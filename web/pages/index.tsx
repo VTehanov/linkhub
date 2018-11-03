@@ -1,26 +1,26 @@
-import Post from '../components/Post/Post';
-import PostGrid from '../styles/PostGrid';
-import PostForm from '../components/Post/PostForm';
+import Project from '../components/Project/ProjectCard';
+import ProjectGrid from '../styles/ProjectGrid';
+import ProjectForm from '../components/Project/ProjectForm';
 
 const Home = () => (
-  <PostGrid>
-    <Post post={{
+  <ProjectGrid>
+    <Project project={{
       title: 'sample title',
       content: 'lorem ipsum dolor'
     }} />
 
-    <Post post={{
+    <Project project={{
       title: 'sample title',
       content: 'lorem ipsum dolor'
     }} />
 
-    <Post post={{
+    <Project project={{
       title: 'sample title',
       content: 'lorem ipsum dolor'
     }} />
 
-    <PostForm />
-  </PostGrid>
+    <ProjectForm />
+  </ProjectGrid>
 );
 
 export default Home;
