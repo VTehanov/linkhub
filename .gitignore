@@ -1,3 +1,5 @@
 web/node_modules
 web/.next
+server/node_modules
+server/variables.env
 .DS_Store
