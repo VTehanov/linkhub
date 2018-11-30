@@ -1,0 +1,10 @@
+type Project {
+  id: UUID! @unique
+  name: String!
+  description: String!
+}
+
+type User {
+  id: UUID! @unique
+  email: String! @unique
+}
