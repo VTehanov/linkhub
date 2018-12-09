@@ -121,8 +121,8 @@ type PageInfo {
   endCursor: String
 }
 
-type Project {
-  id: UUID!
+type Project implements Node {
+  id: ID!
   name: String!
   description: String!
 }
@@ -165,7 +165,7 @@ enum ProjectOrderByInput {
 }
 
 type ProjectPreviousValues {
-  id: UUID!
+  id: ID!
   name: String!
   description: String!
 }
@@ -228,6 +228,46 @@ input ProjectWhereInput {
 
   """Logical NOT on all given filters combined by AND."""
   NOT: [ProjectWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
   name: String
 
   """All values that are not equal to given value."""
@@ -311,7 +351,7 @@ input ProjectWhereInput {
 }
 
 input ProjectWhereUniqueInput {
-  id: UUID
+  id: ID
 }
 
 type Query {
@@ -334,8 +374,8 @@ type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
-type User {
-  id: UUID!
+type User implements Node {
+  id: ID!
   email: String!
 }
 
@@ -374,7 +414,7 @@ enum UserOrderByInput {
 }
 
 type UserPreviousValues {
-  id: UUID!
+  id: ID!
   email: String!
 }
 
@@ -434,6 +474,46 @@ input UserWhereInput {
 
   """Logical NOT on all given filters combined by AND."""
   NOT: [UserWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
   email: String
 
   """All values that are not equal to given value."""
@@ -477,12 +557,9 @@ input UserWhereInput {
 }
 
 input UserWhereUniqueInput {
-  id: UUID
+  id: ID
   email: String
 }
-
-"""A type 4 UUID according to IETF RFC 4122."""
-scalar UUID
 `
 
 export const Prisma = makePrismaBindingClass<BindingConstructor<Prisma>>({typeDefs})
@@ -545,6 +622,20 @@ export interface ProjectWhereInput {
   AND?: ProjectWhereInput[] | ProjectWhereInput
   OR?: ProjectWhereInput[] | ProjectWhereInput
   NOT?: ProjectWhereInput[] | ProjectWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
   name?: String
   name_not?: String
   name_in?: String[] | String
@@ -576,7 +667,7 @@ export interface ProjectWhereInput {
 }
 
 export interface ProjectWhereUniqueInput {
-  id?: UUID
+  id?: ID_Input
 }
 
 export interface UserCreateInput {
@@ -606,6 +697,20 @@ export interface UserWhereInput {
   AND?: UserWhereInput[] | UserWhereInput
   OR?: UserWhereInput[] | UserWhereInput
   NOT?: UserWhereInput[] | UserWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
   email?: String
   email_not?: String
   email_in?: String[] | String
@@ -623,7 +728,7 @@ export interface UserWhereInput {
 }
 
 export interface UserWhereUniqueInput {
-  id?: UUID
+  id?: ID_Input
   email?: String
 }
 
@@ -658,8 +763,8 @@ export interface PageInfo {
   endCursor?: String
 }
 
-export interface Project {
-  id: UUID
+export interface Project extends Node {
+  id: ID_Output
   name: String
   description: String
 }
@@ -684,7 +789,7 @@ export interface ProjectEdge {
 }
 
 export interface ProjectPreviousValues {
-  id: UUID
+  id: ID_Output
   name: String
   description: String
 }
@@ -696,8 +801,8 @@ export interface ProjectSubscriptionPayload {
   previousValues?: ProjectPreviousValues
 }
 
-export interface User {
-  id: UUID
+export interface User extends Node {
+  id: ID_Output
   email: String
 }
 
@@ -721,7 +826,7 @@ export interface UserEdge {
 }
 
 export interface UserPreviousValues {
-  id: UUID
+  id: ID_Output
   email: String
 }
 
@@ -758,8 +863,3 @@ export type Long = string
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
 export type String = string
-
-/*
-A type 4 UUID according to IETF RFC 4122.
-*/
-export type UUID = string

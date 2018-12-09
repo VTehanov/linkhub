@@ -1,0 +1,10 @@
+# import * from '../../generated/prisma.graphql'
+
+
+type Mutation {
+  createProject(name: String!, description: String!): Project!
+}
+
+type Query {
+  hi(name: String!): String!
+}

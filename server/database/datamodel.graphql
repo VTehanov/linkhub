@@ -1,10 +1,10 @@
 type Project {
-  id: UUID! @unique
+  id: ID! @unique
   name: String!
   description: String!
 }
 
 type User {
-  id: UUID! @unique
+  id: ID! @unique
   email: String! @unique
 }

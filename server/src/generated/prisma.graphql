@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/vasil-tehanov/linkhub/dev
-# timestamp: Sat Dec 01 2018 00:30:52 GMT+0200 (Eastern European Standard Time)
+# timestamp: Sun Dec 09 2018 12:25:09 GMT+0200 (Eastern European Standard Time)
 
 type AggregateProject {
   count: Int!
@@ -62,8 +62,8 @@ type PageInfo {
   endCursor: String
 }
 
-type Project {
-  id: UUID!
+type Project implements Node {
+  id: ID!
   name: String!
   description: String!
 }
@@ -106,7 +106,7 @@ enum ProjectOrderByInput {
 }
 
 type ProjectPreviousValues {
-  id: UUID!
+  id: ID!
   name: String!
   description: String!
 }
@@ -169,6 +169,46 @@ input ProjectWhereInput {
 
   """Logical NOT on all given filters combined by AND."""
   NOT: [ProjectWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
   name: String
 
   """All values that are not equal to given value."""
@@ -252,7 +292,7 @@ input ProjectWhereInput {
 }
 
 input ProjectWhereUniqueInput {
-  id: UUID
+  id: ID
 }
 
 type Query {
@@ -275,8 +315,8 @@ type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
-type User {
-  id: UUID!
+type User implements Node {
+  id: ID!
   email: String!
 }
 
@@ -315,7 +355,7 @@ enum UserOrderByInput {
 }
 
 type UserPreviousValues {
-  id: UUID!
+  id: ID!
   email: String!
 }
 
@@ -375,6 +415,46 @@ input UserWhereInput {
 
   """Logical NOT on all given filters combined by AND."""
   NOT: [UserWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
   email: String
 
   """All values that are not equal to given value."""
@@ -418,9 +498,6 @@ input UserWhereInput {
 }
 
 input UserWhereUniqueInput {
-  id: UUID
+  id: ID
   email: String
 }
-
-"""A type 4 UUID according to IETF RFC 4122."""
-scalar UUID

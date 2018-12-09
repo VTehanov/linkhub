@@ -1,18 +1,19 @@
 import { GraphQLServer } from 'graphql-yoga'
 
-const resolvers = {
-  Query: {
-    hi(_: any, args: any) {
-      return `Hi, ${args.name}`
-    }
-  }
-}
+import db from './database';
+import { getTypeDefs, getResolvers } from './createSchema';
+
 
 const server = new GraphQLServer({
-  typeDefs: './src/schema.graphql',
-  resolvers,
-  context: req => ({
-    ...req
+  typeDefs: getTypeDefs(),
+  resolvers: getResolvers(),
+  resolverValidationOptions: {
+    // TODO: fix the need for this
+    requireResolversForResolveType: false
+  },
+  context: (req: any) => ({
+    ...req,
+    db
   })
 })
 
