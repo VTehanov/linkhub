@@ -2,9 +2,9 @@
 
 
 type Mutation {
-  createProject(name: String!, description: String!): Project!
+  createProject(data: ProjectCreateInput!): Project!
 }
 
 type Query {
-  hi(name: String!): String!
+  projects(where: ProjectWhereInput!): [Project]!
 }
