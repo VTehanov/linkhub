@@ -1,24 +1,24 @@
-export const resolvers = {
-  Mutation: {
-    createProject: async (
-      _: any,
-      args: any,
-      ctx: any
-    ) => {
-      const { name, description } = args;
-      const project = await ctx.db.mutation.createProject({
-        data: {
-          name,
-          description
-        }
-      })
+import { MutationResolvers } from '../../generated/types'
 
-      return project
-    }
-  },
-  Query: {
-    hi(_: any, args: any) {
-      return `Hi, ${args.name}`
-    }
+
+const Mutation: MutationResolvers.Resolvers = {
+  createProject: async (
+    _,
+    { data },
+    { db }
+  ) => {
+    const project = await db.mutation.createProject({
+      data: {
+        name: data.name,
+        description: data.description
+      }
+    })
+
+    return project
   }
+}
+
+
+export const resolvers = {
+  Mutation
 }

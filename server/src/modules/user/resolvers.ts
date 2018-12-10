@@ -1,23 +1,23 @@
-export const resolvers = {
-  Mutation: {
-    createUser: async (
-      _: any,
-      args: any,
-      ctx: any
-    ) => {
-      const { email } = args;
-      const user = await ctx.db.mutation.createUser({
-        data: {
-          email
-        }
-      })
+import { MutationResolvers } from '../../generated/types'
 
-      return user
-    }
-  },
-  Query: {
-    hiUser(_: any, args: any) {
-      return `Hi, ${args.name}`
-    }
+
+const Mutation: MutationResolvers.Resolvers = {
+  createUser: async (
+    _,
+    { data },
+    { db }
+  ) => {
+    const user = await db.mutation.createUser({
+      data: {
+        email: data.email
+      }
+    })
+
+    return user
   }
-};
+}
+
+
+export const resolvers = {
+  Mutation
+}
