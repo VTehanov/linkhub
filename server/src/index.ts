@@ -1,20 +1,18 @@
+import 'reflect-metadata'
+
 import { GraphQLServer } from 'graphql-yoga'
 
-import db from './database';
-import { getTypeDefs, getResolvers } from './createSchema';
+const typeDefs = `
+  type Query {
+    hello(name: String): String!
+  }
+`
 
+const resolvers = {
+  Query: {
+    hello: (_, { name }) => `Hello ${name || 'World'}`
+  }
+}
 
-const server = new GraphQLServer({
-  typeDefs: getTypeDefs(),
-  resolvers: getResolvers(),
-  resolverValidationOptions: {
-    // TODO: fix the need for this
-    requireResolversForResolveType: false
-  },
-  context: (req: any) => ({
-    ...req,
-    db
-  })
-})
-
-server.start(() => console.log('Server is running on http://localhost:4000'))
+const server = new GraphQLServer({ typeDefs, resolvers })
+server.start(() => console.log('Server is running on localhost:4000'))
