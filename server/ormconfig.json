@@ -1,17 +1,18 @@
 {
+  "name": "default",
   "type": "postgres",
   "host": "localhost",
   "port": 5432,
   "username": "postgres",
   "password": "postgres",
-  "database": "postgres",
+  "database": "linkhub-dev",
   "synchronize": true,
   "logging": false,
-  "entities": ["src/entity/**/*.ts"],
+  "entities": ["src/modules/**/*.ts"],
   "migrations": ["src/migration/**/*.ts"],
   "subscribers": ["src/subscriber/**/*.ts"],
   "cli": {
-    "entitiesDir": "src/entity",
+    "entitiesDir": "src/modules/**/*.ts",
     "migrationsDir": "src/migration",
     "subscribersDir": "src/subscriber"
   }

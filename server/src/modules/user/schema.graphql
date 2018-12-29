@@ -1,0 +1,11 @@
+type User {
+  email: String!
+}
+
+type Mutation {
+  register(email: String!): User!
+}
+
+type Query {
+  hiUser(name: String!): String!
+}
