@@ -2,8 +2,9 @@ import { User } from './User'
 
 export const resolvers = {
   Mutation: {
-    register: async (_, { email }) => {
+    register: async (_: any, args: any) => {
       let newUser
+      const { email } = args
 
       try {
         newUser = await User.create({
