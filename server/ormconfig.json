@@ -8,11 +8,11 @@
   "database": "linkhub-dev",
   "synchronize": true,
   "logging": false,
-  "entities": ["src/modules/**/*.ts"],
+  "entities": ["src/entity/**/*.ts"],
   "migrations": ["src/migration/**/*.ts"],
   "subscribers": ["src/subscriber/**/*.ts"],
   "cli": {
-    "entitiesDir": "src/modules/**/*.ts",
+    "entitiesDir": "src/entity/**/*.ts",
     "migrationsDir": "src/migration",
     "subscribersDir": "src/subscriber"
   }

@@ -1,5 +1,8 @@
 export type Maybe<T> = T | null
 
+export interface RegisterInput {
+  email: string
+}
 import { GraphQLResolveInfo } from 'graphql'
 
 import { MyContext } from '../types/Context'
@@ -79,15 +82,22 @@ export namespace MutationResolvers {
     Context = MyContext
   > = Resolver<R, Parent, Context, RegisterArgs>
   export interface RegisterArgs {
-    email: string
+    input: RegisterInput
   }
 }
 
 export namespace UserResolvers {
   export interface Resolvers<Context = MyContext, TypeParent = User> {
+    id?: IdResolver<string, TypeParent, Context>
+
     email?: EmailResolver<string, TypeParent, Context>
   }
 
+  export type IdResolver<
+    R = string,
+    Parent = User,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
   export type EmailResolver<
     R = string,
     Parent = User,
@@ -153,6 +163,8 @@ export interface Mutation {
 }
 
 export interface User {
+  id: string
+
   email: string
 }
 
@@ -164,5 +176,5 @@ export interface HiUserQueryArgs {
   name: string
 }
 export interface RegisterMutationArgs {
-  email: string
+  input: RegisterInput
 }

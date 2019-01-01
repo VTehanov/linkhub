@@ -1,0 +1,13 @@
+# import User from '../../shared/User.graphql'
+
+input RegisterInput {
+  email: String!
+}
+
+type Mutation {
+  register(input: RegisterInput!): User!
+}
+
+type Query {
+  hiUser(name: String!): String!
+}
