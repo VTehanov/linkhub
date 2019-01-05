@@ -7,7 +7,7 @@ const Mutation: MutationResolvers.Resolvers = {
     let user
 
     try {
-      user = await User.create({ email })
+      user = await User.create({ email }).save()
     } catch (err) {
       throw err
     }

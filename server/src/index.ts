@@ -1,15 +1,3 @@
-import 'reflect-metadata'
+import { startServer } from './startServer'
 
-import { GraphQLServer } from 'graphql-yoga'
-import { getTypeDefs, getResolvers } from './utils/createSchema'
-import { createConnection } from 'typeorm'
-const connectionOptions = require('../ormconfig.json')
-
-const server = new GraphQLServer({
-  typeDefs: getTypeDefs(),
-  resolvers: getResolvers()
-})
-
-createConnection(connectionOptions).then(() => {
-  server.start(() => console.log('Server is running on localhost:4000'))
-})
+startServer()
