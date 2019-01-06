@@ -1,6 +1,6 @@
-import { request } from 'graphql-request'
+import { testRequester } from '../../../utils/testUtils/testRequester'
 
-const registerMutation = (email: String) => `
+const registerMutation = (email: string) => `
   mutation {
     register(input: {
       email: "${email}"
@@ -14,11 +14,7 @@ describe('Register user', () => {
   test('registers user', async () => {
     const email = 'testCase@mail.com'
 
-    const response = await request(
-      'http://localhost:4000',
-      registerMutation(email)
-    )
-
+    const response = await testRequester(registerMutation(email))
     expect(response).toEqual({ register: { email } })
   })
 })

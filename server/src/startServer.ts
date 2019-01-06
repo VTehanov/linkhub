@@ -1,11 +1,12 @@
 import 'reflect-metadata'
 
-import { GraphQLServer } from 'graphql-yoga'
+import { GraphQLServer, Options } from 'graphql-yoga'
+import { AddressInfo } from 'net'
+
 import { getTypeDefs, getResolvers } from './utils/createSchema'
 import { createTypeormConn } from './utils/createTypeOrmConnection'
-// import { createTestConn } from './utils/testUtils/createTestConnection'
 
-export const startServer = async () => {
+export const startServer = async (serverOptions: Options = {}) => {
   const server = new GraphQLServer({
     typeDefs: getTypeDefs(),
     resolvers: getResolvers()
@@ -13,9 +14,9 @@ export const startServer = async () => {
 
   await createTypeormConn()
 
-  const app = await server.start().then(() => {
-    console.log('* Server is up on localhost:4000')
-  })
+  const app = await server.start(serverOptions)
+  const { port } = app.address() as AddressInfo
+  console.log(`\n* Server is up on :${port}`)
 
   return app
 }

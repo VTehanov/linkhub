@@ -32,10 +32,11 @@
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development npm-run-all --parallel dev:watch playground",
-    "dev:watch": "nodemon -e ts,graphql -x ts-node src/index.ts",
+    "dev:watch": "cross-env NODE_ENV=development nodemon -e ts,graphql -x ts-node src/index.ts",
     "gen:types": "gql-gen",
     "playground": "graphql playground",
     "start": "ts-node src/index.ts",
-    "test": "cross-env NODE_ENV=test jest --watchAll"
+    "test": "cross-env NODE_ENV=test jest",
+    "test:watch": "cross-env NODE_ENV=test jest --watchAll"
   }
 }
