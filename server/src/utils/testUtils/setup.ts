@@ -1,12 +1,10 @@
 import { startServer } from '../../startServer'
-import { User } from '../../entity/User'
+import { seedData } from './seedData'
 
 export const setup = async () => {
   const app = await startServer()
 
-  await User.create({
-    email: 'test@mail.com'
-  }).save()
+  await seedData()
 
   return app
 }

@@ -36,6 +36,6 @@
     "gen:types": "gql-gen",
     "playground": "graphql playground",
     "start": "ts-node src/index.ts",
-    "test": "cross-env NODE_ENV=test jest --detectOpenHandles"
+    "test": "cross-env NODE_ENV=test jest --watchAll"
   }
 }
