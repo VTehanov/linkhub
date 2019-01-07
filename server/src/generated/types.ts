@@ -73,17 +73,58 @@ export namespace QueryResolvers {
 
 export namespace MutationResolvers {
   export interface Resolvers<Context = MyContext, TypeParent = {}> {
-    register?: RegisterResolver<Maybe<User>, TypeParent, Context>
+    register?: RegisterResolver<RegisterResponse, TypeParent, Context>
   }
 
   export type RegisterResolver<
-    R = Maybe<User>,
+    R = RegisterResponse,
     Parent = {},
     Context = MyContext
   > = Resolver<R, Parent, Context, RegisterArgs>
   export interface RegisterArgs {
     input: RegisterInput
   }
+}
+
+export namespace RegisterResponseResolvers {
+  export interface Resolvers<
+    Context = MyContext,
+    TypeParent = RegisterResponse
+  > {
+    errors?: ErrorsResolver<Maybe<Error[]>, TypeParent, Context>
+
+    user?: UserResolver<Maybe<User>, TypeParent, Context>
+  }
+
+  export type ErrorsResolver<
+    R = Maybe<Error[]>,
+    Parent = RegisterResponse,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type UserResolver<
+    R = Maybe<User>,
+    Parent = RegisterResponse,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+}
+
+export namespace ErrorResolvers {
+  export interface Resolvers<Context = MyContext, TypeParent = Error> {
+    path?: PathResolver<string, TypeParent, Context>
+
+    message?: MessageResolver<string, TypeParent, Context>
+  }
+
+  export type PathResolver<
+    R = string,
+    Parent = Error,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type MessageResolver<
+    R = string,
+    Parent = Error,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
 }
 
 export namespace UserResolvers {
@@ -101,28 +142,6 @@ export namespace UserResolvers {
   export type EmailResolver<
     R = string,
     Parent = User,
-    Context = MyContext
-  > = Resolver<R, Parent, Context>
-}
-
-export namespace RegisterResponseResolvers {
-  export interface Resolvers<
-    Context = MyContext,
-    TypeParent = RegisterResponse
-  > {
-    user?: UserResolver<Maybe<User>, TypeParent, Context>
-
-    errors?: ErrorsResolver<Maybe<string[]>, TypeParent, Context>
-  }
-
-  export type UserResolver<
-    R = Maybe<User>,
-    Parent = RegisterResponse,
-    Context = MyContext
-  > = Resolver<R, Parent, Context>
-  export type ErrorsResolver<
-    R = Maybe<string[]>,
-    Parent = RegisterResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>
 }
@@ -163,8 +182,9 @@ export interface DeprecatedDirectiveArgs {
 export interface IResolvers {
   Query?: QueryResolvers.Resolvers
   Mutation?: MutationResolvers.Resolvers
-  User?: UserResolvers.Resolvers
   RegisterResponse?: RegisterResponseResolvers.Resolvers
+  Error?: ErrorResolvers.Resolvers
+  User?: UserResolvers.Resolvers
 }
 
 export interface IDirectiveResolvers<Result> {
@@ -182,19 +202,25 @@ export interface Query {
 }
 
 export interface Mutation {
-  register?: Maybe<User>
+  register: RegisterResponse
+}
+
+export interface RegisterResponse {
+  errors?: Maybe<Error[]>
+
+  user?: Maybe<User>
+}
+
+export interface Error {
+  path: string
+
+  message: string
 }
 
 export interface User {
   id: string
 
   email: string
-}
-
-export interface RegisterResponse {
-  user?: Maybe<User>
-
-  errors?: Maybe<string[]>
 }
 
 // ====================================================

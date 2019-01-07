@@ -1,11 +1,17 @@
 # import User from '../../shared/User.graphql'
+# import Error from '../../shared/Error.graphql'
 
 input RegisterInput {
   email: String!
 }
 
+type RegisterResponse {
+  errors: [Error!]
+  user: User
+}
+
 type Mutation {
-  register(input: RegisterInput!): User!
+  register(input: RegisterInput!): RegisterResponse!
 }
 
 type Query {
