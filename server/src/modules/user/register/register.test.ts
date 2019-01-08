@@ -33,7 +33,6 @@ describe('Register user', () => {
 
   test('does not register user if email is already in use', async () => {
     const email = users[0].email
-    console.log(email)
     const response = await testRequester(registerMutation(email))
 
     expect(response).toEqual({
@@ -42,6 +41,23 @@ describe('Register user', () => {
           {
             path: 'email',
             message: errorMessages.DUPLICATE_EMAIL
+          }
+        ],
+        user: null
+      }
+    })
+  })
+
+  test('does not register with invalid email', async () => {
+    const email = 'smthwrong'
+    const response = await testRequester(registerMutation(email))
+
+    expect(response).toEqual({
+      register: {
+        errors: [
+          {
+            path: 'email',
+            message: errorMessages.INVALID_EMAIL
           }
         ],
         user: null

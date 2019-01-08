@@ -6,6 +6,7 @@
     "@types/glob": "^7.1.1",
     "@types/jest": "^23.3.11",
     "@types/node": "^10.12.18",
+    "@types/yup": "^0.26.4",
     "babel-jest": "^23.6.0",
     "cross-env": "^5.2.0",
     "graphql-cli": "^3.0.3",
@@ -28,7 +29,8 @@
     "merge-graphql-schemas": "^1.5.8",
     "pg": "^7.3.0",
     "reflect-metadata": "^0.1.10",
-    "typeorm": "0.2.9"
+    "typeorm": "0.2.9",
+    "yup": "^0.26.6"
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development npm-run-all --parallel dev:watch playground",
