@@ -1,21 +1,9 @@
-import * as yup from 'yup'
-
 import { User } from '../../../entity/User'
 import { MutationResolvers } from '../../../generated/types'
-import { INVALID_EMAIL, DUPLICATE_EMAIL } from './errorMessages'
-import {
-  EMAIL_MAX_LENGTH,
-  EMAIL_MIN_LENGTH
-} from '../../../constants/dataConstraints'
-import { formatYupError } from '../../../utils/formatYupErrors'
+import { DUPLICATE_EMAIL } from './errorMessages'
 
-const registerSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email(INVALID_EMAIL)
-    .min(EMAIL_MIN_LENGTH)
-    .max(EMAIL_MAX_LENGTH)
-})
+import { formatYupError } from '../../../utils/formatYupErrors'
+import { registerSchema } from './validationSchemas'
 
 const Mutation: MutationResolvers.Resolvers = {
   async register(_, { input }) {
