@@ -1,5 +1,11 @@
 export type Maybe<T> = T | null
 
+export interface CreateProjectInput {
+  name: string
+
+  description: string
+}
+
 export interface RegisterInput {
   email: string
 }
@@ -73,7 +79,22 @@ export namespace QueryResolvers {
 
 export namespace MutationResolvers {
   export interface Resolvers<Context = MyContext, TypeParent = {}> {
+    createProject?: CreateProjectResolver<
+      CreateProjectResponse,
+      TypeParent,
+      Context
+    >
+
     register?: RegisterResolver<RegisterResponse, TypeParent, Context>
+  }
+
+  export type CreateProjectResolver<
+    R = CreateProjectResponse,
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context, CreateProjectArgs>
+  export interface CreateProjectArgs {
+    input: CreateProjectInput
   }
 
   export type RegisterResolver<
@@ -84,6 +105,66 @@ export namespace MutationResolvers {
   export interface RegisterArgs {
     input: RegisterInput
   }
+}
+
+export namespace CreateProjectResponseResolvers {
+  export interface Resolvers<
+    Context = MyContext,
+    TypeParent = CreateProjectResponse
+  > {
+    errors?: ErrorsResolver<Error[], TypeParent, Context>
+
+    project?: ProjectResolver<Maybe<Project>, TypeParent, Context>
+  }
+
+  export type ErrorsResolver<
+    R = Error[],
+    Parent = CreateProjectResponse,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type ProjectResolver<
+    R = Maybe<Project>,
+    Parent = CreateProjectResponse,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+}
+
+export namespace ErrorResolvers {
+  export interface Resolvers<Context = MyContext, TypeParent = Error> {
+    path?: PathResolver<string, TypeParent, Context>
+
+    message?: MessageResolver<string, TypeParent, Context>
+  }
+
+  export type PathResolver<
+    R = string,
+    Parent = Error,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type MessageResolver<
+    R = string,
+    Parent = Error,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+}
+
+export namespace ProjectResolvers {
+  export interface Resolvers<Context = MyContext, TypeParent = Project> {
+    name?: NameResolver<Maybe<string>, TypeParent, Context>
+
+    description?: DescriptionResolver<Maybe<string>, TypeParent, Context>
+  }
+
+  export type NameResolver<
+    R = Maybe<string>,
+    Parent = Project,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type DescriptionResolver<
+    R = Maybe<string>,
+    Parent = Project,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
 }
 
 export namespace RegisterResponseResolvers {
@@ -104,25 +185,6 @@ export namespace RegisterResponseResolvers {
   export type UserResolver<
     R = Maybe<User>,
     Parent = RegisterResponse,
-    Context = MyContext
-  > = Resolver<R, Parent, Context>
-}
-
-export namespace ErrorResolvers {
-  export interface Resolvers<Context = MyContext, TypeParent = Error> {
-    path?: PathResolver<string, TypeParent, Context>
-
-    message?: MessageResolver<string, TypeParent, Context>
-  }
-
-  export type PathResolver<
-    R = string,
-    Parent = Error,
-    Context = MyContext
-  > = Resolver<R, Parent, Context>
-  export type MessageResolver<
-    R = string,
-    Parent = Error,
     Context = MyContext
   > = Resolver<R, Parent, Context>
 }
@@ -182,8 +244,10 @@ export interface DeprecatedDirectiveArgs {
 export interface IResolvers {
   Query?: QueryResolvers.Resolvers
   Mutation?: MutationResolvers.Resolvers
-  RegisterResponse?: RegisterResponseResolvers.Resolvers
+  CreateProjectResponse?: CreateProjectResponseResolvers.Resolvers
   Error?: ErrorResolvers.Resolvers
+  Project?: ProjectResolvers.Resolvers
+  RegisterResponse?: RegisterResponseResolvers.Resolvers
   User?: UserResolvers.Resolvers
 }
 
@@ -202,19 +266,33 @@ export interface Query {
 }
 
 export interface Mutation {
+  createProject: CreateProjectResponse
+
   register: RegisterResponse
 }
 
-export interface RegisterResponse {
-  errors?: Maybe<Error[]>
+export interface CreateProjectResponse {
+  errors: Error[]
 
-  user?: Maybe<User>
+  project?: Maybe<Project>
 }
 
 export interface Error {
   path: string
 
   message: string
+}
+
+export interface Project {
+  name?: Maybe<string>
+
+  description?: Maybe<string>
+}
+
+export interface RegisterResponse {
+  errors?: Maybe<Error[]>
+
+  user?: Maybe<User>
 }
 
 export interface User {
@@ -229,6 +307,9 @@ export interface User {
 
 export interface HiUserQueryArgs {
   name: string
+}
+export interface CreateProjectMutationArgs {
+  input: CreateProjectInput
 }
 export interface RegisterMutationArgs {
   input: RegisterInput
