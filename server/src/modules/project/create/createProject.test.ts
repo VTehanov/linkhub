@@ -1,12 +1,10 @@
-import * as faker from 'faker'
+import { Connection } from 'typeorm'
 
 import { CreateProjectInput } from '../../../generated/types'
 import { testRequester } from '../../../utils/testUtils/testRequester'
-import {
-  PROJECT_DESCRIPTION_MAX_LENGTH,
-  PROJECT_NAME_MAX_LENGTH
-} from '../../../constants/dataConstraints'
 import * as errorMessages from './errorMessages'
+import { Project } from '../../../entity/Project'
+import { createTypeormConn } from '../../../utils/createTypeOrmConnection'
 
 const createProjectMutation = ({ name, description }: CreateProjectInput) => `
   mutation {
@@ -26,6 +24,15 @@ const createProjectMutation = ({ name, description }: CreateProjectInput) => `
   }
 `
 
+let conn: Connection
+beforeAll(async () => {
+  conn = await createTypeormConn()
+})
+
+afterAll(async () => {
+  conn.close()
+})
+
 describe('Create project', () => {
   test('creates project', async () => {
     const name = 'test name'
@@ -33,6 +40,7 @@ describe('Create project', () => {
     const response = await testRequester(
       createProjectMutation({ name, description })
     )
+    const projects = await Project.find({ name })
     expect(response).toEqual({
       createProject: {
         project: {
@@ -42,31 +50,36 @@ describe('Create project', () => {
         errors: []
       }
     })
+
+    expect(projects).toHaveLength(1)
+    expect(projects[0].name).toEqual(name)
+    expect(projects[0].description).toEqual(description)
   })
 
-  test("it doesn't create project with invalid data", async () => {
-    const name = faker.random.alphaNumeric(PROJECT_NAME_MAX_LENGTH + 2)
-    const description = faker.random.alphaNumeric(
-      PROJECT_DESCRIPTION_MAX_LENGTH + 2
-    )
+  test('it does not create project with invalid data', async () => {
+    const name = 'Te'
+    const description = 'st'
     const response = await testRequester(
       createProjectMutation({ name, description })
     )
+    const projects = await Project.find({ name, description })
 
     expect(response).toEqual({
       createProject: {
         errors: [
           {
             path: 'name',
-            message: errorMessages.NAME_TOO_LONG
+            message: errorMessages.NAME_TOO_SHORT
           },
           {
             path: 'description',
-            message: errorMessages.DESCRIPTION_TOO_LONG
+            message: errorMessages.DESCRIPTION_TOO_SHORT
           }
         ],
         project: null
       }
     })
+
+    expect(projects).toHaveLength(0)
   })
 })

@@ -19,6 +19,7 @@ const Mutation: MutationResolvers.Resolvers = {
     }
 
     const emailInUse = await User.findOne({ email })
+
     if (emailInUse) {
       return {
         errors: [
