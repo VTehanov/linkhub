@@ -1,33 +1,7 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-
-  .form-name {
-    text-align: center;
-    font-weight: 700;
-    font-family: ${props => props.theme.fonts.title};
-  }
-
-  input {
-    padding: 8px 5px;
-    font-size: 14px;
-  }
-
-  button[type='submit'] {
-    margin-top: 15px;
-    padding: 10px 0;
-    border: 0;
-    background-color: ${props => props.theme.colors.cta};
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
-  }
-`
+import { StyledForm } from '../styles/Form'
 
 const REGISTER_MUTATION = gql`
   mutation REGISTER_MUTATION($email: String!) {
@@ -35,6 +9,10 @@ const REGISTER_MUTATION = gql`
       user {
         id
         email
+      }
+      errors {
+        path
+        message
       }
     }
   }
@@ -44,7 +22,7 @@ interface IState {
   email?: string
 }
 
-class RegisterForm extends Component<null, IState> {
+class RegisterForm extends Component<any, IState> {
   state = {
     email: ''
   }
@@ -56,19 +34,20 @@ class RegisterForm extends Component<null, IState> {
     })
   }
 
+  handleSubmit = async (e: React.FormEvent<HTMLFormElement>, fn: Function) => {
+    e.preventDefault()
+    await fn()
+    this.setState({ email: '' })
+  }
+
   render() {
     return (
       <Mutation mutation={REGISTER_MUTATION} variables={this.state}>
-        {(register, { error, loading }) => (
-          <Form
+        {register => (
+          <StyledForm
             method="post"
-            onSubmit={async e => {
-              e.preventDefault()
-              await register()
-              this.setState({ email: '' })
-            }}
+            onSubmit={e => this.handleSubmit(e, register)}
           >
-            {error && error}
             <h2 className="form-name">Create an account</h2>
             <input
               type="email"
@@ -78,7 +57,7 @@ class RegisterForm extends Component<null, IState> {
               onChange={this.handleChange}
             />
             <button type="submit">Register</button>
-          </Form>
+          </StyledForm>
         )}
       </Mutation>
     )

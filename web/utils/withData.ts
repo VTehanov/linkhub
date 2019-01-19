@@ -1,6 +1,6 @@
 import withApollo, { InitApolloOptions } from 'next-with-apollo'
 import ApolloClient from 'apollo-boost'
-import { ENDPOINTS } from '../config/constants'
+import { ENDPOINTS } from '../constants/endpoints'
 
 const createClient = ({ headers }: InitApolloOptions<{}>) => {
   return new ApolloClient({
