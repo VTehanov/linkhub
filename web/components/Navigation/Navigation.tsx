@@ -1,19 +1,18 @@
-import Link from 'next/link';
-import StyledNavigation from './StyledNavigation';
+import Link from 'next/link'
+import StyledNavigation from './StyledNavigation'
 
-
-interface NavigationProps {
+interface IProps {
   routes: {
-    url: string,
+    url: string
     text: string
   }[]
 }
 
-const Navigation: React.SFC<NavigationProps> = ({ routes }) => {
+const Navigation: React.SFC<IProps> = ({ routes }) => {
   return (
     <StyledNavigation>
       {routes.map(route => (
-        <Link href={route.url}>
+        <Link href={route.url} key={route.text}>
           <a className="Navigation__link">{route.text}</a>
         </Link>
       ))}
@@ -21,4 +20,4 @@ const Navigation: React.SFC<NavigationProps> = ({ routes }) => {
   )
 }
 
-export default Navigation;
+export default Navigation

@@ -1,7 +1,5 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
-const StyledNavigation = styled.nav`
-  background-color: pink;
-`;
+const StyledNavigation = styled.nav``
 
-export default StyledNavigation;
+export default StyledNavigation

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 const Button = styled.button`
   padding: 2em 2em;
@@ -10,4 +10,4 @@ const Button = styled.button`
   text-transform: uppercase;
 `
 
-export default Button;
+export default Button

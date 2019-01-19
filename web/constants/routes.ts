@@ -1,6 +1,7 @@
 export default [
+  { url: '/', text: 'Home' },
   {
-    url: '/create',
-    text: 'Create'
+    url: '/register',
+    text: 'Register'
   }
 ]

@@ -14,7 +14,13 @@ export const startServer = async (serverOptions: Options = {}) => {
 
   await createTypeormConn()
 
-  const app = await server.start(serverOptions)
+  const app = await server.start({
+    cors: {
+      credentials: true,
+      origin: 'http://localhost:3000'
+    },
+    ...serverOptions
+  })
   const { port } = app.address() as AddressInfo
   console.log(`\n* Server is up on :${port}`)
 
