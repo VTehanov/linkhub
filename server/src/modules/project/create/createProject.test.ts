@@ -40,7 +40,7 @@ describe('Create project', () => {
     const response = await testRequester(
       createProjectMutation({ name, description })
     )
-    const projects = await Project.find({ name })
+    const projects = await Project.find({ where: { name } })
     expect(response).toEqual({
       createProject: {
         project: {
@@ -62,7 +62,7 @@ describe('Create project', () => {
     const response = await testRequester(
       createProjectMutation({ name, description })
     )
-    const projects = await Project.find({ name, description })
+    const projects = await Project.find({ where: { name, description } })
 
     expect(response).toEqual({
       createProject: {

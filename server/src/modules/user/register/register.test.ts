@@ -36,7 +36,7 @@ describe('Register user', () => {
   test('registers user', async () => {
     const email = 'someRandomEmailThatIsNotInDb@mail.com'
     const response = await testRequester(registerMutation(email))
-    const users = await User.find({ email })
+    const users = await User.find({ where: { email } })
 
     expect(response).toEqual({
       register: {
@@ -52,7 +52,7 @@ describe('Register user', () => {
   test('does not register user if email is already in use', async () => {
     const email = 'test@mail.com'
     const response = await testRequester(registerMutation(email))
-    const users = await User.find({ email })
+    const users = await User.find({ where: { email } })
 
     expect(response).toEqual({
       register: {
@@ -72,7 +72,7 @@ describe('Register user', () => {
   test('does not register with invalid email', async () => {
     const email = 'smthwrong'
     const response = await testRequester(registerMutation(email))
-    const users = await User.find({ email })
+    const users = await User.find({ where: { email } })
 
     expect(response).toEqual({
       register: {
