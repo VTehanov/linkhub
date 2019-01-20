@@ -1,4 +1,10 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+
+const sharedStyles = css`
+  padding: 1em;
+  border: 1px solid #d6d6d6;
+  font-size: 14px;
+`
 
 export const StyledForm = styled.form`
   display: flex;
@@ -11,8 +17,11 @@ export const StyledForm = styled.form`
   }
 
   input {
-    padding: 8px 5px;
-    font-size: 14px;
+    ${sharedStyles}
+  }
+
+  * ~ * {
+    margin-top: 10px;
   }
 
   button[type='submit'] {
@@ -23,5 +32,11 @@ export const StyledForm = styled.form`
     font-size: 16px;
     font-weight: bold;
     color: white;
+  }
+
+  textarea {
+    ${sharedStyles}
+    min-height: 80px;
+    resize: vertical;
   }
 `
