@@ -4,7 +4,8 @@ import { CreateProjectInput } from '../../../generated/types'
 import { testRequester } from '../../../utils/testUtils/testRequester'
 import * as errorMessages from './errorMessages'
 import { Project } from '../../../entity/Project'
-import { createTypeormConn } from '../../../utils/createTypeOrmConnection'
+// import { createTypeormConn } from '../../../utils/createTypeOrmConnection'
+import { createTestConnection } from '../../../utils/testUtils/createTestConnection'
 
 const createProjectMutation = ({ name, description }: CreateProjectInput) => `
   mutation {
@@ -26,7 +27,7 @@ const createProjectMutation = ({ name, description }: CreateProjectInput) => `
 
 let conn: Connection
 beforeAll(async () => {
-  conn = await createTypeormConn()
+  conn = await createTestConnection()
 })
 
 afterAll(async () => {

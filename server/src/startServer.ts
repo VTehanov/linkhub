@@ -5,12 +5,19 @@ import { AddressInfo } from 'net'
 
 import { getTypeDefs, getResolvers } from './utils/createSchema'
 import { createTypeormConn } from './utils/createTypeOrmConnection'
+// import { createTestConnection } from './utils/testUtils/createTestConnection'
 
 export const startServer = async (serverOptions: Options = {}) => {
   const server = new GraphQLServer({
     typeDefs: getTypeDefs(),
     resolvers: getResolvers()
   })
+
+  // if (process.env.NODE_ENV === 'test') {
+  //   await createTestConnection(true)
+  // } else {
+  //   await createTypeormConn()
+  // }
 
   await createTypeormConn()
 

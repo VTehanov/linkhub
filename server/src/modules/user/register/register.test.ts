@@ -2,9 +2,9 @@ import { Connection } from 'typeorm'
 
 import { testRequester } from '../../../utils/testUtils/testRequester'
 import * as errorMessages from './errorMessages'
-import { createTypeormConn } from '../../../utils/createTypeOrmConnection'
-import { seedData } from '../../../utils/testUtils/seedData'
+// import { createTypeormConn } from '../../../utils/createTypeOrmConnection'
 import { User } from '../../../entity/User'
+import { createTestConnection } from '../../../utils/testUtils/createTestConnection'
 
 const registerMutation = (email: string) => `
   mutation {
@@ -24,15 +24,16 @@ const registerMutation = (email: string) => `
 
 let conn: Connection
 beforeAll(async () => {
-  conn = await createTypeormConn()
-  await seedData()
+  conn = await createTestConnection()
+  await User.create({ email: 'test@mail.com' }).save()
+  console.log('I added user')
 })
 
 afterAll(async () => {
   conn.close()
 })
 
-describe('Register user', () => {
+describe('Register user', async () => {
   test('registers user', async () => {
     const email = 'someRandomEmailThatIsNotInDb@mail.com'
     const response = await testRequester(registerMutation(email))
