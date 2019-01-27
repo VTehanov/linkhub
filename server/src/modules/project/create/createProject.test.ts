@@ -1,10 +1,10 @@
 import { Connection } from 'typeorm'
+import * as faker from 'faker'
 
 import { CreateProjectInput } from '../../../generated/types'
 import { testRequester } from '../../../utils/testUtils/testRequester'
 import * as errorMessages from './errorMessages'
 import { Project } from '../../../entity/Project'
-// import { createTypeormConn } from '../../../utils/createTypeOrmConnection'
 import { createTestConnection } from '../../../utils/testUtils/createTestConnection'
 
 const createProjectMutation = ({ name, description }: CreateProjectInput) => `
@@ -36,8 +36,8 @@ afterAll(async () => {
 
 describe('Create project', () => {
   test('creates project', async () => {
-    const name = 'test name'
-    const description = 'Some cool project that I have created'
+    const name = faker.commerce.productName()
+    const description = faker.random.alphaNumeric(80)
     const response = await testRequester(
       createProjectMutation({ name, description })
     )

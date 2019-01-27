@@ -5,7 +5,7 @@ import { AddressInfo } from 'net'
 
 import { getTypeDefs, getResolvers } from './utils/createSchema'
 import { createTypeormConn } from './utils/createTypeOrmConnection'
-// import { createTestConnection } from './utils/testUtils/createTestConnection'
+import { createTestConnection } from './utils/testUtils/createTestConnection'
 
 export const startServer = async (serverOptions: Options = {}) => {
   const server = new GraphQLServer({
@@ -13,13 +13,11 @@ export const startServer = async (serverOptions: Options = {}) => {
     resolvers: getResolvers()
   })
 
-  // if (process.env.NODE_ENV === 'test') {
-  //   await createTestConnection(true)
-  // } else {
-  //   await createTypeormConn()
-  // }
-
-  await createTypeormConn()
+  if (process.env.NODE_ENV === 'test') {
+    await createTestConnection(true)
+  } else {
+    await createTypeormConn()
+  }
 
   const app = await server.start({
     cors: {
