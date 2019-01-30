@@ -22,8 +22,10 @@ const registerMutation = (email: string) => `
   }
 `
 
+faker.seed(process.hrtime()[1])
 const seedEmail = faker.internet.email()
 let conn: Connection
+
 beforeAll(async () => {
   conn = await createTestConnection()
   await User.create({ email: seedEmail }).save()

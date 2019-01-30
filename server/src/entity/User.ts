@@ -11,4 +11,10 @@ export class User extends BaseEntity {
     length: EMAIL_MAX_LENGTH
   })
   email: string
+
+  @Column({
+    type: 'boolean',
+    default: false
+  })
+  confirmedEmail: boolean
 }
