@@ -5,6 +5,7 @@ import { DUPLICATE_EMAIL } from './errorMessages'
 import { formatYupError } from '../../../utils/formatYupErrors'
 import { registerSchema } from './validationSchemas'
 import { createEmailConfirmationLink } from '../../../utils/createEmailConfirmationLink/createEmailConfirmationLink'
+import { sendEmail } from '../../../sendEmail'
 
 const Mutation: MutationResolvers.Resolvers = {
   async register(_, { input }, { redis, requestUrl }) {
@@ -38,7 +39,12 @@ const Mutation: MutationResolvers.Resolvers = {
       throw err
     }
 
-    await createEmailConfirmationLink(requestUrl, user.id, redis)
+    if (process.env.NODE_ENV !== 'test') {
+      await sendEmail(
+        email,
+        await createEmailConfirmationLink(requestUrl, user.id, redis)
+      )
+    }
 
     return {
       user
