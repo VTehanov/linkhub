@@ -6,6 +6,10 @@ export interface CreateProjectInput {
   description: string
 }
 
+export interface LoginInput {
+  email: string
+}
+
 export interface RegisterInput {
   email: string
 }
@@ -85,6 +89,8 @@ export namespace MutationResolvers {
       Context
     >
 
+    login?: LoginResolver<Maybe<LoginResponse>, TypeParent, Context>
+
     register?: RegisterResolver<RegisterResponse, TypeParent, Context>
   }
 
@@ -95,6 +101,15 @@ export namespace MutationResolvers {
   > = Resolver<R, Parent, Context, CreateProjectArgs>
   export interface CreateProjectArgs {
     input: CreateProjectInput
+  }
+
+  export type LoginResolver<
+    R = Maybe<LoginResponse>,
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context, LoginArgs>
+  export interface LoginArgs {
+    input: LoginInput
   }
 
   export type RegisterResolver<
@@ -167,11 +182,8 @@ export namespace ProjectResolvers {
   > = Resolver<R, Parent, Context>
 }
 
-export namespace RegisterResponseResolvers {
-  export interface Resolvers<
-    Context = MyContext,
-    TypeParent = RegisterResponse
-  > {
+export namespace LoginResponseResolvers {
+  export interface Resolvers<Context = MyContext, TypeParent = LoginResponse> {
     errors?: ErrorsResolver<Maybe<Error[]>, TypeParent, Context>
 
     user?: UserResolver<Maybe<User>, TypeParent, Context>
@@ -179,12 +191,12 @@ export namespace RegisterResponseResolvers {
 
   export type ErrorsResolver<
     R = Maybe<Error[]>,
-    Parent = RegisterResponse,
+    Parent = LoginResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>
   export type UserResolver<
     R = Maybe<User>,
-    Parent = RegisterResponse,
+    Parent = LoginResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>
 }
@@ -204,6 +216,28 @@ export namespace UserResolvers {
   export type EmailResolver<
     R = string,
     Parent = User,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+}
+
+export namespace RegisterResponseResolvers {
+  export interface Resolvers<
+    Context = MyContext,
+    TypeParent = RegisterResponse
+  > {
+    errors?: ErrorsResolver<Maybe<Error[]>, TypeParent, Context>
+
+    user?: UserResolver<Maybe<User>, TypeParent, Context>
+  }
+
+  export type ErrorsResolver<
+    R = Maybe<Error[]>,
+    Parent = RegisterResponse,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type UserResolver<
+    R = Maybe<User>,
+    Parent = RegisterResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>
 }
@@ -247,8 +281,9 @@ export interface IResolvers {
   CreateProjectResponse?: CreateProjectResponseResolvers.Resolvers
   Error?: ErrorResolvers.Resolvers
   Project?: ProjectResolvers.Resolvers
-  RegisterResponse?: RegisterResponseResolvers.Resolvers
+  LoginResponse?: LoginResponseResolvers.Resolvers
   User?: UserResolvers.Resolvers
+  RegisterResponse?: RegisterResponseResolvers.Resolvers
 }
 
 export interface IDirectiveResolvers<Result> {
@@ -267,6 +302,8 @@ export interface Query {
 
 export interface Mutation {
   createProject: CreateProjectResponse
+
+  login?: Maybe<LoginResponse>
 
   register: RegisterResponse
 }
@@ -289,7 +326,7 @@ export interface Project {
   description?: Maybe<string>
 }
 
-export interface RegisterResponse {
+export interface LoginResponse {
   errors?: Maybe<Error[]>
 
   user?: Maybe<User>
@@ -301,6 +338,12 @@ export interface User {
   email: string
 }
 
+export interface RegisterResponse {
+  errors?: Maybe<Error[]>
+
+  user?: Maybe<User>
+}
+
 // ====================================================
 // Arguments
 // ====================================================
@@ -310,6 +353,9 @@ export interface HiUserQueryArgs {
 }
 export interface CreateProjectMutationArgs {
   input: CreateProjectInput
+}
+export interface LoginMutationArgs {
+  input: LoginInput
 }
 export interface RegisterMutationArgs {
   input: RegisterInput

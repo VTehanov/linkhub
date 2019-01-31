@@ -1,0 +1,15 @@
+# import User from '../../shared/User.graphql'
+# import Error from '../../shared/Error.graphql'
+
+input LoginInput {
+  email: String!
+}
+
+type LoginResponse {
+  errors: [Error!]
+  user: User
+}
+
+type Mutation {
+  login(input: LoginInput!): LoginResponse
+}
