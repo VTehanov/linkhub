@@ -5,7 +5,7 @@ import { DUPLICATE_EMAIL } from './errorMessages'
 import { formatYupError } from '../../../utils/formatYupErrors'
 import { registerSchema } from './validationSchemas'
 import { createEmailConfirmationLink } from '../../../utils/createEmailConfirmationLink/createEmailConfirmationLink'
-import { sendEmail } from '../../../sendEmail'
+import { sendEmail } from '../../../services/sendEmail'
 
 const Mutation: MutationResolvers.Resolvers = {
   async register(_, { input }, { redis, requestUrl }) {

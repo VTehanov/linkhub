@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { redis } from '../redis'
+import { redis } from '../services/redis'
 import { User } from '../entity/User'
 
 export const confirmEmail = async (req: Request, res: Response) => {
