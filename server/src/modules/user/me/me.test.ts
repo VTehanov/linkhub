@@ -46,6 +46,19 @@ afterAll(async () => {
 const rq = new TestRequester()
 
 describe('Me query', () => {
+  test('should not get user if not logged in', async () => {
+    const response = await rq.withCredentials({
+      method: 'post',
+      data: {
+        query: meQuery
+      }
+    })
+
+    expect(response.data.data).toEqual({
+      me: null
+    })
+  })
+
   test('gets current user', async () => {
     await rq.withCredentials({
       method: 'post',
@@ -67,6 +80,4 @@ describe('Me query', () => {
       }
     })
   })
-
-  test('should not get user if not logged in', async () => {})
 })

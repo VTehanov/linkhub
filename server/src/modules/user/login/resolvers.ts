@@ -7,7 +7,6 @@ import { INVALID_LOGIN } from './errorMessages'
 const Mutation: MutationResolvers.Resolvers = {
   async login(_, { input }, { session }) {
     const { email } = input
-    let user
 
     try {
       await registerSchema.validate(input)
@@ -17,7 +16,7 @@ const Mutation: MutationResolvers.Resolvers = {
       }
     }
 
-    user = await User.findOne({ where: { email } })
+    const user = await User.findOne({ where: { email } })
 
     if (!user) {
       return {

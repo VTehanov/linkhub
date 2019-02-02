@@ -14,6 +14,10 @@ import { sessionMiddleware } from './middlewares/session'
 const nodeEnv: string = process.env.NODE_ENV as string
 
 export const startServer = async (serverOptions: Options = {}) => {
+  if (nodeEnv === 'test') {
+    await redis.flushall()
+  }
+
   const server = new GraphQLServer({
     typeDefs: getTypeDefs(),
     resolvers: getResolvers(),
