@@ -5,7 +5,7 @@ import { User } from '../../../entity/User'
 import { INVALID_LOGIN } from './errorMessages'
 
 const Mutation: MutationResolvers.Resolvers = {
-  async login(_, { input }) {
+  async login(_, { input }, { session }) {
     const { email } = input
     let user
 
@@ -29,6 +29,8 @@ const Mutation: MutationResolvers.Resolvers = {
         ]
       }
     }
+
+    session.userId = user.id
 
     return {
       user

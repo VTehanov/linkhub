@@ -2,7 +2,7 @@ import { Connection } from 'typeorm'
 import * as faker from 'faker'
 
 import { CreateProjectInput } from '../../../generated/types'
-import { testRequester } from '../../../utils/testUtils/testRequester'
+import TestRequester from '../../../utils/testUtils/TestRequester'
 import * as errorMessages from './errorMessages'
 import { Project } from '../../../entity/Project'
 import { createTestConnection } from '../../../utils/testUtils/createTestConnection'
@@ -33,12 +33,14 @@ beforeAll(async () => {
 afterAll(async () => {
   conn.close()
 })
+const rq = new TestRequester()
 
 describe('Create project', () => {
   test('creates project', async () => {
     const name = faker.commerce.productName()
     const description = faker.random.alphaNumeric(80)
-    const response = await testRequester(
+
+    const response = await rq.simpleQuery(
       createProjectMutation({ name, description })
     )
     const projects = await Project.find({ where: { name } })
@@ -60,7 +62,7 @@ describe('Create project', () => {
   test('it does not create project with invalid data', async () => {
     const name = 'Te'
     const description = 'st'
-    const response = await testRequester(
+    const response = await rq.simpleQuery(
       createProjectMutation({ name, description })
     )
     const projects = await Project.find({ where: { name, description } })

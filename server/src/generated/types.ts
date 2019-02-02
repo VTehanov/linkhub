@@ -68,9 +68,16 @@ export type DirectiveResolverFn<TResult, TArgs = {}, TContext = {}> = (
 
 export namespace QueryResolvers {
   export interface Resolvers<Context = MyContext, TypeParent = {}> {
+    me?: MeResolver<Maybe<User>, TypeParent, Context>
+
     hiUser?: HiUserResolver<string, TypeParent, Context>
   }
 
+  export type MeResolver<
+    R = Maybe<User>,
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
   export type HiUserResolver<
     R = string,
     Parent = {},
@@ -79,6 +86,25 @@ export namespace QueryResolvers {
   export interface HiUserArgs {
     name: string
   }
+}
+
+export namespace UserResolvers {
+  export interface Resolvers<Context = MyContext, TypeParent = User> {
+    id?: IdResolver<string, TypeParent, Context>
+
+    email?: EmailResolver<string, TypeParent, Context>
+  }
+
+  export type IdResolver<
+    R = string,
+    Parent = User,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type EmailResolver<
+    R = string,
+    Parent = User,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
 }
 
 export namespace MutationResolvers {
@@ -201,25 +227,6 @@ export namespace LoginResponseResolvers {
   > = Resolver<R, Parent, Context>
 }
 
-export namespace UserResolvers {
-  export interface Resolvers<Context = MyContext, TypeParent = User> {
-    id?: IdResolver<string, TypeParent, Context>
-
-    email?: EmailResolver<string, TypeParent, Context>
-  }
-
-  export type IdResolver<
-    R = string,
-    Parent = User,
-    Context = MyContext
-  > = Resolver<R, Parent, Context>
-  export type EmailResolver<
-    R = string,
-    Parent = User,
-    Context = MyContext
-  > = Resolver<R, Parent, Context>
-}
-
 export namespace RegisterResponseResolvers {
   export interface Resolvers<
     Context = MyContext,
@@ -277,12 +284,12 @@ export interface DeprecatedDirectiveArgs {
 
 export interface IResolvers {
   Query?: QueryResolvers.Resolvers
+  User?: UserResolvers.Resolvers
   Mutation?: MutationResolvers.Resolvers
   CreateProjectResponse?: CreateProjectResponseResolvers.Resolvers
   Error?: ErrorResolvers.Resolvers
   Project?: ProjectResolvers.Resolvers
   LoginResponse?: LoginResponseResolvers.Resolvers
-  User?: UserResolvers.Resolvers
   RegisterResponse?: RegisterResponseResolvers.Resolvers
 }
 
@@ -297,7 +304,15 @@ export interface IDirectiveResolvers<Result> {
 // ====================================================
 
 export interface Query {
+  me?: Maybe<User>
+
   hiUser: string
+}
+
+export interface User {
+  id: string
+
+  email: string
 }
 
 export interface Mutation {
@@ -330,12 +345,6 @@ export interface LoginResponse {
   errors?: Maybe<Error[]>
 
   user?: Maybe<User>
-}
-
-export interface User {
-  id: string
-
-  email: string
 }
 
 export interface RegisterResponse {

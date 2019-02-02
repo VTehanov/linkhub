@@ -1,7 +1,7 @@
 import { Connection } from 'typeorm'
 import * as faker from 'faker'
 
-import { testRequester } from '../../../utils/testUtils/testRequester'
+import TestRequester from '../../../utils/testUtils/testRequester'
 import * as errorMessages from './errorMessages'
 import { User } from '../../../entity/User'
 import { createTestConnection } from '../../../utils/testUtils/createTestConnection'
@@ -35,10 +35,12 @@ afterAll(async () => {
   conn.close()
 })
 
-describe('Register user', async () => {
+const rq = new TestRequester()
+
+describe('Register user', () => {
   test('registers user', async () => {
     const email = faker.internet.email()
-    const response = await testRequester(registerMutation(email))
+    const response = await rq.simpleQuery(registerMutation(email))
     const users = await User.find({ where: { email } })
 
     expect(response).toEqual({
@@ -53,7 +55,7 @@ describe('Register user', async () => {
   })
 
   test('does not register user if email is already in use', async () => {
-    const response = await testRequester(registerMutation(seedEmail))
+    const response = await rq.simpleQuery(registerMutation(seedEmail))
     const users = await User.find({ where: { email: seedEmail } })
 
     expect(response).toEqual({
@@ -73,7 +75,7 @@ describe('Register user', async () => {
 
   test('does not register with invalid email', async () => {
     const email = 'smthwrong'
-    const response = await testRequester(registerMutation(email))
+    const response = await rq.simpleQuery(registerMutation(email))
     const users = await User.find({ where: { email } })
 
     expect(response).toEqual({
