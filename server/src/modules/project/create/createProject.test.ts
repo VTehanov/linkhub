@@ -1,29 +1,10 @@
 import { Connection } from 'typeorm'
 import * as faker from 'faker'
 
-import { CreateProjectInput } from '../../../generated/types'
 import TestRequester from '../../../utils/testUtils/TestRequester'
 import * as errorMessages from './errorMessages'
 import { Project } from '../../../entity/Project'
 import { createTestConnection } from '../../../utils/testUtils/createTestConnection'
-
-const createProjectMutation = ({ name, description }: CreateProjectInput) => `
-  mutation {
-    createProject(input: {
-      name: "${name}"
-      description: "${description}"
-    }) {
-      project {
-        name
-        description
-      }
-      errors {
-        path
-        message
-      }
-    }
-  }
-`
 
 let conn: Connection
 beforeAll(async () => {
@@ -40,11 +21,10 @@ describe('Create project', () => {
     const name = faker.commerce.productName()
     const description = faker.random.alphaNumeric(80)
 
-    const response = await rq.simpleQuery(
-      createProjectMutation({ name, description })
-    )
+    const response = await rq.createProject({ name, description })
     const projects = await Project.find({ where: { name } })
-    expect(response).toEqual({
+
+    expect(response.data).toEqual({
       createProject: {
         project: {
           name,
@@ -62,12 +42,10 @@ describe('Create project', () => {
   test('it does not create project with invalid data', async () => {
     const name = 'Te'
     const description = 'st'
-    const response = await rq.simpleQuery(
-      createProjectMutation({ name, description })
-    )
+    const response = await rq.createProject({ name, description })
     const projects = await Project.find({ where: { name, description } })
 
-    expect(response).toEqual({
+    expect(response.data).toEqual({
       createProject: {
         errors: [
           {

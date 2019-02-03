@@ -5,22 +5,6 @@ import { User } from '../../../entity/User'
 import TestRequester from '../../../utils/testUtils/TestRequester'
 import { INVALID_LOGIN } from './errorMessages'
 
-const loginMutation = (email: string) => `
-  mutation {
-    login(input: {
-      email: "${email}"
-    }) {
-      user {
-        email
-      }
-      errors {
-        path
-        message
-      }
-    }
-  }
-`
-
 faker.seed(process.hrtime()[1])
 const seedEmail = faker.internet.email()
 const rq = new TestRequester()
@@ -37,9 +21,9 @@ afterAll(async () => {
 
 describe('Login user', () => {
   test('logs in user', async () => {
-    const response = await rq.simpleQuery(loginMutation(seedEmail))
+    const response = await rq.login({ email: seedEmail })
 
-    expect(response).toEqual({
+    expect(response.data).toEqual({
       login: {
         user: { email: seedEmail },
         errors: null
@@ -49,9 +33,9 @@ describe('Login user', () => {
 
   test('does not login user with invalid credentials', async () => {
     const wrongEmail = 'wrongbutstillemail@mail.com'
-    const response = await rq.simpleQuery(loginMutation(wrongEmail))
+    const response = await rq.login({ email: wrongEmail })
 
-    expect(response).toEqual({
+    expect(response.data).toEqual({
       login: {
         user: null,
         errors: [

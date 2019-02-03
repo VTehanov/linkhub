@@ -4,35 +4,6 @@ import { createTestConnection } from '../../../utils/testUtils/createTestConnect
 import { User } from '../../../entity/User'
 import TestRequester from '../../../utils/testUtils/TestRequester'
 
-const loginMutation = (email: string) => `
-  mutation {
-    login(input: {
-      email: "${email}"
-    }) {
-      user {
-        id
-        email
-      }
-      errors {
-        path
-        message
-      }
-    }
-  }
-`
-
-const meQuery = `{
-  me {
-    email
-  }
-}`
-
-const logoutMutation = `
-  mutation {
-    logout
-  }
-`
-
 faker.seed(process.hrtime()[1])
 const seedEmail = faker.internet.email()
 let conn: Connection
@@ -53,39 +24,21 @@ const rq = new TestRequester()
 
 describe('Logout', () => {
   test('logs user out', async () => {
-    await rq.withCredentials({
-      method: 'post',
-      data: {
-        query: loginMutation(seedEmail)
-      }
-    })
+    await rq.login({ email: seedEmail })
 
-    const response = await rq.withCredentials({
-      method: 'post',
-      data: {
-        query: meQuery
-      }
-    })
+    const response = await rq.me()
 
-    expect(response.data.data).toEqual({
+    expect(response.data).toEqual({
       me: {
         email: seedEmail
       }
     })
 
-    await rq.withCredentials({
-      method: 'post',
-      data: { query: logoutMutation }
-    })
+    await rq.logout()
 
-    const response2 = await rq.withCredentials({
-      method: 'post',
-      data: {
-        query: meQuery
-      }
-    })
+    const response2 = await rq.me()
 
-    expect(response2.data.data).toEqual({
+    expect(response2.data).toEqual({
       me: null
     })
   })

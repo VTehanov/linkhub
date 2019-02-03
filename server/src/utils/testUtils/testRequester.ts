@@ -1,27 +1,125 @@
-import { request } from 'graphql-request'
-import axios, { AxiosRequestConfig } from 'axios'
+import * as rp from 'request-promise'
+import { CookieJar } from 'request'
+import {
+  CreateProjectInput,
+  RegisterInput,
+  LoginInput
+} from '../../generated/types'
 
 class TestRequester {
   requestUrl: string
+  jar: CookieJar
+  options: rp.Options
 
   constructor(url?: string) {
     this.requestUrl = url || (process.env.TEST_HOST as string)
-  }
+    this.jar = rp.jar()
 
-  async simpleQuery(query: string) {
-    const response = await request(this.requestUrl, query)
-
-    return response
-  }
-
-  async withCredentials(axiosOptions: AxiosRequestConfig) {
-    const response = await axios({
+    this.options = {
       url: this.requestUrl,
       withCredentials: true,
-      ...axiosOptions
-    })
+      jar: this.jar,
+      json: true
+    }
+  }
 
-    return response
+  async register({ email }: RegisterInput) {
+    return rp.post({
+      ...this.options,
+      body: {
+        query: `
+          mutation {
+            register(input: {
+              email: "${email}"
+            }) {
+              user {
+                email
+              }
+              errors {
+                path
+                message
+              }
+            }
+          }
+        `
+      }
+    })
+  }
+
+  async login({ email }: LoginInput) {
+    return rp.post({
+      ...this.options,
+      body: {
+        query: `
+          mutation {
+            login(input: {
+              email: "${email}"
+            }) {
+              user {
+                email
+              }
+              errors {
+                path
+                message
+              }
+            }
+          }
+        `
+      }
+    })
+  }
+
+  async logout() {
+    return rp.post({
+      ...this.options,
+      body: {
+        query: `
+          mutation {
+            logout
+          }
+        `
+      }
+    })
+  }
+
+  async me() {
+    return rp.post({
+      ...this.options,
+      body: {
+        query: `
+          query {
+            me {
+              email
+            }
+          }
+        `
+      }
+    })
+  }
+
+  async createProject({ name, description }: CreateProjectInput) {
+    return rp.post({
+      ...this.options,
+      body: {
+        query: `
+          mutation {
+            createProject(input: {
+              name: "${name}"
+              description: "${description}"
+            }) {
+              project {
+                name
+                description
+              }
+              errors {
+                path
+                message
+              }
+            }
+          }
+        `
+      }
+    })
   }
 }
 

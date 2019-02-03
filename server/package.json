@@ -12,6 +12,7 @@
     "@types/node": "^10.12.18",
     "@types/node-fetch": "^2.1.4",
     "@types/nodemailer": "^4.6.5",
+    "@types/request-promise": "^4.1.42",
     "@types/uuid": "^3.4.4",
     "@types/yup": "^0.26.4",
     "babel-jest": "^23.6.0",
@@ -30,7 +31,6 @@
     "typescript": "^3.2.2"
   },
   "dependencies": {
-    "axios": "^0.18.0",
     "connect-redis": "^3.4.0",
     "dotenv": "^6.2.0",
     "express-session": "^1.15.6",
@@ -44,6 +44,7 @@
     "nodemailer": "^5.1.1",
     "pg": "^7.3.0",
     "reflect-metadata": "^0.1.10",
+    "request-promise": "^4.2.2",
     "typeorm": "0.2.9",
     "uuid": "^3.3.2",
     "yup": "^0.26.6"
