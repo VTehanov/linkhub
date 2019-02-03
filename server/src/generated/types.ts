@@ -115,7 +115,9 @@ export namespace MutationResolvers {
       Context
     >
 
-    login?: LoginResolver<Maybe<LoginResponse>, TypeParent, Context>
+    login?: LoginResolver<LoginResponse, TypeParent, Context>
+
+    logout?: LogoutResolver<Maybe<boolean>, TypeParent, Context>
 
     register?: RegisterResolver<RegisterResponse, TypeParent, Context>
   }
@@ -130,7 +132,7 @@ export namespace MutationResolvers {
   }
 
   export type LoginResolver<
-    R = Maybe<LoginResponse>,
+    R = LoginResponse,
     Parent = {},
     Context = MyContext
   > = Resolver<R, Parent, Context, LoginArgs>
@@ -138,6 +140,11 @@ export namespace MutationResolvers {
     input: LoginInput
   }
 
+  export type LogoutResolver<
+    R = Maybe<boolean>,
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
   export type RegisterResolver<
     R = RegisterResponse,
     Parent = {},
@@ -318,7 +325,9 @@ export interface User {
 export interface Mutation {
   createProject: CreateProjectResponse
 
-  login?: Maybe<LoginResponse>
+  login: LoginResponse
+
+  logout?: Maybe<boolean>
 
   register: RegisterResponse
 }
