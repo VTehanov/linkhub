@@ -3,9 +3,10 @@ import { registerSchema } from '../register/validationSchemas'
 import { formatYupError } from '../../../utils/formatYupErrors'
 import { User } from '../../../entity/User'
 import { INVALID_LOGIN } from './errorMessages'
+import { USER_SESSION_ID_PREFIX } from '../../../constants/names'
 
 const Mutation: MutationResolvers.Resolvers = {
-  async login(_, { input }, { session }) {
+  async login(_, { input }, { session, redis, request }) {
     const { email } = input
 
     try {
@@ -30,6 +31,12 @@ const Mutation: MutationResolvers.Resolvers = {
     }
 
     session.userId = user.id
+    if (request.sessionID) {
+      await redis.lpush(
+        `${USER_SESSION_ID_PREFIX}${user.id}`,
+        request.sessionID
+      )
+    }
 
     return {
       user

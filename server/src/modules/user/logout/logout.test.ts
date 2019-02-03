@@ -42,4 +42,20 @@ describe('Logout', () => {
       me: null
     })
   })
+
+  test('logs user out of multiple sessions', async () => {
+    const session1 = new TestRequester()
+    const session2 = new TestRequester()
+
+    await session1.login({ email: seedEmail })
+    await session2.login({ email: seedEmail })
+
+    expect(await session1.me()).toEqual(await session2.me())
+
+    await session1.logout()
+
+    const session1me = await session1.me()
+    expect(session1me.data.me).toBeNull()
+    expect(await session1.me()).toEqual(await session2.me())
+  })
 })

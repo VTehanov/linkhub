@@ -23,6 +23,7 @@ export const startServer = async (serverOptions: Options = {}) => {
     resolvers: getResolvers(),
     context: ({ request }) => ({
       redis,
+      request,
       requestUrl: `${request.protocol}://${request.get('host')}`,
       session: request.session
     })
