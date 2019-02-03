@@ -8,12 +8,16 @@ import { createTestConnection } from '../../../utils/testUtils/createTestConnect
 
 faker.seed(process.hrtime()[1])
 const seedEmail = faker.internet.email()
+const seedPassword = faker.internet.password()
 const rq = new TestRequester()
 
 let conn: Connection
 beforeAll(async () => {
   conn = await createTestConnection()
-  await User.create({ email: seedEmail }).save()
+  await User.create({
+    email: seedEmail,
+    password: seedPassword
+  }).save()
 })
 
 afterAll(async () => {
@@ -23,7 +27,8 @@ afterAll(async () => {
 describe('Register user', () => {
   test('registers user', async () => {
     const email = faker.internet.email()
-    const response = await rq.register({ email })
+    const password = faker.internet.password()
+    const response = await rq.register({ email, password })
     const users = await User.find({ where: { email } })
 
     expect(response.data).toEqual({
@@ -35,10 +40,12 @@ describe('Register user', () => {
 
     expect(users).toHaveLength(1)
     expect(users[0].email).toBe(email)
+    expect(users[0].password).not.toBe(password)
   })
 
   test('does not register user if email is already in use', async () => {
-    const response = await rq.register({ email: seedEmail })
+    const password = 'somepasswordthatdoesntmatter'
+    const response = await rq.register({ email: seedEmail, password })
     const users = await User.find({ where: { email: seedEmail } })
 
     expect(response.data).toEqual({
@@ -58,7 +65,8 @@ describe('Register user', () => {
 
   test('does not register with invalid email', async () => {
     const email = 'smthwrong'
-    const response = await rq.register({ email })
+    const password = 'passwordthatdontmatter'
+    const response = await rq.register({ email, password })
     const users = await User.find({ where: { email } })
 
     expect(response.data).toEqual({

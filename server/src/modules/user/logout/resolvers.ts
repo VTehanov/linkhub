@@ -8,7 +8,7 @@ const Mutation: MutationResolvers.Resolvers = {
   logout: async (_, __, { session, redis }) => {
     const { userId } = session
 
-    if (userId) return false
+    if (!userId) return false
 
     const sessionIDs = await redis.lrange(
       `${USER_SESSION_ID_PREFIX}${userId}`,

@@ -9,7 +9,7 @@ import { sendEmail } from '../../../services/sendEmail'
 
 const Mutation: MutationResolvers.Resolvers = {
   async register(_, { input }, { redis, requestUrl }) {
-    const { email } = input
+    const { email, password } = input
 
     try {
       await registerSchema.validate(input)
@@ -32,7 +32,10 @@ const Mutation: MutationResolvers.Resolvers = {
       }
     }
 
-    const user = await User.create({ email }).save()
+    const user = await User.create({
+      email,
+      password
+    }).save()
 
     if (process.env.NODE_ENV !== 'test') {
       await sendEmail(

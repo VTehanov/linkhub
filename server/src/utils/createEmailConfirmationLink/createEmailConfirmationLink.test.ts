@@ -9,6 +9,7 @@ import { User } from '../../entity/User'
 
 faker.seed(process.hrtime()[1])
 const seedEmail = faker.internet.email()
+const seedPassword = faker.internet.password()
 const redis = new Redis()
 
 let conn: Connection
@@ -16,7 +17,10 @@ let userId: string
 
 beforeAll(async () => {
   conn = await createTestConnection()
-  const user = await User.create({ email: seedEmail }).save()
+  const user = await User.create({
+    email: seedEmail,
+    password: seedPassword
+  }).save()
   userId = user.id
 })
 

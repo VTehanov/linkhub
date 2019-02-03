@@ -6,12 +6,14 @@ import TestRequester from '../../../utils/testUtils/TestRequester'
 
 faker.seed(process.hrtime()[1])
 const seedEmail = faker.internet.email()
+const seedPassword = faker.internet.password()
 let conn: Connection
 
 beforeAll(async () => {
   conn = await createTestConnection()
   await User.create({
     email: seedEmail,
+    password: seedPassword,
     confirmedEmail: true
   }).save()
 })
@@ -20,11 +22,14 @@ afterAll(async () => {
   conn.close()
 })
 
-const rq = new TestRequester()
-
 describe('Logout', () => {
   test('logs user out', async () => {
-    await rq.login({ email: seedEmail })
+    const rq = new TestRequester()
+
+    await rq.login({
+      email: seedEmail,
+      password: seedPassword
+    })
 
     const response = await rq.me()
 
@@ -47,8 +52,14 @@ describe('Logout', () => {
     const session1 = new TestRequester()
     const session2 = new TestRequester()
 
-    await session1.login({ email: seedEmail })
-    await session2.login({ email: seedEmail })
+    await session1.login({
+      email: seedEmail,
+      password: seedPassword
+    })
+    await session2.login({
+      email: seedEmail,
+      password: seedPassword
+    })
 
     expect(await session1.me()).toEqual(await session2.me())
 

@@ -23,7 +23,7 @@ class TestRequester {
     }
   }
 
-  async register({ email }: RegisterInput) {
+  async register({ email, password }: RegisterInput) {
     return rp.post({
       ...this.options,
       body: {
@@ -31,6 +31,7 @@ class TestRequester {
           mutation {
             register(input: {
               email: "${email}"
+              password: "${password}"
             }) {
               user {
                 email
@@ -46,7 +47,7 @@ class TestRequester {
     })
   }
 
-  async login({ email }: LoginInput) {
+  async login({ email, password }: LoginInput) {
     return rp.post({
       ...this.options,
       body: {
@@ -54,6 +55,7 @@ class TestRequester {
           mutation {
             login(input: {
               email: "${email}"
+              password: "${password}"
             }) {
               user {
                 email

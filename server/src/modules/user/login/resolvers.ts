@@ -1,3 +1,5 @@
+import * as bcrypt from 'bcryptjs'
+
 import { MutationResolvers } from '../../../generated/types'
 import { registerSchema } from '../register/validationSchemas'
 import { formatYupError } from '../../../utils/formatYupErrors'
@@ -5,9 +7,18 @@ import { User } from '../../../entity/User'
 import { INVALID_LOGIN } from './errorMessages'
 import { USER_SESSION_ID_PREFIX } from '../../../constants/names'
 
+const invalidLoginResponse = {
+  errors: [
+    {
+      path: 'email',
+      message: INVALID_LOGIN
+    }
+  ]
+}
+
 const Mutation: MutationResolvers.Resolvers = {
   async login(_, { input }, { session, redis, request }) {
-    const { email } = input
+    const { email, password } = input
 
     try {
       await registerSchema.validate(input)
@@ -20,14 +31,13 @@ const Mutation: MutationResolvers.Resolvers = {
     const user = await User.findOne({ where: { email } })
 
     if (!user) {
-      return {
-        errors: [
-          {
-            path: 'email',
-            message: INVALID_LOGIN
-          }
-        ]
-      }
+      return invalidLoginResponse
+    }
+
+    const validPassword: boolean = await bcrypt.compare(password, user.password)
+
+    if (!validPassword) {
+      return invalidLoginResponse
     }
 
     session.userId = user.id
