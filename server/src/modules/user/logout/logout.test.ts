@@ -56,6 +56,6 @@ describe('Logout', () => {
 
     const session1me = await session1.me()
     expect(session1me.data.me).toBeNull()
-    expect(await session1.me()).toEqual(await session2.me())
+    expect(session1me).toEqual(await session2.me())
   })
 })

@@ -8,23 +8,21 @@ const Mutation: MutationResolvers.Resolvers = {
   logout: async (_, __, { session, redis }) => {
     const { userId } = session
 
-    if (userId) {
-      const sessionIDs = await redis.lrange(
-        `${USER_SESSION_ID_PREFIX}${userId}`,
-        0,
-        -1
-      )
+    if (userId) return false
 
-      const promises: Promise<number>[] = []
-      sessionIDs.forEach(async (sessionID: string) =>
-        promises.push(redis.del(`${REDIS_SESSION_PREFIX}${sessionID}`))
-      )
+    const sessionIDs = await redis.lrange(
+      `${USER_SESSION_ID_PREFIX}${userId}`,
+      0,
+      -1
+    )
 
-      await Promise.all(promises)
-      return true
-    }
+    const promises: Promise<number>[] = []
+    sessionIDs.forEach(async (sessionID: string) =>
+      promises.push(redis.del(`${REDIS_SESSION_PREFIX}${sessionID}`))
+    )
 
-    return false
+    await Promise.all(promises)
+    return true
   }
 }
 
