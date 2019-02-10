@@ -3,6 +3,7 @@ import * as connectRedis from 'connect-redis'
 
 import { redis } from '../services/redis'
 import { REDIS_SESSION_PREFIX } from '../constants/names'
+import { COOKIE_MAX_AGE_MS } from '../constants/timePeriods'
 
 const RedisStore = connectRedis(session)
 
@@ -18,6 +19,6 @@ export const sessionMiddleware = session({
   cookie: {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
+    maxAge: COOKIE_MAX_AGE_MS
   }
 })
