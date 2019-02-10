@@ -12,7 +12,7 @@ const Mutation: MutationResolvers.Resolvers = {
     const { email, password } = input
 
     try {
-      await registerSchema.validate(input)
+      await registerSchema.validate(input, { abortEarly: false })
     } catch (err) {
       return {
         errors: formatYupError(err)

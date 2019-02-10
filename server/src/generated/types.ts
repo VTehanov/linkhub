@@ -119,6 +119,18 @@ export namespace MutationResolvers {
       Context
     >
 
+    sendForgotPasswordEmail?: SendForgotPasswordEmailResolver<
+      Maybe<boolean>,
+      TypeParent,
+      Context
+    >
+
+    forgotPasswordChange?: ForgotPasswordChangeResolver<
+      Maybe<Error[]>,
+      TypeParent,
+      Context
+    >
+
     login?: LoginResolver<LoginResponse, TypeParent, Context>
 
     logout?: LogoutResolver<Maybe<boolean>, TypeParent, Context>
@@ -133,6 +145,26 @@ export namespace MutationResolvers {
   > = Resolver<R, Parent, Context, CreateProjectArgs>
   export interface CreateProjectArgs {
     input: CreateProjectInput
+  }
+
+  export type SendForgotPasswordEmailResolver<
+    R = Maybe<boolean>,
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context, SendForgotPasswordEmailArgs>
+  export interface SendForgotPasswordEmailArgs {
+    email: string
+  }
+
+  export type ForgotPasswordChangeResolver<
+    R = Maybe<Error[]>,
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context, ForgotPasswordChangeArgs>
+  export interface ForgotPasswordChangeArgs {
+    newPassword: string
+
+    key: string
   }
 
   export type LoginResolver<
@@ -329,6 +361,10 @@ export interface User {
 export interface Mutation {
   createProject: CreateProjectResponse
 
+  sendForgotPasswordEmail?: Maybe<boolean>
+
+  forgotPasswordChange?: Maybe<Error[]>
+
   login: LoginResponse
 
   logout?: Maybe<boolean>
@@ -375,6 +411,14 @@ export interface HiUserQueryArgs {
 }
 export interface CreateProjectMutationArgs {
   input: CreateProjectInput
+}
+export interface SendForgotPasswordEmailMutationArgs {
+  email: string
+}
+export interface ForgotPasswordChangeMutationArgs {
+  newPassword: string
+
+  key: string
 }
 export interface LoginMutationArgs {
   input: LoginInput

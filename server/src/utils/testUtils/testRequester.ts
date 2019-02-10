@@ -99,6 +99,25 @@ class TestRequester {
     })
   }
 
+  async forgotPasswordChange(newPassword: string, key: string) {
+    return rp.post({
+      ...this.options,
+      body: {
+        query: `
+          mutation {
+            forgotPasswordChange(
+              newPassword: "${newPassword}"
+              key: "${key}"
+            ) {
+              path
+              message
+            }
+          }
+        `
+      }
+    })
+  }
+
   async createProject({ name, description }: CreateProjectInput) {
     return rp.post({
       ...this.options,

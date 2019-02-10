@@ -4,7 +4,7 @@ import { MutationResolvers } from '../../../generated/types'
 import { registerSchema } from '../register/validationSchemas'
 import { formatYupError } from '../../../utils/formatYupErrors'
 import { User } from '../../../entity/User'
-import { INVALID_LOGIN } from './errorMessages'
+import { INVALID_LOGIN, FORGOT_PASSWORD_LOCKED_ERROR } from './errorMessages'
 import { USER_SESSION_ID_PREFIX } from '../../../constants/names'
 
 const invalidLoginResponse = {
@@ -32,6 +32,19 @@ const Mutation: MutationResolvers.Resolvers = {
 
     if (!user) {
       return invalidLoginResponse
+    }
+
+    // Add email confirmation check
+
+    if (user.forgotPasswordLocked) {
+      return {
+        errors: [
+          {
+            path: 'email',
+            message: FORGOT_PASSWORD_LOCKED_ERROR
+          }
+        ]
+      }
     }
 
     const validPassword: boolean = await bcrypt.compare(password, user.password)

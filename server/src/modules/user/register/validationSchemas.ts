@@ -14,6 +14,12 @@ import {
   PASSWORD_MAX_LENGTH
 } from '../../../constants/dataConstraints'
 
+export const passwordSchema = yup
+  .string()
+  .required(REQUIRED_PASSWORD)
+  .min(PASSWORD_MIN_LENGTH, PASSWORD_TOO_SHORT)
+  .max(PASSWORD_MAX_LENGTH, PASSWORD_TOO_LONG)
+
 export const registerSchema = yup.object().shape({
   email: yup
     .string()
@@ -21,9 +27,5 @@ export const registerSchema = yup.object().shape({
     .email(INVALID_EMAIL)
     .min(EMAIL_MIN_LENGTH)
     .max(EMAIL_MAX_LENGTH),
-  password: yup
-    .string()
-    .required(REQUIRED_PASSWORD)
-    .min(PASSWORD_MIN_LENGTH, PASSWORD_TOO_SHORT)
-    .max(PASSWORD_MAX_LENGTH, PASSWORD_TOO_LONG)
+  password: passwordSchema
 })
