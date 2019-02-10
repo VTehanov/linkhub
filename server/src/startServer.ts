@@ -10,6 +10,7 @@ import { createTestConnection } from './utils/testUtils/createTestConnection'
 import { redis } from './services/redis'
 import { confirmEmail } from './routes/confirmEmail'
 import { sessionMiddleware } from './middlewares/session'
+import { rateLimiterMiddleware } from './middlewares/rateLimiter'
 
 const nodeEnv: string = process.env.NODE_ENV as string
 
@@ -35,6 +36,7 @@ export const startServer = async (serverOptions: Options = {}) => {
     await createTypeormConn()
   }
 
+  server.express.use(rateLimiterMiddleware)
   server.express.use(sessionMiddleware)
 
   server.express.get('/confirm/:id', confirmEmail)
