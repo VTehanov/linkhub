@@ -96,7 +96,7 @@ export namespace UserResolvers {
   export interface Resolvers<Context = MyContext, TypeParent = User> {
     id?: IdResolver<string, TypeParent, Context>
 
-    email?: EmailResolver<string, TypeParent, Context>
+    email?: EmailResolver<Maybe<string>, TypeParent, Context>
   }
 
   export type IdResolver<
@@ -105,7 +105,7 @@ export namespace UserResolvers {
     Context = MyContext
   > = Resolver<R, Parent, Context>
   export type EmailResolver<
-    R = string,
+    R = Maybe<string>,
     Parent = User,
     Context = MyContext
   > = Resolver<R, Parent, Context>
@@ -355,7 +355,7 @@ export interface Query {
 export interface User {
   id: string
 
-  email: string
+  email?: Maybe<string>
 }
 
 export interface Mutation {
