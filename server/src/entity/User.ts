@@ -13,17 +13,18 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column({
-    type: 'varchar',
-    length: EMAIL_MAX_LENGTH
+  @Column('varchar', {
+    length: EMAIL_MAX_LENGTH,
+    nullable: true
   })
-  email: string
+  email: string | null
 
-  @Column('text')
-  password: string
+  @Column('text', {
+    nullable: true
+  })
+  password: string | null
 
-  @Column({
-    type: 'boolean',
+  @Column('boolean', {
     default: false
   })
   confirmedEmail: boolean
@@ -31,8 +32,15 @@ export class User extends BaseEntity {
   @Column('boolean', { default: false })
   forgotPasswordLocked: boolean
 
+  @Column('text', {
+    nullable: true
+  })
+  twitterId: string | null
+
   @BeforeInsert()
   async hashPasswordBeforeInsert() {
-    this.password = await bcrypt.hash(this.password, 10)
+    if (this.password) {
+      this.password = await bcrypt.hash(this.password, 10)
+    }
   }
 }
