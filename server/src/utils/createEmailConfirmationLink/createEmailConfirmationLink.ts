@@ -10,5 +10,5 @@ export const createEmailConfirmationLink = async (
 
   await redis.set(id, userId, 'ex', 60 * 60 * 24)
 
-  return `${url}/confirm/${id}`
+  return `${url}/api/auth/confirm-email/${id}`
 }

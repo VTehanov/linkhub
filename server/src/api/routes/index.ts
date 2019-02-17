@@ -1,13 +1,6 @@
 import { Router } from 'express'
-import * as Passport from 'passport'
+import { authRoutes } from './auth'
 
-export const router = Router()
+export const apiRoutes = Router()
 
-router.get('/auth/twitter', Passport.authenticate('twitter'))
-router.get(
-  '/auth/twitter/callback',
-  Passport.authenticate('twitter', {
-    successRedirect: '/',
-    failureRedirect: '/login'
-  })
-)
+apiRoutes.use('/auth', authRoutes)
