@@ -47,7 +47,10 @@ const Mutation: MutationResolvers.Resolvers = {
       }
     }
 
-    const validPassword: boolean = await bcrypt.compare(password, user.password)
+    const validPassword: boolean = await bcrypt.compare(
+      password,
+      user.password as string
+    )
 
     if (!validPassword) {
       return invalidLoginResponse

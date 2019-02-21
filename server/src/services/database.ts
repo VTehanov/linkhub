@@ -27,6 +27,8 @@ class DB {
       synchronize: resetDB,
       dropSchema: resetDB
     })
+
+    await this.connection.synchronize()
   }
 
   getConnection() {

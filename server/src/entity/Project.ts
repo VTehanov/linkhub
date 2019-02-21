@@ -1,4 +1,11 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import {
+  Entity,
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne
+} from 'typeorm'
+import { User } from './User'
 
 @Entity()
 export class Project extends BaseEntity {
@@ -14,4 +21,9 @@ export class Project extends BaseEntity {
     type: 'text'
   })
   description: string
+
+  @ManyToOne(() => User, user => user.projects, {
+    cascade: true
+  })
+  creator: User
 }

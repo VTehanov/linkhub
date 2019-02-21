@@ -4,9 +4,11 @@ import {
   PrimaryGeneratedColumn,
   Column,
   BaseEntity,
-  BeforeInsert
+  BeforeInsert,
+  OneToMany
 } from 'typeorm'
 import { EMAIL_MAX_LENGTH } from '../constants/dataConstraints'
+import { Project } from './Project'
 
 @Entity()
 export class User extends BaseEntity {
@@ -36,6 +38,9 @@ export class User extends BaseEntity {
     nullable: true
   })
   twitterId: string | null
+
+  @OneToMany(() => Project, project => project.creator)
+  projects: Project[]
 
   @BeforeInsert()
   async hashPasswordBeforeInsert() {
