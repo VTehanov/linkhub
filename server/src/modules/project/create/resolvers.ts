@@ -11,6 +11,17 @@ const Mutation: MutationResolvers.Resolvers = {
 
     // TODO: add logged in middleware
 
+    if (!userId) {
+      return {
+        errors: [
+          {
+            path: 'email',
+            message: 'Please log in'
+          }
+        ]
+      }
+    }
+
     try {
       await createProjectSchema.validate(input, { abortEarly: false })
     } catch (err) {
@@ -25,17 +36,6 @@ const Mutation: MutationResolvers.Resolvers = {
         id: userId
       }
     })
-
-    if (!loggedInUser) {
-      return {
-        errors: [
-          {
-            path: 'email',
-            message: 'Please log in'
-          }
-        ]
-      }
-    }
 
     try {
       project = await Project.create({
