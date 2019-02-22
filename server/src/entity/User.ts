@@ -5,7 +5,8 @@ import {
   Column,
   BaseEntity,
   BeforeInsert,
-  OneToMany
+  OneToMany,
+  CreateDateColumn
 } from 'typeorm'
 import { EMAIL_MAX_LENGTH } from '../constants/dataConstraints'
 import { Project } from './Project'
@@ -41,6 +42,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Project, project => project.creator)
   projects: Project[]
+
+  @CreateDateColumn()
+  createdAt: string
 
   @BeforeInsert()
   async hashPasswordBeforeInsert() {

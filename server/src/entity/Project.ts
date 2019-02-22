@@ -3,7 +3,9 @@ import {
   BaseEntity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne
+  ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn
 } from 'typeorm'
 import { User } from './User'
 
@@ -26,4 +28,12 @@ export class Project extends BaseEntity {
     cascade: true
   })
   creator: User
+
+  @CreateDateColumn()
+  createdAt: string
+
+  @UpdateDateColumn({
+    nullable: true
+  })
+  updatedAt: string
 }
