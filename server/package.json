@@ -66,6 +66,8 @@
     "playground": "graphql playground",
     "start": "ts-node src/index.ts",
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles",
-    "test:watch": "cross-env NODE_ENV=test jest --watch"
+    "test:watch": "cross-env NODE_ENV=test jest --watch",
+    "data:seed": "cross-env NODE_ENV=development ts-node src/utils/seedData/index.ts",
+    "data:nuke": "cross-env NODE_ENV=development ts-node src/utils/seedData/nukeData.ts"
   }
 }
