@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 import { StyledForm } from '../styles/Form'
+import { StyledInput } from '../../styles/Input'
+import { GithubLogin } from './OAuth/GithubLogin'
 
 const REGISTER_MUTATION = gql`
   mutation REGISTER_MUTATION($email: String!, $password: String!) {
@@ -53,8 +55,9 @@ class RegisterForm extends Component<any, IState> {
             method="post"
             onSubmit={e => this.handleSubmit(e, register)}
           >
-            <h2 className="form-name">Create an account</h2>
-            <input
+            <GithubLogin />
+            <div className="delimeter">or</div>
+            <StyledInput
               type="email"
               name="email"
               required
@@ -62,7 +65,7 @@ class RegisterForm extends Component<any, IState> {
               value={this.state.email}
               onChange={this.handleChange}
             />
-            <input
+            <StyledInput
               type="password"
               name="password"
               required
