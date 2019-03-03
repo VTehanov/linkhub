@@ -1,26 +1,5 @@
-import Project from '../components/Project/ProjectCard';
-import ProjectGrid from '../styles/ProjectGrid';
-import ProjectForm from '../components/Project/ProjectForm';
+import ProjectGrid from '../styles/ProjectGrid'
 
-const Home = () => (
-  <ProjectGrid>
-    <Project project={{
-      title: 'sample title',
-      content: 'lorem ipsum dolor'
-    }} />
+const Home = () => <ProjectGrid />
 
-    <Project project={{
-      title: 'sample title',
-      content: 'lorem ipsum dolor'
-    }} />
-
-    <Project project={{
-      title: 'sample title',
-      content: 'lorem ipsum dolor'
-    }} />
-
-    <ProjectForm />
-  </ProjectGrid>
-);
-
-export default Home;
+export default Home

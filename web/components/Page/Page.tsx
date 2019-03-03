@@ -10,7 +10,7 @@ const Page = (props: any) => (
     <StyledPage>
       <GlobalStyles />
       <Header />
-      {props.children}
+      <main>{props.children}</main>
     </StyledPage>
   </ThemeProvider>
 )

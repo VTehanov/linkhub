@@ -2,14 +2,12 @@ import React, { Component } from 'react'
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 import { StyledForm } from '../styles/Form'
+import { GithubLogin } from './OAuth/GithubLogin'
+import { StyledInput } from '../../styles/Input'
 
-const REGISTER_MUTATION = gql`
-  mutation REGISTER_MUTATION($email: String!, $password: String!) {
-    register(input: { email: $email, password: $password }) {
-      user {
-        id
-        email
-      }
+const LOGIN_MUTATION = gql`
+  mutation LOGIN_MUTATION($email: String!, $password: String!) {
+    login(input: { email: $email, password: $password }) {
       errors {
         path
         message
@@ -23,7 +21,7 @@ interface IState {
   password?: string
 }
 
-class RegisterForm extends Component<any, IState> {
+class LoginForm extends Component<any, IState> {
   state = {
     email: '',
     password: ''
@@ -47,14 +45,12 @@ class RegisterForm extends Component<any, IState> {
 
   render() {
     return (
-      <Mutation mutation={REGISTER_MUTATION} variables={this.state}>
-        {register => (
-          <StyledForm
-            method="post"
-            onSubmit={e => this.handleSubmit(e, register)}
-          >
-            <h2 className="form-name">Create an account</h2>
-            <input
+      <Mutation mutation={LOGIN_MUTATION} variables={this.state}>
+        {login => (
+          <StyledForm method="post" onSubmit={e => this.handleSubmit(e, login)}>
+            <GithubLogin />
+            <div className="delimeter">or</div>
+            <StyledInput
               type="email"
               name="email"
               required
@@ -62,7 +58,7 @@ class RegisterForm extends Component<any, IState> {
               value={this.state.email}
               onChange={this.handleChange}
             />
-            <input
+            <StyledInput
               type="password"
               name="password"
               required
@@ -70,7 +66,7 @@ class RegisterForm extends Component<any, IState> {
               value={this.state.password}
               onChange={this.handleChange}
             />
-            <button type="submit">Register</button>
+            <button type="submit">Login</button>
           </StyledForm>
         )}
       </Mutation>
@@ -78,4 +74,4 @@ class RegisterForm extends Component<any, IState> {
   }
 }
 
-export default RegisterForm
+export default LoginForm

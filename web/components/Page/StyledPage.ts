@@ -1,10 +1,9 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 const StyledPage = styled.div`
-  color: ${props => props.theme.textColor};
-`;
+  main {
+    padding-top: 60px;
+  }
+`
 
-export default StyledPage;
-
-
-
+export default StyledPage

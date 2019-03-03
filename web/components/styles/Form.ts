@@ -1,10 +1,6 @@
 import styled, { css } from 'styled-components'
 
-const sharedStyles = css`
-  padding: 1em;
-  border: 1px solid #d6d6d6;
-  font-size: 14px;
-`
+const sharedStyles = css``
 
 export const StyledForm = styled.form`
   display: flex;
@@ -13,30 +9,50 @@ export const StyledForm = styled.form`
   .form-name {
     text-align: center;
     font-weight: 700;
-    font-family: ${props => props.theme.fonts.title};
-  }
-
-  input {
-    ${sharedStyles}
   }
 
   * ~ * {
-    margin-top: 10px;
+    margin-top: 25px;
   }
 
   button[type='submit'] {
-    margin-top: 15px;
-    padding: 10px 0;
+    padding: 15px 0;
     border: 0;
-    background-color: ${props => props.theme.colors.cta};
-    font-size: 16px;
+    border-radius: 5px;
+    background-color: darkgray;
+    font-size: 20px;
     font-weight: bold;
+    font-family: 'Montserrat';
     color: white;
+    cursor: pointer;
   }
 
   textarea {
     ${sharedStyles}
     min-height: 80px;
     resize: vertical;
+  }
+
+  .delimeter {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #dddddd;
+    font-family: 'Nunito Sans';
+  }
+
+  .delimeter:before,
+  .delimeter:after {
+    content: '';
+    box-sizing: border-box;
+    border-top: 1px solid #dddddd;
+    margin: 0 20px 0 0;
+    flex: 1 0 20px;
+  }
+
+  .delimeter:after {
+    margin: 0 0 0 20px;
   }
 `
