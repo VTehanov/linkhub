@@ -20,7 +20,7 @@ class DB {
 
   async createConnection() {
     const connectionOptions = await getConnectionOptions(this.nodeEnv)
-    const resetDB = this.nodeEnv === 'test' || this.nodeEnv === 'development'
+    const resetDB = this.nodeEnv === 'test' || process.env.NUKE_DB === 'true'
     this.connection = await createConnection({
       ...connectionOptions,
       name: 'default',

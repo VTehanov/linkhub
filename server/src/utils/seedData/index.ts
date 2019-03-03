@@ -20,7 +20,10 @@ const seedProjects = async () => {
   }
 
   Promise.all(projectPromises).then(() =>
-    console.log(`Seeded 10 projects inside ${process.env.NODE_ENV}`)
+    console.log(
+      `Seeded 10 projects inside ${(process.env
+        .NODE_ENV as string).toUpperCase()}`
+    )
   )
 }
 
