@@ -7,6 +7,8 @@ export const StyledForm = styled.form`
   .form-name {
     text-align: center;
     font-weight: 700;
+    font-family: 'Montserrat';
+    color: #4e4e4e;
   }
 
   * ~ * {

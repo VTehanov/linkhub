@@ -1,17 +1,24 @@
 import styled, { css } from 'styled-components'
 
-const sharedStyle = css`
+const sharedStyles = css`
   padding: 1em;
-  border: 1px solid #d6d6d6;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+
+  font-size: 14px;
+  font-family: 'Nunito Sans';
+
+  outline: none;
+
+  &::placeholder {
+    color: #a6a6a6;
+  }
 `
 
-const Input = styled.input`
-  ${sharedStyle}
+export const StyledInput = styled.input`
+  ${sharedStyles}
 `
-
-const TextArea = styled.textarea`
-  ${sharedStyle}
+export const StyledTextArea = styled.textarea`
+  ${sharedStyles}
   resize: none;
 `
-
-export { Input, TextArea }

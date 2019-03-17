@@ -3,7 +3,7 @@ import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 import { StyledForm } from '../styles/Form'
 import { GithubLogin } from './OAuth/GithubLogin'
-import { StyledInput } from '../../styles/Input'
+import { StyledInput } from '../../styles/Controls'
 
 const LOGIN_MUTATION = gql`
   mutation LOGIN_MUTATION($email: String!, $password: String!) {

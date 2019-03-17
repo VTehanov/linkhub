@@ -2,7 +2,7 @@ import React, { SFC, useState } from 'react'
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 import { StyledForm } from '../styles/Form'
-import { StyledInput } from '../../styles/Input'
+import { StyledInput } from '../../styles/Controls'
 import { GithubLogin } from './OAuth/GithubLogin'
 
 const REGISTER_MUTATION = gql`

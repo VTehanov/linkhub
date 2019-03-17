@@ -2,6 +2,7 @@ import { useState, SFC } from 'react'
 import { StyledForm } from '../styles/Form'
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
+import { StyledInput, StyledTextArea } from '../../styles/Controls'
 
 const CREATE_PROJECT_MUTATION = gql`
   mutation CREATE_PROJECT_MUTATION($name: String!, $description: String!) {
@@ -41,14 +42,14 @@ export const ProjectForm: SFC = () => {
       {createProject => (
         <StyledForm onSubmit={e => handleSubmit(e, createProject)}>
           <h2 className="form-name">Create a project</h2>
-          <input
+          <StyledInput
             type="text"
             name="name"
             placeholder="Name"
             value={name}
             onChange={e => setName(e.target.value)}
           />
-          <textarea
+          <StyledTextArea
             name="description"
             placeholder="Description"
             value={description}
