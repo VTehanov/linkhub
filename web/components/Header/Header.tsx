@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import Link from 'next/link'
+import { JoinOrProfile } from './JoinOrProfile'
 
 const Header = () => (
   <StyledHeader>
@@ -17,15 +18,7 @@ const Header = () => (
         <input type="text" placeholder="Search for projects" />
       </div>
       <div className="navigation">
-        <div className="cta">
-          <Link
-            href={{
-              pathname: '/register'
-            }}
-          >
-            <a>Join now</a>
-          </Link>
-        </div>
+        <JoinOrProfile />
       </div>
     </div>
   </StyledHeader>
