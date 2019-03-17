@@ -4,6 +4,7 @@ import { Mutation } from 'react-apollo'
 import { StyledForm } from '../styles/Form'
 import { StyledInput } from '../../styles/Controls'
 import { GithubLogin } from './OAuth/GithubLogin'
+import { InputEvent, FormEvent } from '../../types'
 
 const REGISTER_MUTATION = gql`
   mutation REGISTER_MUTATION($email: String!, $password: String!) {
@@ -38,7 +39,10 @@ export const RegisterForm: SFC = () => {
   return (
     <Mutation mutation={REGISTER_MUTATION} variables={{ email, password }}>
       {register => (
-        <StyledForm method="post" onSubmit={e => handleSubmit(e, register)}>
+        <StyledForm
+          method="post"
+          onSubmit={(e: FormEvent) => handleSubmit(e, register)}
+        >
           <GithubLogin />
           <div className="delimeter">or</div>
           <StyledInput
@@ -47,7 +51,7 @@ export const RegisterForm: SFC = () => {
             required
             placeholder="Email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e: InputEvent) => setEmail(e.target.value)}
           />
           <StyledInput
             type="password"
@@ -55,7 +59,7 @@ export const RegisterForm: SFC = () => {
             required
             placeholder="Password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e: InputEvent) => setPassword(e.target.value)}
           />
           <button type="submit">Register</button>
         </StyledForm>

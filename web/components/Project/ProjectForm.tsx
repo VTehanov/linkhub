@@ -3,6 +3,7 @@ import { StyledForm } from '../styles/Form'
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 import { StyledInput, StyledTextArea } from '../../styles/Controls'
+import { FormEvent, InputEvent } from '../../types'
 
 const CREATE_PROJECT_MUTATION = gql`
   mutation CREATE_PROJECT_MUTATION($name: String!, $description: String!) {
@@ -40,20 +41,20 @@ export const ProjectForm: SFC = () => {
       variables={{ name, description }}
     >
       {createProject => (
-        <StyledForm onSubmit={e => handleSubmit(e, createProject)}>
+        <StyledForm onSubmit={(e: FormEvent) => handleSubmit(e, createProject)}>
           <h2 className="form-name">Create a project</h2>
           <StyledInput
             type="text"
             name="name"
             placeholder="Name"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={(e: InputEvent) => setName(e.target.value)}
           />
           <StyledTextArea
             name="description"
             placeholder="Description"
             value={description}
-            onChange={e => setDescription(e.target.value)}
+            onChange={(e: InputEvent) => setDescription(e.target.value)}
           />
           <button type="submit">Create project</button>
         </StyledForm>
