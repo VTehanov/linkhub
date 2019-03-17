@@ -1,37 +1,35 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 
-const Header = () => {
-  return (
-    <StyledHeader>
-      <div className="inner">
-        <div className="logo">
+const Header = () => (
+  <StyledHeader>
+    <div className="inner">
+      <div className="logo">
+        <Link
+          href={{
+            pathname: '/'
+          }}
+        >
+          <a>Linkhub</a>
+        </Link>
+      </div>
+      <div className="search">
+        <input type="text" placeholder="Search for projects" />
+      </div>
+      <div className="navigation">
+        <div className="cta">
           <Link
             href={{
-              pathname: '/'
+              pathname: '/register'
             }}
           >
-            <a>Linkhub</a>
+            <a>Join now</a>
           </Link>
         </div>
-        <div className="search">
-          <input type="text" placeholder="Search for projects" />
-        </div>
-        <div className="navigation">
-          <div className="cta">
-            <Link
-              href={{
-                pathname: '/register'
-              }}
-            >
-              <a>Join now</a>
-            </Link>
-          </div>
-        </div>
       </div>
-    </StyledHeader>
-  )
-}
+    </div>
+  </StyledHeader>
+)
 
 const StyledHeader = styled.header`
   margin-bottom: 1em;

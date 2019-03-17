@@ -2,10 +2,12 @@ import React from 'react'
 import styled from 'styled-components'
 
 export const GithubLogin = () => (
-  <StyledGithubLogin type="button">Continue with GitHub</StyledGithubLogin>
+  <StyledGithubLogin>Continue with GitHub</StyledGithubLogin>
 )
 
-const StyledGithubLogin = styled.button`
+const StyledGithubLogin = styled.button.attrs({
+  type: 'button'
+})`
   padding: 10px 25px;
   border: 1px solid #dddddd;
   border-radius: 5px;

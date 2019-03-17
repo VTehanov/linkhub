@@ -1,6 +1,5 @@
-import { ThemeProvider } from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
 
-import StyledPage from './StyledPage'
 import Header from '../Header/Header'
 import GlobalStyles from '../../styles/GlobalStyles'
 import theme from '../../styles/theme'
@@ -14,5 +13,11 @@ const Page = (props: any) => (
     </StyledPage>
   </ThemeProvider>
 )
+
+const StyledPage = styled.div`
+  main {
+    padding-top: 60px;
+  }
+`
 
 export default Page

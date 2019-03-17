@@ -1,5 +1,5 @@
-import RegisterForm from '../components/Auth/RegisterForm'
 import styled from 'styled-components'
+import { RegisterForm } from '../components/Auth/RegisterForm'
 
 const RegisterPage = () => (
   <StyledRegisterPage>

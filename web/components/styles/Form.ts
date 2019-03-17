@@ -1,6 +1,4 @@
-import styled, { css } from 'styled-components'
-
-const sharedStyles = css``
+import styled from 'styled-components'
 
 export const StyledForm = styled.form`
   display: flex;
@@ -28,7 +26,6 @@ export const StyledForm = styled.form`
   }
 
   textarea {
-    ${sharedStyles}
     min-height: 80px;
     resize: vertical;
   }
