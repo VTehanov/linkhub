@@ -1,7 +1,9 @@
 import styled, { css } from 'styled-components'
 
 const sharedStyles = css`
+  width: 100%;
   padding: 1em;
+  box-sizing: border-box;
   border: 1px solid #dddddd;
   border-radius: 5px;
 

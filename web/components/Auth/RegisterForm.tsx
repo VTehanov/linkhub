@@ -5,6 +5,7 @@ import { StyledForm } from '../styles/Form'
 import { StyledInput } from '../../styles/Controls'
 import { GithubLogin } from './OAuth/GithubLogin'
 import { InputEvent, FormEvent } from '../../types'
+import { InputError } from '../Errors/InputError'
 
 const REGISTER_MUTATION = gql`
   mutation REGISTER_MUTATION($email: String!, $password: String!) {
@@ -38,32 +39,43 @@ export const RegisterForm: SFC = () => {
 
   return (
     <Mutation mutation={REGISTER_MUTATION} variables={{ email, password }}>
-      {register => (
-        <StyledForm
-          method="post"
-          onSubmit={(e: FormEvent) => handleSubmit(e, register)}
-        >
-          <GithubLogin />
-          <div className="delimeter">or</div>
-          <StyledInput
-            type="email"
-            name="email"
-            required
-            placeholder="Email"
-            value={email}
-            onChange={(e: InputEvent) => setEmail(e.target.value)}
-          />
-          <StyledInput
-            type="password"
-            name="password"
-            required
-            placeholder="Password"
-            value={password}
-            onChange={(e: InputEvent) => setPassword(e.target.value)}
-          />
-          <button type="submit">Register</button>
-        </StyledForm>
-      )}
+      {(register, { data }) => {
+        const errors = data && data.register.errors
+
+        return (
+          <StyledForm
+            method="post"
+            onSubmit={(e: FormEvent) => handleSubmit(e, register)}
+          >
+            <GithubLogin />
+            <div className="delimeter">or</div>
+            <div className="field">
+              <StyledInput
+                type="email"
+                name="email"
+                errors={errors}
+                required
+                placeholder="Email"
+                value={email}
+                onChange={(e: InputEvent) => setEmail(e.target.value)}
+              />
+              <InputError name="email" errors={errors} />
+            </div>
+            <div className="field">
+              <StyledInput
+                type="password"
+                name="password"
+                required
+                placeholder="Password"
+                value={password}
+                onChange={(e: InputEvent) => setPassword(e.target.value)}
+              />
+              <InputError name="password" errors={errors} />
+            </div>
+            <button type="submit">Register</button>
+          </StyledForm>
+        )
+      }}
     </Mutation>
   )
 }

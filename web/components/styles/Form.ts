@@ -11,8 +11,10 @@ export const StyledForm = styled.form`
     color: #4e4e4e;
   }
 
-  * ~ * {
-    margin-top: 25px;
+  .field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px;
   }
 
   button[type='submit'] {
@@ -35,6 +37,7 @@ export const StyledForm = styled.form`
   .delimeter {
     display: flex;
     width: 100%;
+    margin: 25px 0;
     justify-content: center;
     align-items: center;
     text-align: center;
