@@ -1,11 +1,10 @@
-import * as React from 'react';
+import * as React from 'react'
 
-import StyledProject from './StyledProject';
-
+import StyledProject from './StyledProject'
 
 interface ProjectProps {
   project: {
-    title: string,
+    title: string
     content: string
   }
 }
@@ -15,6 +14,6 @@ const Project: React.SFC<ProjectProps> = ({ project }) => (
     <h1 className="Project__title">{project.title}</h1>
     <p className="Project__content">{project.content}</p>
   </StyledProject>
-);
+)
 
-export default Project;
+export default Project
