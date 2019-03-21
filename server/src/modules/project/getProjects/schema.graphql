@@ -1,0 +1,9 @@
+# import Project from '../../shared/Project.graphql'
+
+type GetProjectsResponse {
+  projects: [Project!]!
+}
+
+type Query {
+  getProjects: GetProjectsResponse!
+}

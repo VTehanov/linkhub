@@ -72,11 +72,18 @@ export type DirectiveResolverFn<TResult, TArgs = {}, TContext = {}> = (
 
 export namespace QueryResolvers {
   export interface Resolvers<Context = MyContext, TypeParent = {}> {
+    getProjects?: GetProjectsResolver<GetProjectsResponse, TypeParent, Context>
+
     me?: MeResolver<Maybe<User>, TypeParent, Context>
 
     hiUser?: HiUserResolver<string, TypeParent, Context>
   }
 
+  export type GetProjectsResolver<
+    R = GetProjectsResponse,
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
   export type MeResolver<
     R = Maybe<User>,
     Parent = {},
@@ -90,6 +97,40 @@ export namespace QueryResolvers {
   export interface HiUserArgs {
     name: string
   }
+}
+
+export namespace GetProjectsResponseResolvers {
+  export interface Resolvers<
+    Context = MyContext,
+    TypeParent = GetProjectsResponse
+  > {
+    projects?: ProjectsResolver<Project[], TypeParent, Context>
+  }
+
+  export type ProjectsResolver<
+    R = Project[],
+    Parent = GetProjectsResponse,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+}
+
+export namespace ProjectResolvers {
+  export interface Resolvers<Context = MyContext, TypeParent = Project> {
+    name?: NameResolver<Maybe<string>, TypeParent, Context>
+
+    description?: DescriptionResolver<Maybe<string>, TypeParent, Context>
+  }
+
+  export type NameResolver<
+    R = Maybe<string>,
+    Parent = Project,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type DescriptionResolver<
+    R = Maybe<string>,
+    Parent = Project,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
 }
 
 export namespace UserResolvers {
@@ -232,25 +273,6 @@ export namespace ErrorResolvers {
   > = Resolver<R, Parent, Context>
 }
 
-export namespace ProjectResolvers {
-  export interface Resolvers<Context = MyContext, TypeParent = Project> {
-    name?: NameResolver<Maybe<string>, TypeParent, Context>
-
-    description?: DescriptionResolver<Maybe<string>, TypeParent, Context>
-  }
-
-  export type NameResolver<
-    R = Maybe<string>,
-    Parent = Project,
-    Context = MyContext
-  > = Resolver<R, Parent, Context>
-  export type DescriptionResolver<
-    R = Maybe<string>,
-    Parent = Project,
-    Context = MyContext
-  > = Resolver<R, Parent, Context>
-}
-
 export namespace LoginResponseResolvers {
   export interface Resolvers<Context = MyContext, TypeParent = LoginResponse> {
     errors?: ErrorsResolver<Maybe<Error[]>, TypeParent, Context>
@@ -327,11 +349,12 @@ export interface DeprecatedDirectiveArgs {
 
 export interface IResolvers {
   Query?: QueryResolvers.Resolvers
+  GetProjectsResponse?: GetProjectsResponseResolvers.Resolvers
+  Project?: ProjectResolvers.Resolvers
   User?: UserResolvers.Resolvers
   Mutation?: MutationResolvers.Resolvers
   CreateProjectResponse?: CreateProjectResponseResolvers.Resolvers
   Error?: ErrorResolvers.Resolvers
-  Project?: ProjectResolvers.Resolvers
   LoginResponse?: LoginResponseResolvers.Resolvers
   RegisterResponse?: RegisterResponseResolvers.Resolvers
 }
@@ -347,9 +370,21 @@ export interface IDirectiveResolvers<Result> {
 // ====================================================
 
 export interface Query {
+  getProjects: GetProjectsResponse
+
   me?: Maybe<User>
 
   hiUser: string
+}
+
+export interface GetProjectsResponse {
+  projects: Project[]
+}
+
+export interface Project {
+  name?: Maybe<string>
+
+  description?: Maybe<string>
 }
 
 export interface User {
@@ -382,12 +417,6 @@ export interface Error {
   path: string
 
   message: string
-}
-
-export interface Project {
-  name?: Maybe<string>
-
-  description?: Maybe<string>
 }
 
 export interface LoginResponse {

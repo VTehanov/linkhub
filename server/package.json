@@ -2,6 +2,17 @@
   "name": "server",
   "version": "0.0.1",
   "description": "Awesome project developed with TypeORM.",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development npm-run-all --parallel dev:watch playground",
+    "dev:watch": "cross-env NODE_ENV=development nodemon -e ts,graphql -x ts-node src/index.ts",
+    "gen:types": "gql-gen",
+    "playground": "graphql playground",
+    "start": "ts-node src/index.ts",
+    "test": "cross-env NODE_ENV=test jest --detectOpenHandles",
+    "test:watch": "cross-env NODE_ENV=test jest --watch",
+    "data:seed": "cross-env NODE_ENV=development ts-node src/utils/seedData/index.ts",
+    "data:nuke": "cross-env NODE_ENV=development NUKE_DB=true ts-node src/utils/seedData/nukeData.ts"
+  },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/connect-redis": "^0.0.8",
@@ -58,16 +69,5 @@
     "typeorm": "0.2.9",
     "uuid": "^3.3.2",
     "yup": "^0.26.6"
-  },
-  "scripts": {
-    "dev": "cross-env NODE_ENV=development npm-run-all --parallel dev:watch playground",
-    "dev:watch": "cross-env NODE_ENV=development nodemon -e ts,graphql -x ts-node src/index.ts",
-    "gen:types": "gql-gen",
-    "playground": "graphql playground",
-    "start": "ts-node src/index.ts",
-    "test": "cross-env NODE_ENV=test jest --detectOpenHandles",
-    "test:watch": "cross-env NODE_ENV=test jest --watch",
-    "data:seed": "cross-env NODE_ENV=development ts-node src/utils/seedData/index.ts",
-    "data:nuke": "cross-env NODE_ENV=development NUKE_DB=true ts-node src/utils/seedData/nukeData.ts"
   }
 }

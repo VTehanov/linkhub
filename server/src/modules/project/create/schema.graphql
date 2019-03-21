@@ -1,9 +1,5 @@
 # import Error from '../../shared/Error.graphql'
-
-type Project {
-  name: String
-  description: String
-}
+# import Project from '../../shared/Project.graphql'
 
 input CreateProjectInput {
   name: String!
