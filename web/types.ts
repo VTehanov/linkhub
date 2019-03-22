@@ -4,3 +4,8 @@ export type GraphQLGenericError = {
   path: string
   message: string
 }
+
+export type Project = {
+  name: string
+  description: string
+}
