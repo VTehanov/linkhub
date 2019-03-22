@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
-import { Project } from '../types'
 import styled from 'styled-components'
+import { ProjectGrid } from '../components/Project/ProjectGrid'
 
 const GET_PROJECTS_QUERY = gql`
   query GET_PROJECTS_QUERY {
@@ -21,9 +21,7 @@ const HomePage = () => {
         return (
           <StyledHomePage>
             <div className="inner">
-              {data.getProjects.projects.map(({ name }: Project) => (
-                <p>{name}</p>
-              ))}
+              <ProjectGrid projects={data.getProjects.projects} />
             </div>
           </StyledHomePage>
         )
