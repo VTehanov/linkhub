@@ -1,0 +1,13 @@
+# import Project from '../../shared/Project.graphql'
+
+input GetProjectInput {
+  id: String!
+}
+
+type GetProjectResponse {
+  project: Project
+}
+
+type Query {
+  getProject(input: GetProjectInput!): GetProjectResponse
+}

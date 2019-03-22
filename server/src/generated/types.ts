@@ -1,5 +1,9 @@
 export type Maybe<T> = T | null
 
+export interface GetProjectInput {
+  id: string
+}
+
 export interface CreateProjectInput {
   name: string
 
@@ -72,11 +76,26 @@ export type DirectiveResolverFn<TResult, TArgs = {}, TContext = {}> = (
 
 export namespace QueryResolvers {
   export interface Resolvers<Context = MyContext, TypeParent = {}> {
+    getProject?: GetProjectResolver<
+      Maybe<GetProjectResponse>,
+      TypeParent,
+      Context
+    >
+
     getProjects?: GetProjectsResolver<GetProjectsResponse, TypeParent, Context>
 
     me?: MeResolver<Maybe<User>, TypeParent, Context>
 
     hiUser?: HiUserResolver<string, TypeParent, Context>
+  }
+
+  export type GetProjectResolver<
+    R = Maybe<GetProjectResponse>,
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context, GetProjectArgs>
+  export interface GetProjectArgs {
+    input: GetProjectInput
   }
 
   export type GetProjectsResolver<
@@ -99,17 +118,17 @@ export namespace QueryResolvers {
   }
 }
 
-export namespace GetProjectsResponseResolvers {
+export namespace GetProjectResponseResolvers {
   export interface Resolvers<
     Context = MyContext,
-    TypeParent = GetProjectsResponse
+    TypeParent = GetProjectResponse
   > {
-    projects?: ProjectsResolver<Project[], TypeParent, Context>
+    project?: ProjectResolver<Maybe<Project>, TypeParent, Context>
   }
 
-  export type ProjectsResolver<
-    R = Project[],
-    Parent = GetProjectsResponse,
+  export type ProjectResolver<
+    R = Maybe<Project>,
+    Parent = GetProjectResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>
 }
@@ -129,6 +148,21 @@ export namespace ProjectResolvers {
   export type DescriptionResolver<
     R = Maybe<string>,
     Parent = Project,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+}
+
+export namespace GetProjectsResponseResolvers {
+  export interface Resolvers<
+    Context = MyContext,
+    TypeParent = GetProjectsResponse
+  > {
+    projects?: ProjectsResolver<Project[], TypeParent, Context>
+  }
+
+  export type ProjectsResolver<
+    R = Project[],
+    Parent = GetProjectsResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>
 }
@@ -349,8 +383,9 @@ export interface DeprecatedDirectiveArgs {
 
 export interface IResolvers {
   Query?: QueryResolvers.Resolvers
-  GetProjectsResponse?: GetProjectsResponseResolvers.Resolvers
+  GetProjectResponse?: GetProjectResponseResolvers.Resolvers
   Project?: ProjectResolvers.Resolvers
+  GetProjectsResponse?: GetProjectsResponseResolvers.Resolvers
   User?: UserResolvers.Resolvers
   Mutation?: MutationResolvers.Resolvers
   CreateProjectResponse?: CreateProjectResponseResolvers.Resolvers
@@ -370,6 +405,8 @@ export interface IDirectiveResolvers<Result> {
 // ====================================================
 
 export interface Query {
+  getProject?: Maybe<GetProjectResponse>
+
   getProjects: GetProjectsResponse
 
   me?: Maybe<User>
@@ -377,14 +414,18 @@ export interface Query {
   hiUser: string
 }
 
-export interface GetProjectsResponse {
-  projects: Project[]
+export interface GetProjectResponse {
+  project?: Maybe<Project>
 }
 
 export interface Project {
   name?: Maybe<string>
 
   description?: Maybe<string>
+}
+
+export interface GetProjectsResponse {
+  projects: Project[]
 }
 
 export interface User {
@@ -435,6 +476,9 @@ export interface RegisterResponse {
 // Arguments
 // ====================================================
 
+export interface GetProjectQueryArgs {
+  input: GetProjectInput
+}
 export interface HiUserQueryArgs {
   name: string
 }

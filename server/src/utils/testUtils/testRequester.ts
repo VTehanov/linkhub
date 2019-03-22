@@ -160,6 +160,24 @@ class TestRequester {
       }
     })
   }
+
+  async getProject(id: string) {
+    return rp.post({
+      ...this.options,
+      body: {
+        query: `
+          query {
+            getProject(input: { id: "${id}" }) {
+              project {
+                name
+                description
+              }
+            }
+          }
+        `
+      }
+    })
+  }
 }
 
 export default TestRequester
