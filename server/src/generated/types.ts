@@ -135,11 +135,18 @@ export namespace GetProjectResponseResolvers {
 
 export namespace ProjectResolvers {
   export interface Resolvers<Context = MyContext, TypeParent = Project> {
+    id?: IdResolver<Maybe<string>, TypeParent, Context>
+
     name?: NameResolver<Maybe<string>, TypeParent, Context>
 
     description?: DescriptionResolver<Maybe<string>, TypeParent, Context>
   }
 
+  export type IdResolver<
+    R = Maybe<string>,
+    Parent = Project,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
   export type NameResolver<
     R = Maybe<string>,
     Parent = Project,
@@ -419,6 +426,8 @@ export interface GetProjectResponse {
 }
 
 export interface Project {
+  id?: Maybe<string>
+
   name?: Maybe<string>
 
   description?: Maybe<string>

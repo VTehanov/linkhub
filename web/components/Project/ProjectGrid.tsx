@@ -8,15 +8,13 @@ interface IProps {
   projects: Project[]
 }
 
-export const ProjectGrid: SFC<IProps> = ({ projects }) => {
-  return (
-    <StyledProjectGrid>
-      {projects.map(project => (
-        <ProjectCard project={project} />
-      ))}
-    </StyledProjectGrid>
-  )
-}
+export const ProjectGrid: SFC<IProps> = ({ projects }) => (
+  <StyledProjectGrid>
+    {projects.map(project => (
+      <ProjectCard key={project.id} project={project} />
+    ))}
+  </StyledProjectGrid>
+)
 
 const StyledProjectGrid = styled.div`
   display: grid;

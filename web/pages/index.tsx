@@ -7,6 +7,7 @@ const GET_PROJECTS_QUERY = gql`
   query GET_PROJECTS_QUERY {
     getProjects {
       projects {
+        id
         name
         description
       }
