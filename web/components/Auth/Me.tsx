@@ -2,7 +2,7 @@ import React, { SFC } from 'react'
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
 
-const ME_QUERY = gql`
+export const ME_QUERY = gql`
   query {
     me {
       id

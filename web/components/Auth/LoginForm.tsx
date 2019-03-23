@@ -5,6 +5,7 @@ import { StyledForm } from '../styles/Form'
 import { GithubLogin } from './OAuth/GithubLogin'
 import { StyledInput } from '../../styles/Controls'
 import { FormEvent, InputEvent } from '../../types'
+import { ME_QUERY } from './Me'
 
 const LOGIN_MUTATION = gql`
   mutation LOGIN_MUTATION($email: String!, $password: String!) {
@@ -33,7 +34,11 @@ export const LoginForm: SFC = () => {
   }
 
   return (
-    <Mutation mutation={LOGIN_MUTATION} variables={{ email, password }}>
+    <Mutation
+      mutation={LOGIN_MUTATION}
+      variables={{ email, password }}
+      refetchQueries={[{ query: ME_QUERY }]}
+    >
       {login => (
         <StyledForm
           method="post"
