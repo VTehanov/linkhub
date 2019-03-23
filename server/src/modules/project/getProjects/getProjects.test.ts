@@ -21,8 +21,11 @@ let conn: Connection
 beforeAll(async () => {
   conn = await createTestConnection()
 
-  await Project.create(seedProjects[0]).save()
-  await Project.create(seedProjects[1]).save()
+  const promises = []
+  promises.push(Project.create(seedProjects[0]).save())
+  promises.push(Project.create(seedProjects[1]).save())
+
+  await Promise.all(promises)
 })
 
 afterAll(async () => {
@@ -32,10 +35,11 @@ afterAll(async () => {
 describe('Get projects', () => {
   test('it returns posts correctly', async () => {
     const rq = new TestRequester()
-    const projects = await rq.getProjects()
+    const projectsResponse = await rq.getProjects()
+    const { projects } = projectsResponse.data.getProjects
 
-    expect(projects.data.getProjects).toEqual({
-      projects: seedProjects
-    })
+    expect(projects).toContainEqual(seedProjects[0])
+    expect(projects).toContainEqual(seedProjects[1])
+    expect(projects.length).toBeGreaterThanOrEqual(seedProjects.length)
   })
 })
