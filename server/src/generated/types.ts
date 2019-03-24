@@ -84,6 +84,8 @@ export namespace QueryResolvers {
 
     getProjects?: GetProjectsResolver<GetProjectsResponse, TypeParent, Context>
 
+    myProjects?: MyProjectsResolver<MyProjectsResponse, TypeParent, Context>
+
     me?: MeResolver<Maybe<User>, TypeParent, Context>
 
     hiUser?: HiUserResolver<string, TypeParent, Context>
@@ -100,6 +102,11 @@ export namespace QueryResolvers {
 
   export type GetProjectsResolver<
     R = GetProjectsResponse,
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type MyProjectsResolver<
+    R = MyProjectsResponse,
     Parent = {},
     Context = MyContext
   > = Resolver<R, Parent, Context>
@@ -170,6 +177,21 @@ export namespace GetProjectsResponseResolvers {
   export type ProjectsResolver<
     R = Project[],
     Parent = GetProjectsResponse,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+}
+
+export namespace MyProjectsResponseResolvers {
+  export interface Resolvers<
+    Context = MyContext,
+    TypeParent = MyProjectsResponse
+  > {
+    projects?: ProjectsResolver<Project[], TypeParent, Context>
+  }
+
+  export type ProjectsResolver<
+    R = Project[],
+    Parent = MyProjectsResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>
 }
@@ -393,6 +415,7 @@ export interface IResolvers {
   GetProjectResponse?: GetProjectResponseResolvers.Resolvers
   Project?: ProjectResolvers.Resolvers
   GetProjectsResponse?: GetProjectsResponseResolvers.Resolvers
+  MyProjectsResponse?: MyProjectsResponseResolvers.Resolvers
   User?: UserResolvers.Resolvers
   Mutation?: MutationResolvers.Resolvers
   CreateProjectResponse?: CreateProjectResponseResolvers.Resolvers
@@ -416,6 +439,8 @@ export interface Query {
 
   getProjects: GetProjectsResponse
 
+  myProjects: MyProjectsResponse
+
   me?: Maybe<User>
 
   hiUser: string
@@ -434,6 +459,10 @@ export interface Project {
 }
 
 export interface GetProjectsResponse {
+  projects: Project[]
+}
+
+export interface MyProjectsResponse {
   projects: Project[]
 }
 

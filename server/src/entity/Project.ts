@@ -24,7 +24,7 @@ export class Project extends BaseEntity {
   })
   description: string
 
-  @ManyToOne(() => User, user => user.projects, {
+  @ManyToOne(() => User, (creator: User) => creator.projects, {
     cascade: true
   })
   creator: User

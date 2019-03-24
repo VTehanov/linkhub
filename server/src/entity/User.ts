@@ -40,7 +40,7 @@ export class User extends BaseEntity {
   })
   twitterId: string | null
 
-  @OneToMany(() => Project, project => project.creator)
+  @OneToMany(() => Project, (project: Project) => project.creator)
   projects: Project[]
 
   @CreateDateColumn()

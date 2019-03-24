@@ -178,6 +178,24 @@ class TestRequester {
       }
     })
   }
+
+  async myProjects() {
+    return rp.post({
+      ...this.options,
+      body: {
+        query: `
+          query {
+            myProjects {
+              projects {
+                name
+                description
+              }
+            }
+          }
+        `
+      }
+    })
+  }
 }
 
 export default TestRequester
