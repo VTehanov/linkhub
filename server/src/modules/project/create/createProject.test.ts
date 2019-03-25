@@ -3,7 +3,7 @@ import * as faker from 'faker'
 
 import TestRequester from '../../../utils/testUtils/TestRequester'
 import * as errorMessages from './errorMessages'
-import { Project } from '../../../entity/Project'
+import { Project, ProgressStatusEnum } from '../../../entity/Project'
 import { createTestConnection } from '../../../utils/testUtils/createTestConnection'
 import { User } from '../../../entity/User'
 
@@ -40,7 +40,8 @@ describe('Create project', () => {
       createProject: {
         project: {
           name,
-          description
+          description,
+          progressStatus: ProgressStatusEnum.NOT_STARTED
         },
         errors: []
       }

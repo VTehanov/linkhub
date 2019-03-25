@@ -131,6 +131,7 @@ class TestRequester {
               project {
                 name
                 description
+                progressStatus
               }
               errors {
                 path

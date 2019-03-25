@@ -1,5 +1,6 @@
 type Project {
-  id: String
-  name: String
+  id: String!
+  name: String!
   description: String
+  progressStatus: String!
 }

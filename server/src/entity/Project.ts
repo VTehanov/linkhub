@@ -9,6 +9,11 @@ import {
 } from 'typeorm'
 import { User } from './User'
 
+export enum ProgressStatusEnum {
+  NOT_STARTED = 'Not started',
+  IN_PROGRESS = 'In progress'
+}
+
 @Entity()
 export class Project extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -23,6 +28,13 @@ export class Project extends BaseEntity {
     type: 'text'
   })
   description: string
+
+  @Column({
+    type: 'enum',
+    enum: ProgressStatusEnum,
+    default: ProgressStatusEnum.NOT_STARTED
+  })
+  progressStatus: ProgressStatusEnum
 
   @ManyToOne(() => User, (creator: User) => creator.projects, {
     cascade: true
