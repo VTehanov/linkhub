@@ -10,6 +10,7 @@
     "start": "ts-node src/index.ts",
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles",
     "test:watch": "cross-env NODE_ENV=test jest --watch",
+    "test:majestic": "majestic",
     "data:seed": "cross-env NODE_ENV=development ts-node src/utils/seedData/index.ts",
     "data:nuke": "cross-env NODE_ENV=development NUKE_DB=true ts-node src/utils/seedData/nukeData.ts"
   },
@@ -39,6 +40,7 @@
     "graphql-codegen-typescript-server": "^0.15.2",
     "graphql-request": "^1.8.2",
     "jest": "^23.6.0",
+    "majestic": "^1.2.23",
     "nodemon": "^1.18.9",
     "npm-run-all": "^4.1.5",
     "ts-jest": "^23.10.5",

@@ -4759,6 +4759,14 @@ lru-cache@^4.0.1, lru-cache@^4.1.3:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
 
+majestic@^1.2.23:
+  version "1.2.23"
+  resolved "https://registry.yarnpkg.com/majestic/-/majestic-1.2.23.tgz#a0b9f4981ad2dac1736f4e5bdad624aeb2d1c7e1"
+  integrity sha512-jy21SBX8n3WNImQ7GauJ5P9PBrqXh2zsxGHSRQcbm+pIY38XKA9fQYzYPzaI+aIDWwHywS/R+exRTx7Ro3T7xw==
+  dependencies:
+    node-fetch "^2.3.0"
+    read-pkg-up "^4.0.0"
+
 make-dir@^1.0.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/make-dir/-/make-dir-1.3.0.tgz#79c1033b80515bd6d24ec9933e860ca75ee27f0c"
@@ -6011,6 +6019,14 @@ read-pkg-up@^2.0.0:
   dependencies:
     find-up "^2.0.0"
     read-pkg "^2.0.0"
+
+read-pkg-up@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/read-pkg-up/-/read-pkg-up-4.0.0.tgz#1b221c6088ba7799601c808f91161c66e58f8978"
+  integrity sha512-6etQSH7nJGsK0RbG/2TeDzZFa8shjQ1um+SwQQ5cwKy0dhSXdOncEhb1CPpvQG4h7FyOV6EB6YlV0yJvZQNAkA==
+  dependencies:
+    find-up "^3.0.0"
+    read-pkg "^3.0.0"
 
 read-pkg@^1.0.0:
   version "1.1.0"
