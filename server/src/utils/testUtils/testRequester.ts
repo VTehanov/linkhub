@@ -166,6 +166,10 @@ class TestRequester {
               projects {
                 name
                 description
+                tags {
+                  id
+                  name
+                }
               }
             }
           }
@@ -184,6 +188,10 @@ class TestRequester {
               project {
                 name
                 description
+                tags {
+                  id
+                  name
+                }
               }
             }
           }
