@@ -8,6 +8,8 @@ export interface CreateProjectInput {
   name: string
 
   description: string
+
+  tags?: Maybe<string[]>
 }
 
 export interface LoginInput {
@@ -149,6 +151,8 @@ export namespace ProjectResolvers {
     description?: DescriptionResolver<Maybe<string>, TypeParent, Context>
 
     progressStatus?: ProgressStatusResolver<string, TypeParent, Context>
+
+    tags?: TagsResolver<Maybe<Tag[]>, TypeParent, Context>
   }
 
   export type IdResolver<
@@ -169,6 +173,37 @@ export namespace ProjectResolvers {
   export type ProgressStatusResolver<
     R = string,
     Parent = Project,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type TagsResolver<
+    R = Maybe<Tag[]>,
+    Parent = Project,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+}
+
+export namespace TagResolvers {
+  export interface Resolvers<Context = MyContext, TypeParent = Tag> {
+    id?: IdResolver<string, TypeParent, Context>
+
+    name?: NameResolver<string, TypeParent, Context>
+
+    projects?: ProjectsResolver<Project[], TypeParent, Context>
+  }
+
+  export type IdResolver<
+    R = string,
+    Parent = Tag,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type NameResolver<
+    R = string,
+    Parent = Tag,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type ProjectsResolver<
+    R = Project[],
+    Parent = Tag,
     Context = MyContext
   > = Resolver<R, Parent, Context>
 }
@@ -421,6 +456,7 @@ export interface IResolvers {
   Query?: QueryResolvers.Resolvers
   GetProjectResponse?: GetProjectResponseResolvers.Resolvers
   Project?: ProjectResolvers.Resolvers
+  Tag?: TagResolvers.Resolvers
   GetProjectsResponse?: GetProjectsResponseResolvers.Resolvers
   MyProjectsResponse?: MyProjectsResponseResolvers.Resolvers
   User?: UserResolvers.Resolvers
@@ -465,6 +501,16 @@ export interface Project {
   description?: Maybe<string>
 
   progressStatus: string
+
+  tags?: Maybe<Tag[]>
+}
+
+export interface Tag {
+  id: string
+
+  name: string
+
+  projects: Project[]
 }
 
 export interface GetProjectsResponse {

@@ -3,10 +3,12 @@ import { Project } from '../../../entity/Project'
 import { createProjectSchema } from './validationSchemas'
 import { formatYupError } from '../../../utils/formatYupErrors'
 import { User } from '../../../entity/User'
+import { Tag } from '../../../entity/Tag'
 
 const Mutation: MutationResolvers.Resolvers = {
   async createProject(_, { input }, { session }) {
     let project
+    let tags
     const { userId } = session
 
     // TODO: add logged in middleware
@@ -37,10 +39,15 @@ const Mutation: MutationResolvers.Resolvers = {
       }
     })
 
+    if (input.tags) {
+      tags = await Tag.findByIds(input.tags)
+    }
+
     try {
       project = await Project.create({
         ...input,
-        creator: loggedInUser
+        creator: loggedInUser,
+        tags
       }).save()
     } catch (err) {
       throw err

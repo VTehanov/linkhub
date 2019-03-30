@@ -6,18 +6,40 @@ import * as errorMessages from './errorMessages'
 import { Project, ProgressStatusEnum } from '../../../entity/Project'
 import { createTestConnection } from '../../../utils/testUtils/createTestConnection'
 import { User } from '../../../entity/User'
+import { Tag } from '../../../entity/Tag'
 
 faker.seed(process.hrtime()[1])
 const seedEmail = faker.internet.email()
 const seedPassword = faker.internet.password()
 
+const tagNames = [
+  {
+    id: '1',
+    name: 'Serverless'
+  },
+  {
+    id: '2',
+    name: 'Android'
+  }
+]
+const tags: Tag[] = []
+
 let conn: Connection
 beforeAll(async () => {
   conn = await createTestConnection()
-  await User.create({
-    email: seedEmail,
-    password: seedPassword
-  }).save()
+  const promises = []
+  promises.push(
+    User.create({
+      email: seedEmail,
+      password: seedPassword
+    }).save()
+  )
+
+  tagNames.forEach(async t => {
+    tags.push(await Tag.create(t).save())
+  })
+
+  await Promise.all(promises)
 })
 
 afterAll(async () => {
@@ -113,5 +135,24 @@ describe('Create project', () => {
         project: null
       }
     })
+  })
+
+  it('creates a project with provided tags', async () => {
+    const rq = new TestRequester()
+    const name = faker.commerce.productName()
+    const description = faker.random.alphaNumeric(80)
+    await rq.login({
+      email: seedEmail,
+      password: seedPassword
+    })
+    const response = await rq.createProject({
+      name,
+      description,
+      tags: [tags[0].id, tags[1].id]
+    })
+
+    expect(response.data.createProject.project.name).toEqual(name)
+    expect(response.data.createProject.project.description).toEqual(description)
+    expect(response.data.createProject.project.tags).toEqual(tagNames)
   })
 })

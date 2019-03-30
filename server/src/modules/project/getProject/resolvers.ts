@@ -3,9 +3,12 @@ import { Project } from '../../../entity/Project'
 
 const Query: QueryResolvers.Resolvers = {
   async getProject(_, { input }) {
-    const project = await Project.findOne({
-      id: input.id
-    })
+    const project = await Project.createQueryBuilder('project')
+      .where({
+        id: input.id
+      })
+      .leftJoinAndSelect('project.tags', 'tag')
+      .getOne()
 
     // TODO: Add slugs + search by slug
     // var data = await getRepository(User)

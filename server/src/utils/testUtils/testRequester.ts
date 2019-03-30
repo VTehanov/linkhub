@@ -118,7 +118,17 @@ class TestRequester {
     })
   }
 
-  async createProject({ name, description }: CreateProjectInput) {
+  async createProject({ name, description, tags }: CreateProjectInput) {
+    const tagsTransformed = tags ? `tags: ["${tags.join('","')}"]` : ''
+    const tagsResponse = tags
+      ? `
+      tags {
+        id
+        name
+      }
+    `
+      : ''
+
     return rp.post({
       ...this.options,
       body: {
@@ -127,11 +137,13 @@ class TestRequester {
             createProject(input: {
               name: "${name}"
               description: "${description}"
+              ${tagsTransformed}
             }) {
               project {
                 name
                 description
                 progressStatus
+                ${tagsResponse}
               }
               errors {
                 path

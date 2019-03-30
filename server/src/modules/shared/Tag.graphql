@@ -1,0 +1,7 @@
+# import Project from './Project.graphql'
+
+type Tag {
+  id: String!
+  name: String!
+  projects: [Project!]!
+}

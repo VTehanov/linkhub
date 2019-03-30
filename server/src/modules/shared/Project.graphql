@@ -1,6 +1,9 @@
+# import Tag from './Tag.graphql'
+
 type Project {
   id: String!
   name: String!
   description: String
   progressStatus: String!
+  tags: [Tag!]
 }

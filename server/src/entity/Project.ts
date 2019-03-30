@@ -5,9 +5,12 @@ import {
   Column,
   ManyToOne,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  ManyToMany,
+  JoinTable
 } from 'typeorm'
 import { User } from './User'
+import { Tag } from './Tag'
 
 export enum ProgressStatusEnum {
   NOT_STARTED = 'Not started',
@@ -40,6 +43,10 @@ export class Project extends BaseEntity {
     cascade: true
   })
   creator: User
+
+  @ManyToMany(() => Tag, tag => tag.projects)
+  @JoinTable()
+  tags: Tag[]
 
   @CreateDateColumn()
   createdAt: string
