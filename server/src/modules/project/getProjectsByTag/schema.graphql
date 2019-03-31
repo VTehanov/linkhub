@@ -1,0 +1,13 @@
+# import Project from '../../shared/Project.graphql'
+
+input GetProjectsByTagInput {
+  slug: String!
+}
+
+type GetProjectsByTagResponse {
+  projects: [Project!]!
+}
+
+type Query {
+  getProjectsByTag(input: GetProjectsByTagInput!): GetProjectsByTagResponse!
+}

@@ -4,6 +4,10 @@ export interface GetProjectInput {
   id: string
 }
 
+export interface GetProjectsByTagInput {
+  slug: string
+}
+
 export interface CreateProjectInput {
   name: string
 
@@ -86,6 +90,12 @@ export namespace QueryResolvers {
 
     getProjects?: GetProjectsResolver<GetProjectsResponse, TypeParent, Context>
 
+    getProjectsByTag?: GetProjectsByTagResolver<
+      GetProjectsByTagResponse,
+      TypeParent,
+      Context
+    >
+
     getTags?: GetTagsResolver<GetTagsResponse, TypeParent, Context>
 
     myProjects?: MyProjectsResolver<MyProjectsResponse, TypeParent, Context>
@@ -109,6 +119,15 @@ export namespace QueryResolvers {
     Parent = {},
     Context = MyContext
   > = Resolver<R, Parent, Context>
+  export type GetProjectsByTagResolver<
+    R = GetProjectsByTagResponse,
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context, GetProjectsByTagArgs>
+  export interface GetProjectsByTagArgs {
+    input: GetProjectsByTagInput
+  }
+
   export type GetTagsResolver<
     R = GetTagsResponse,
     Parent = {},
@@ -226,6 +245,21 @@ export namespace GetProjectsResponseResolvers {
   export type ProjectsResolver<
     R = Project[],
     Parent = GetProjectsResponse,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+}
+
+export namespace GetProjectsByTagResponseResolvers {
+  export interface Resolvers<
+    Context = MyContext,
+    TypeParent = GetProjectsByTagResponse
+  > {
+    projects?: ProjectsResolver<Project[], TypeParent, Context>
+  }
+
+  export type ProjectsResolver<
+    R = Project[],
+    Parent = GetProjectsByTagResponse,
     Context = MyContext
   > = Resolver<R, Parent, Context>
 }
@@ -480,6 +514,7 @@ export interface IResolvers {
   Project?: ProjectResolvers.Resolvers
   Tag?: TagResolvers.Resolvers
   GetProjectsResponse?: GetProjectsResponseResolvers.Resolvers
+  GetProjectsByTagResponse?: GetProjectsByTagResponseResolvers.Resolvers
   GetTagsResponse?: GetTagsResponseResolvers.Resolvers
   MyProjectsResponse?: MyProjectsResponseResolvers.Resolvers
   User?: UserResolvers.Resolvers
@@ -504,6 +539,8 @@ export interface Query {
   getProject?: Maybe<GetProjectResponse>
 
   getProjects: GetProjectsResponse
+
+  getProjectsByTag: GetProjectsByTagResponse
 
   getTags: GetTagsResponse
 
@@ -539,6 +576,10 @@ export interface Tag {
 }
 
 export interface GetProjectsResponse {
+  projects: Project[]
+}
+
+export interface GetProjectsByTagResponse {
   projects: Project[]
 }
 
@@ -600,6 +641,9 @@ export interface RegisterResponse {
 
 export interface GetProjectQueryArgs {
   input: GetProjectInput
+}
+export interface GetProjectsByTagQueryArgs {
+  input: GetProjectsByTagInput
 }
 export interface HiUserQueryArgs {
   name: string

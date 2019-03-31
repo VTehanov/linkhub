@@ -3,5 +3,6 @@
 type Tag {
   id: String!
   name: String!
+  slug: String!
   projects: [Project!]!
 }

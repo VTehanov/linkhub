@@ -235,6 +235,31 @@ class TestRequester {
       }
     })
   }
+
+  async getProjectsByTag(slug: string) {
+    return rp.post({
+      ...this.options,
+      body: {
+        query: `
+          query {
+            getProjectsByTag(input: {
+              slug: "${slug}"
+            }) {
+              projects {
+                name
+                description
+                tags {
+                  id
+                  name
+                  slug
+                }
+              }
+            }
+          }
+        `
+      }
+    })
+  }
 }
 
 export default TestRequester
