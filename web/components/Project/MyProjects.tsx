@@ -1,4 +1,4 @@
-import { SFC } from 'react'
+import { FunctionComponent } from 'react'
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
 
@@ -18,6 +18,6 @@ interface IProps {
   children(props: any): JSX.Element
 }
 
-export const MyProjects: SFC<IProps> = ({ children }) => (
+export const MyProjects: FunctionComponent<IProps> = ({ children }) => (
   <Query query={MY_PROJECTS_QUERY}>{data => children(data)}</Query>
 )

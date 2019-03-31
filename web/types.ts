@@ -10,3 +10,9 @@ export type Project = {
   name: string
   description: string
 }
+
+export type Tag = {
+  id: string
+  name: string
+  projects?: Project[]
+}
