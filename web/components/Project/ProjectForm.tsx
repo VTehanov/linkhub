@@ -5,6 +5,7 @@ import { Mutation } from 'react-apollo'
 import { StyledInput, StyledTextArea } from '../../styles/Controls'
 import { FormEvent, InputEvent, Tag } from '../../types'
 import { Tags } from '../Tags/Tags'
+import Router from 'next/router'
 
 const CREATE_PROJECT_MUTATION = gql`
   mutation CREATE_PROJECT_MUTATION(
@@ -16,12 +17,7 @@ const CREATE_PROJECT_MUTATION = gql`
       input: { name: $name, description: $description, tags: $tags }
     ) {
       project {
-        name
-        description
-        tags {
-          id
-          name
-        }
+        id
       }
       errors {
         path
@@ -41,7 +37,16 @@ export const ProjectForm: FunctionComponent = () => {
     fn: Function
   ) => {
     e.preventDefault()
-    await fn()
+    const res = await fn()
+    const projectId = res.data.createProject.project.id
+
+    if (projectId) {
+      Router.push({
+        pathname: `/project/${projectId}`
+      })
+    } else {
+      return
+    }
 
     setName('')
     setDescription('')
