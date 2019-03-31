@@ -1,4 +1,4 @@
-import { SFC } from 'react'
+import { SFC, Fragment } from 'react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Project } from '../../types'
@@ -9,6 +9,10 @@ const GET_PROJECT_QUERY = gql`
       project {
         name
         description
+        tags {
+          id
+          name
+        }
       }
     }
   }
@@ -32,6 +36,15 @@ const ProjectPage: SFC<IProps> = ({ query }) => {
         return (
           <div>
             <h1>{project.name}</h1>
+            {project.tags && project.tags.length > 0 && (
+              <Fragment>
+                <h2>Tags:</h2>
+                {project.tags.map(t => (
+                  <p>{t.name}</p>
+                ))}
+              </Fragment>
+            )}
+
             <p>{project.description}</p>
           </div>
         )

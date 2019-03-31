@@ -9,6 +9,7 @@ export type Project = {
   id: string
   name: string
   description: string
+  tags?: Tag[]
 }
 
 export type Tag = {
