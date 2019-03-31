@@ -217,6 +217,24 @@ class TestRequester {
       }
     })
   }
+
+  async getTags() {
+    return rp.post({
+      ...this.options,
+      body: {
+        query: `
+          query {
+            getTags {
+              tags {
+                id
+                name
+              }
+            }
+          }
+        `
+      }
+    })
+  }
 }
 
 export default TestRequester
