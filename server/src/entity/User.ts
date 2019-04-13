@@ -6,7 +6,8 @@ import {
   BaseEntity,
   BeforeInsert,
   OneToMany,
-  CreateDateColumn
+  CreateDateColumn,
+  ManyToMany
 } from 'typeorm'
 import { EMAIL_MAX_LENGTH } from '../constants/dataConstraints'
 import { Project } from './Project'
@@ -42,6 +43,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Project, (project: Project) => project.creator)
   projects: Project[]
+
+  @ManyToMany(() => Project, (project: Project) => project.participants)
+  projectsJoined: Project[]
 
   @CreateDateColumn()
   createdAt: string

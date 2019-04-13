@@ -1,9 +1,12 @@
 # import Tag from './Tag.graphql'
+# import User from './User.graphql'
 
 type Project {
   id: String!
   name: String!
   description: String
   progressStatus: String!
-  tags: [Tag!]
+  tags: [Tag!]!
+  creator: User!
+  participants: [User!]!
 }

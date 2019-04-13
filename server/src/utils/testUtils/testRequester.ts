@@ -260,6 +260,28 @@ class TestRequester {
       }
     })
   }
+
+  async createRequestToJoinProject(projectId: string, message?: string) {
+    const messageField = message ? `message: "${message}"` : ''
+
+    return rp.post({
+      ...this.options,
+      body: {
+        query: `
+          mutation {
+            requestToJoinProject(input: {
+              projectId: "${projectId}"
+              ${messageField}
+            }) {
+              errors {
+                message
+              }
+            }
+          }
+        `
+      }
+    })
+  }
 }
 
 export default TestRequester

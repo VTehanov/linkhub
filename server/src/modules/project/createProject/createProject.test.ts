@@ -12,34 +12,18 @@ faker.seed(process.hrtime()[1])
 const seedEmail = faker.internet.email()
 const seedPassword = faker.internet.password()
 
-const tagNames = [
-  {
-    id: '1',
-    name: 'Serverless'
-  },
-  {
-    id: '2',
-    name: 'Android'
-  }
-]
-const tags: Tag[] = []
-
+let tagNames = ['Android', 'Machine Learning']
+let tags: Tag[] = []
 let conn: Connection
 beforeAll(async () => {
   conn = await createTestConnection()
-  const promises = []
-  promises.push(
-    User.create({
-      email: seedEmail,
-      password: seedPassword
-    }).save()
-  )
 
-  tagNames.forEach(async t => {
-    tags.push(await Tag.create(t).save())
-  })
+  await User.create({
+    email: seedEmail,
+    password: seedPassword
+  }).save()
 
-  await Promise.all(promises)
+  tagNames.forEach(async t => tags.push(await Tag.create({ name: t }).save()))
 })
 
 afterAll(async () => {
@@ -153,6 +137,14 @@ describe('Create project', () => {
 
     expect(response.data.createProject.project.name).toEqual(name)
     expect(response.data.createProject.project.description).toEqual(description)
-    expect(response.data.createProject.project.tags).toEqual(tagNames)
+    expect(response.data.createProject.project.tags).toHaveLength(
+      tagNames.length
+    )
+    expect(response.data.createProject.project.tags[0].name).toEqual(
+      tagNames[0]
+    )
+    expect(response.data.createProject.project.tags[1].name).toEqual(
+      tagNames[1]
+    )
   })
 })

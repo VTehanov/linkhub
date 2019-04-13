@@ -1,0 +1,16 @@
+# import Error from '../../shared/Error.graphql'
+
+input RequestToJoinProjectInput {
+  projectId: String!
+  message: String
+}
+
+type RequestToJoinProjectResponse {
+  errors: [Error!]
+}
+
+type Mutation {
+  requestToJoinProject(
+    input: RequestToJoinProjectInput!
+  ): RequestToJoinProjectResponse!
+}

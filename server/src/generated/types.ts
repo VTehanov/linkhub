@@ -16,6 +16,12 @@ export interface CreateProjectInput {
   tags?: Maybe<string[]>
 }
 
+export interface RequestToJoinProjectInput {
+  projectId: string
+
+  message?: Maybe<string>
+}
+
 export interface LoginInput {
   email: string
 
@@ -178,7 +184,11 @@ export namespace ProjectResolvers {
 
     progressStatus?: ProgressStatusResolver<string, TypeParent, Context>
 
-    tags?: TagsResolver<Maybe<Tag[]>, TypeParent, Context>
+    tags?: TagsResolver<Tag[], TypeParent, Context>
+
+    creator?: CreatorResolver<User, TypeParent, Context>
+
+    participants?: ParticipantsResolver<User[], TypeParent, Context>
   }
 
   export type IdResolver<
@@ -202,7 +212,17 @@ export namespace ProjectResolvers {
     Context = MyContext
   > = Resolver<R, Parent, Context>
   export type TagsResolver<
-    R = Maybe<Tag[]>,
+    R = Tag[],
+    Parent = Project,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type CreatorResolver<
+    R = User,
+    Parent = Project,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type ParticipantsResolver<
+    R = User[],
     Parent = Project,
     Context = MyContext
   > = Resolver<R, Parent, Context>
@@ -213,6 +233,8 @@ export namespace TagResolvers {
     id?: IdResolver<string, TypeParent, Context>
 
     name?: NameResolver<string, TypeParent, Context>
+
+    slug?: SlugResolver<string, TypeParent, Context>
 
     projects?: ProjectsResolver<Project[], TypeParent, Context>
   }
@@ -227,9 +249,65 @@ export namespace TagResolvers {
     Parent = Tag,
     Context = MyContext
   > = Resolver<R, Parent, Context>
+  export type SlugResolver<
+    R = string,
+    Parent = Tag,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
   export type ProjectsResolver<
     R = Project[],
     Parent = Tag,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+}
+
+export namespace UserResolvers {
+  export interface Resolvers<Context = MyContext, TypeParent = User> {
+    id?: IdResolver<string, TypeParent, Context>
+
+    email?: EmailResolver<Maybe<string>, TypeParent, Context>
+
+    confirmedEmail?: ConfirmedEmailResolver<boolean, TypeParent, Context>
+
+    forgotPasswordLocked?: ForgotPasswordLockedResolver<
+      boolean,
+      TypeParent,
+      Context
+    >
+
+    projects?: ProjectsResolver<Project[], TypeParent, Context>
+
+    projectsJoined?: ProjectsJoinedResolver<Project[], TypeParent, Context>
+  }
+
+  export type IdResolver<
+    R = string,
+    Parent = User,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type EmailResolver<
+    R = Maybe<string>,
+    Parent = User,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type ConfirmedEmailResolver<
+    R = boolean,
+    Parent = User,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type ForgotPasswordLockedResolver<
+    R = boolean,
+    Parent = User,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type ProjectsResolver<
+    R = Project[],
+    Parent = User,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type ProjectsJoinedResolver<
+    R = Project[],
+    Parent = User,
     Context = MyContext
   > = Resolver<R, Parent, Context>
 }
@@ -294,29 +372,16 @@ export namespace MyProjectsResponseResolvers {
   > = Resolver<R, Parent, Context>
 }
 
-export namespace UserResolvers {
-  export interface Resolvers<Context = MyContext, TypeParent = User> {
-    id?: IdResolver<string, TypeParent, Context>
-
-    email?: EmailResolver<Maybe<string>, TypeParent, Context>
-  }
-
-  export type IdResolver<
-    R = string,
-    Parent = User,
-    Context = MyContext
-  > = Resolver<R, Parent, Context>
-  export type EmailResolver<
-    R = Maybe<string>,
-    Parent = User,
-    Context = MyContext
-  > = Resolver<R, Parent, Context>
-}
-
 export namespace MutationResolvers {
   export interface Resolvers<Context = MyContext, TypeParent = {}> {
     createProject?: CreateProjectResolver<
       CreateProjectResponse,
+      TypeParent,
+      Context
+    >
+
+    requestToJoinProject?: RequestToJoinProjectResolver<
+      RequestToJoinProjectResponse,
       TypeParent,
       Context
     >
@@ -347,6 +412,15 @@ export namespace MutationResolvers {
   > = Resolver<R, Parent, Context, CreateProjectArgs>
   export interface CreateProjectArgs {
     input: CreateProjectInput
+  }
+
+  export type RequestToJoinProjectResolver<
+    R = RequestToJoinProjectResponse,
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context, RequestToJoinProjectArgs>
+  export interface RequestToJoinProjectArgs {
+    input: RequestToJoinProjectInput
   }
 
   export type SendForgotPasswordEmailResolver<
@@ -434,6 +508,21 @@ export namespace ErrorResolvers {
   > = Resolver<R, Parent, Context>
 }
 
+export namespace RequestToJoinProjectResponseResolvers {
+  export interface Resolvers<
+    Context = MyContext,
+    TypeParent = RequestToJoinProjectResponse
+  > {
+    errors?: ErrorsResolver<Maybe<Error[]>, TypeParent, Context>
+  }
+
+  export type ErrorsResolver<
+    R = Maybe<Error[]>,
+    Parent = RequestToJoinProjectResponse,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+}
+
 export namespace LoginResponseResolvers {
   export interface Resolvers<Context = MyContext, TypeParent = LoginResponse> {
     errors?: ErrorsResolver<Maybe<Error[]>, TypeParent, Context>
@@ -513,14 +602,15 @@ export interface IResolvers {
   GetProjectResponse?: GetProjectResponseResolvers.Resolvers
   Project?: ProjectResolvers.Resolvers
   Tag?: TagResolvers.Resolvers
+  User?: UserResolvers.Resolvers
   GetProjectsResponse?: GetProjectsResponseResolvers.Resolvers
   GetProjectsByTagResponse?: GetProjectsByTagResponseResolvers.Resolvers
   GetTagsResponse?: GetTagsResponseResolvers.Resolvers
   MyProjectsResponse?: MyProjectsResponseResolvers.Resolvers
-  User?: UserResolvers.Resolvers
   Mutation?: MutationResolvers.Resolvers
   CreateProjectResponse?: CreateProjectResponseResolvers.Resolvers
   Error?: ErrorResolvers.Resolvers
+  RequestToJoinProjectResponse?: RequestToJoinProjectResponseResolvers.Resolvers
   LoginResponse?: LoginResponseResolvers.Resolvers
   RegisterResponse?: RegisterResponseResolvers.Resolvers
 }
@@ -564,7 +654,11 @@ export interface Project {
 
   progressStatus: string
 
-  tags?: Maybe<Tag[]>
+  tags: Tag[]
+
+  creator: User
+
+  participants: User[]
 }
 
 export interface Tag {
@@ -572,7 +666,23 @@ export interface Tag {
 
   name: string
 
+  slug: string
+
   projects: Project[]
+}
+
+export interface User {
+  id: string
+
+  email?: Maybe<string>
+
+  confirmedEmail: boolean
+
+  forgotPasswordLocked: boolean
+
+  projects: Project[]
+
+  projectsJoined: Project[]
 }
 
 export interface GetProjectsResponse {
@@ -591,14 +701,10 @@ export interface MyProjectsResponse {
   projects: Project[]
 }
 
-export interface User {
-  id: string
-
-  email?: Maybe<string>
-}
-
 export interface Mutation {
   createProject: CreateProjectResponse
+
+  requestToJoinProject: RequestToJoinProjectResponse
 
   sendForgotPasswordEmail?: Maybe<boolean>
 
@@ -621,6 +727,10 @@ export interface Error {
   path: string
 
   message: string
+}
+
+export interface RequestToJoinProjectResponse {
+  errors?: Maybe<Error[]>
 }
 
 export interface LoginResponse {
@@ -650,6 +760,9 @@ export interface HiUserQueryArgs {
 }
 export interface CreateProjectMutationArgs {
   input: CreateProjectInput
+}
+export interface RequestToJoinProjectMutationArgs {
+  input: RequestToJoinProjectInput
 }
 export interface SendForgotPasswordEmailMutationArgs {
   email: string

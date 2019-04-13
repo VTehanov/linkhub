@@ -48,6 +48,10 @@ export class Project extends BaseEntity {
   @JoinTable()
   tags: Tag[]
 
+  @ManyToMany(() => User, user => user.projectsJoined)
+  @JoinTable()
+  participants: User[]
+
   @CreateDateColumn()
   createdAt: string
 

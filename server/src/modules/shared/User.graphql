@@ -1,4 +1,10 @@
+# import Project from './Project.graphql'
+
 type User {
   id: ID!
   email: String
+  confirmedEmail: Boolean!
+  forgotPasswordLocked: Boolean!
+  projects: [Project!]!
+  projectsJoined: [Project!]!
 }
