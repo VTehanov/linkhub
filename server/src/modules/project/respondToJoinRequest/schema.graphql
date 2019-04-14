@@ -1,0 +1,17 @@
+# import Error from '../../shared/Error.graphql'
+# import ProjectJoinRequestStatusEnum from '../../shared/ProjectJoinRequest.graphql'
+
+input RespondToJoinProjectInput {
+  requestId: String!
+  status: ProjectJoinRequestStatusEnum!
+}
+
+type RequestToJoinProjectResponse {
+  errors: [Error!]!
+}
+
+type Mutation {
+  respondToJoinRequest(
+    input: RespondToJoinProjectInput!
+  ): RequestToJoinProjectResponse
+}

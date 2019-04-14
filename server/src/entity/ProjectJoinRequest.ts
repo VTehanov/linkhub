@@ -1,13 +1,22 @@
-import { Entity, BaseEntity, PrimaryColumn, Column } from 'typeorm'
+import {
+  Entity,
+  BaseEntity,
+  PrimaryColumn,
+  Column,
+  PrimaryGeneratedColumn
+} from 'typeorm'
 
 export enum ProjectJoinRequestStatusEnum {
-  PENDING = 'Pending',
-  APPROVED = 'Approved',
-  DECLINED = 'Declined'
+  Pending = 'PENDING',
+  Approved = 'APPROVED',
+  Declined = 'DECLINED'
 }
 
 @Entity()
 export class ProjectJoinRequest extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid')
+  id: string
+
   @PrimaryColumn()
   userId: string
 
@@ -23,7 +32,7 @@ export class ProjectJoinRequest extends BaseEntity {
   @Column({
     type: 'enum',
     enum: ProjectJoinRequestStatusEnum,
-    default: ProjectJoinRequestStatusEnum.PENDING
+    default: ProjectJoinRequestStatusEnum.Pending
   })
   status: ProjectJoinRequestStatusEnum
 }

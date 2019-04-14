@@ -5,6 +5,7 @@ import {
   RegisterInput,
   LoginInput
 } from '../../generated/types'
+import { ProjectJoinRequestStatusEnum } from '../../entity/ProjectJoinRequest'
 
 class TestRequester {
   requestUrl: string
@@ -140,6 +141,7 @@ class TestRequester {
               ${tagsTransformed}
             }) {
               project {
+                id
                 name
                 description
                 progressStatus
@@ -261,7 +263,7 @@ class TestRequester {
     })
   }
 
-  async createRequestToJoinProject(projectId: string, message?: string) {
+  async requestToJoinProject(projectId: string, message?: string) {
     const messageField = message ? `message: "${message}"` : ''
 
     return rp.post({
@@ -272,6 +274,29 @@ class TestRequester {
             requestToJoinProject(input: {
               projectId: "${projectId}"
               ${messageField}
+            }) {
+              errors {
+                message
+              }
+            }
+          }
+        `
+      }
+    })
+  }
+
+  async respondToJoinRequest(
+    requestId: string,
+    status: ProjectJoinRequestStatusEnum
+  ) {
+    return rp.post({
+      ...this.options,
+      body: {
+        query: `
+          mutation {
+            respondToJoinRequest(input: {
+              status: ${status},
+              requestId: "${requestId}"
             }) {
               errors {
                 message

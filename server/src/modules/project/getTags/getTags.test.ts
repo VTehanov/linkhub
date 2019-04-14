@@ -1,17 +1,19 @@
 import { Connection } from 'typeorm'
+import * as faker from 'faker'
 import { createTestConnection } from '../../../utils/testUtils/createTestConnection'
 import { Tag } from '../../../entity/Tag'
 import TestRequester from '../../../utils/testUtils/TestRequester'
 
+faker.seed(process.hrtime()[1])
 let conn: Connection
 const tagsData = [
   {
     id: '1',
-    name: 'Microservices'
+    name: faker.commerce.productMaterial()
   },
   {
     id: '2',
-    name: 'Big Data'
+    name: faker.commerce.productMaterial()
   }
 ]
 

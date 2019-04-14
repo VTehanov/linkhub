@@ -22,6 +22,12 @@ export interface RequestToJoinProjectInput {
   message?: Maybe<string>
 }
 
+export interface RespondToJoinProjectInput {
+  requestId: string
+
+  status: ProjectJoinRequestStatusEnum
+}
+
 export interface LoginInput {
   email: string
 
@@ -32,6 +38,12 @@ export interface RegisterInput {
   email: string
 
   password: string
+}
+
+export enum ProjectJoinRequestStatusEnum {
+  Pending = 'PENDING',
+  Approved = 'APPROVED',
+  Declined = 'DECLINED'
 }
 import { GraphQLResolveInfo } from 'graphql'
 
@@ -386,6 +398,12 @@ export namespace MutationResolvers {
       Context
     >
 
+    respondToJoinRequest?: RespondToJoinRequestResolver<
+      Maybe<RequestToJoinProjectResponse>,
+      TypeParent,
+      Context
+    >
+
     sendForgotPasswordEmail?: SendForgotPasswordEmailResolver<
       Maybe<boolean>,
       TypeParent,
@@ -421,6 +439,15 @@ export namespace MutationResolvers {
   > = Resolver<R, Parent, Context, RequestToJoinProjectArgs>
   export interface RequestToJoinProjectArgs {
     input: RequestToJoinProjectInput
+  }
+
+  export type RespondToJoinRequestResolver<
+    R = Maybe<RequestToJoinProjectResponse>,
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context, RespondToJoinRequestArgs>
+  export interface RespondToJoinRequestArgs {
+    input: RespondToJoinProjectInput
   }
 
   export type SendForgotPasswordEmailResolver<
@@ -564,6 +591,42 @@ export namespace RegisterResponseResolvers {
   > = Resolver<R, Parent, Context>
 }
 
+export namespace ProjectJoinRequestResolvers {
+  export interface Resolvers<
+    Context = MyContext,
+    TypeParent = ProjectJoinRequest
+  > {
+    id?: IdResolver<string, TypeParent, Context>
+
+    userId?: UserIdResolver<string, TypeParent, Context>
+
+    message?: MessageResolver<Maybe<string>, TypeParent, Context>
+
+    status?: StatusResolver<ProjectJoinRequestStatusEnum, TypeParent, Context>
+  }
+
+  export type IdResolver<
+    R = string,
+    Parent = ProjectJoinRequest,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type UserIdResolver<
+    R = string,
+    Parent = ProjectJoinRequest,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type MessageResolver<
+    R = Maybe<string>,
+    Parent = ProjectJoinRequest,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type StatusResolver<
+    R = ProjectJoinRequestStatusEnum,
+    Parent = ProjectJoinRequest,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+}
+
 /** Directs the executor to skip this field or fragment when the `if` argument is true. */
 export type SkipDirectiveResolver<Result> = DirectiveResolverFn<
   Result,
@@ -613,6 +676,7 @@ export interface IResolvers {
   RequestToJoinProjectResponse?: RequestToJoinProjectResponseResolvers.Resolvers
   LoginResponse?: LoginResponseResolvers.Resolvers
   RegisterResponse?: RegisterResponseResolvers.Resolvers
+  ProjectJoinRequest?: ProjectJoinRequestResolvers.Resolvers
 }
 
 export interface IDirectiveResolvers<Result> {
@@ -706,6 +770,8 @@ export interface Mutation {
 
   requestToJoinProject: RequestToJoinProjectResponse
 
+  respondToJoinRequest?: Maybe<RequestToJoinProjectResponse>
+
   sendForgotPasswordEmail?: Maybe<boolean>
 
   forgotPasswordChange?: Maybe<Error[]>
@@ -745,6 +811,16 @@ export interface RegisterResponse {
   user?: Maybe<User>
 }
 
+export interface ProjectJoinRequest {
+  id: string
+
+  userId: string
+
+  message?: Maybe<string>
+
+  status: ProjectJoinRequestStatusEnum
+}
+
 // ====================================================
 // Arguments
 // ====================================================
@@ -763,6 +839,9 @@ export interface CreateProjectMutationArgs {
 }
 export interface RequestToJoinProjectMutationArgs {
   input: RequestToJoinProjectInput
+}
+export interface RespondToJoinRequestMutationArgs {
+  input: RespondToJoinProjectInput
 }
 export interface SendForgotPasswordEmailMutationArgs {
   email: string

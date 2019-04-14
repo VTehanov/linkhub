@@ -7,10 +7,14 @@ import { Project, ProgressStatusEnum } from '../../../entity/Project'
 import { createTestConnection } from '../../../utils/testUtils/createTestConnection'
 import { User } from '../../../entity/User'
 import { Tag } from '../../../entity/Tag'
+import { RegisterInput, CreateProjectInput } from '../../../generated/types'
 
 faker.seed(process.hrtime()[1])
-const seedEmail = faker.internet.email()
-const seedPassword = faker.internet.password()
+
+const userData: RegisterInput = {
+  email: faker.internet.email(),
+  password: faker.internet.password()
+}
 
 let tagNames = ['Android', 'Machine Learning']
 let tags: Tag[] = []
@@ -18,10 +22,7 @@ let conn: Connection
 beforeAll(async () => {
   conn = await createTestConnection()
 
-  await User.create({
-    email: seedEmail,
-    password: seedPassword
-  }).save()
+  await User.create(userData).save()
 
   tagNames.forEach(async t => tags.push(await Tag.create({ name: t }).save()))
 })
@@ -33,34 +34,28 @@ afterAll(async () => {
 describe('Create project', () => {
   test('creates project by the logged in user', async () => {
     const rq = new TestRequester()
-    const name = faker.commerce.productName()
-    const description = faker.random.alphaNumeric(80)
+    const projectData: CreateProjectInput = {
+      name: faker.commerce.productName(),
+      description: faker.random.alphaNumeric(80)
+    }
 
-    await rq.login({
-      email: seedEmail,
-      password: seedPassword
-    })
+    await rq.login(userData)
 
-    const response = await rq.createProject({ name, description })
-    expect(response.data).toEqual({
-      createProject: {
-        project: {
-          name,
-          description,
-          progressStatus: ProgressStatusEnum.NOT_STARTED
-        },
-        errors: []
-      }
-    })
+    const response = await rq.createProject(projectData)
+    const resProject: Project = response.data.createProject.project
 
-    const projects = await Project.find({ where: { name } })
+    expect(resProject.name).toBe(projectData.name)
+    expect(resProject.description).toBe(projectData.description)
+
+    const projects = await Project.find({ where: { name: projectData.name } })
     expect(projects).toHaveLength(1)
-    expect(projects[0].name).toEqual(name)
-    expect(projects[0].description).toEqual(description)
+    expect(projects[0].name).toBe(projectData.name)
+    expect(projects[0].description).toBe(projectData.description)
+    expect(projects[0].progressStatus).toBe(ProgressStatusEnum.NOT_STARTED)
 
     const user = await User.findOne({
       where: {
-        email: seedEmail
+        email: userData.email
       },
       relations: ['projects']
     })
@@ -71,10 +66,7 @@ describe('Create project', () => {
 
   test('it does not create project with invalid data', async () => {
     const rq = new TestRequester()
-    await rq.login({
-      email: seedEmail,
-      password: seedPassword
-    })
+    await rq.login(userData)
 
     const prevCount = await Project.count()
     const name = 'Te'
@@ -123,28 +115,22 @@ describe('Create project', () => {
 
   it('creates a project with provided tags', async () => {
     const rq = new TestRequester()
-    const name = faker.commerce.productName()
-    const description = faker.random.alphaNumeric(80)
-    await rq.login({
-      email: seedEmail,
-      password: seedPassword
-    })
+    const projectData: CreateProjectInput = {
+      name: faker.commerce.productName(),
+      description: faker.random.alphaNumeric(80)
+    }
+
+    await rq.login(userData)
     const response = await rq.createProject({
-      name,
-      description,
+      ...projectData,
       tags: [tags[0].id, tags[1].id]
     })
 
-    expect(response.data.createProject.project.name).toEqual(name)
-    expect(response.data.createProject.project.description).toEqual(description)
-    expect(response.data.createProject.project.tags).toHaveLength(
-      tagNames.length
-    )
-    expect(response.data.createProject.project.tags[0].name).toEqual(
-      tagNames[0]
-    )
-    expect(response.data.createProject.project.tags[1].name).toEqual(
-      tagNames[1]
-    )
+    const project: Project = response.data.createProject.project
+    expect(project.name).toEqual(projectData.name)
+    expect(project.description).toEqual(projectData.description)
+    expect(project.tags).toHaveLength(tagNames.length)
+    expect(project.tags[0].name).toEqual(tagNames[0])
+    expect(project.tags[1].name).toEqual(tagNames[1])
   })
 })

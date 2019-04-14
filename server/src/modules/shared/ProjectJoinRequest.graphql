@@ -1,0 +1,12 @@
+enum ProjectJoinRequestStatusEnum {
+  PENDING
+  APPROVED
+  DECLINED
+}
+
+type ProjectJoinRequest {
+  id: String!
+  userId: String!
+  message: String
+  status: ProjectJoinRequestStatusEnum!
+}

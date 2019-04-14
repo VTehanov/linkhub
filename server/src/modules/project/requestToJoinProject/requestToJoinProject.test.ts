@@ -46,7 +46,7 @@ describe('Create Request to Join Project', () => {
       password: seedPassword
     })
     const message = 'I would like to join the project'
-    const res = await rq.createRequestToJoinProject(project.id, message)
+    const res = await rq.requestToJoinProject(project.id, message)
     const projectJoinRequests: ProjectJoinRequest[] = await ProjectJoinRequest.find(
       {
         where: {
@@ -58,12 +58,12 @@ describe('Create Request to Join Project', () => {
 
     expect(res.data.requestToJoinProject.errors).toEqual([])
     expect(projectJoinRequests).toHaveLength(1)
-    expect(projectJoinRequests[0]).toEqual({
-      userId: user.id,
-      projectId: project.id,
-      message,
-      status: ProjectJoinRequestStatusEnum.PENDING
-    })
+    expect(projectJoinRequests[0].userId).toBe(user.id)
+    expect(projectJoinRequests[0].projectId).toBe(project.id)
+    expect(projectJoinRequests[0].message).toBe(message)
+    expect(projectJoinRequests[0].status).toBe(
+      ProjectJoinRequestStatusEnum.Pending
+    )
   })
 
   test('does not join a project if not logged in', async () => {
@@ -73,7 +73,7 @@ describe('Create Request to Join Project', () => {
         projectId: project.id
       }
     })
-    const res = await rq.createRequestToJoinProject(project.id)
+    const res = await rq.requestToJoinProject(project.id)
     const afterCount = await ProjectJoinRequest.count({
       where: {
         projectId: project.id
@@ -101,7 +101,7 @@ describe('Create Request to Join Project', () => {
       email: seedEmail,
       password: seedPassword
     })
-    const res = await rq.createRequestToJoinProject(v4())
+    const res = await rq.requestToJoinProject(v4())
     const afterCount = await ProjectJoinRequest.count({
       where: {
         projectId: project.id
