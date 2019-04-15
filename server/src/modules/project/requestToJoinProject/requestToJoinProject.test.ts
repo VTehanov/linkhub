@@ -9,14 +9,25 @@ import {
   ProjectJoinRequest,
   ProjectJoinRequestStatusEnum
 } from '../../../entity/ProjectJoinRequest'
-import { PLEASE_LOG_IN, PROJECT_DOES_NOT_EXIST } from './errorMessages'
+import {
+  PLEASE_LOG_IN,
+  PROJECT_DOES_NOT_EXIST,
+  USER_ALREADY_REQUESTED
+} from './errorMessages'
+import { CreateProjectInput, RegisterInput } from '../../../generated/types'
 
 faker.seed(process.hrtime()[1])
 
-const seedName = faker.commerce.productName()
-const seedDescription = faker.random.alphaNumeric(80)
-const seedEmail = faker.internet.email()
-const seedPassword = faker.internet.password()
+const projectData: CreateProjectInput = {
+  name: faker.commerce.productName(),
+  description: faker.random.alphaNumeric(80)
+}
+
+const userData: RegisterInput = {
+  email: faker.internet.email(),
+  password: faker.internet.password()
+}
+
 let project: Project
 let user: User
 let conn: Connection
@@ -24,14 +35,11 @@ let conn: Connection
 beforeAll(async () => {
   conn = await createTestConnection()
   project = await Project.create({
-    name: seedName,
-    description: seedDescription
+    name: projectData.name,
+    description: projectData.description
   }).save()
 
-  user = await User.create({
-    email: seedEmail,
-    password: seedPassword
-  }).save()
+  user = await User.create(userData).save()
 })
 
 afterAll(async () => {
@@ -41,10 +49,7 @@ afterAll(async () => {
 describe('Create Request to Join Project', () => {
   test('creates a request by logged in user to a project', async () => {
     const rq = new TestRequester()
-    await rq.login({
-      email: seedEmail,
-      password: seedPassword
-    })
+    await rq.login(userData)
     const message = 'I would like to join the project'
     const res = await rq.requestToJoinProject(project.id, message)
     const projectJoinRequests: ProjectJoinRequest[] = await ProjectJoinRequest.find(
@@ -97,10 +102,7 @@ describe('Create Request to Join Project', () => {
       }
     })
 
-    await rq.login({
-      email: seedEmail,
-      password: seedPassword
-    })
+    await rq.login(userData)
     const res = await rq.requestToJoinProject(v4())
     const afterCount = await ProjectJoinRequest.count({
       where: {
@@ -114,5 +116,58 @@ describe('Create Request to Join Project', () => {
       }
     ])
     expect(previousCount).toBe(afterCount)
+  })
+
+  test('cannot request to join a project twice', async () => {
+    const rq = new TestRequester()
+
+    await rq.login(userData)
+    const anotherProject = await Project.create({
+      name: projectData.name,
+      description: projectData.description
+    }).save()
+    const firstResponse = await rq.requestToJoinProject(anotherProject.id)
+    const requests = await ProjectJoinRequest.find({
+      where: {
+        projectId: anotherProject.id,
+        userId: user.id
+      }
+    })
+
+    expect(requests).toHaveLength(1)
+    expect(firstResponse.data.requestToJoinProject).toEqual({
+      errors: []
+    })
+
+    const secondResponse = await rq.requestToJoinProject(anotherProject.id)
+    const secondRequests = await ProjectJoinRequest.find({
+      where: {
+        projectId: anotherProject.id,
+        userId: user.id
+      }
+    })
+
+    expect(secondResponse.data.requestToJoinProject).toEqual({
+      errors: [
+        {
+          message: USER_ALREADY_REQUESTED
+        }
+      ]
+    })
+    expect(secondRequests).toHaveLength(1)
+
+    // console.log(projectAfterRequest)
+    // expect(projectAfterRequest!.participants).toHaveLength(1)
+    // expect(projectAfterRequest!.participants[0].id).toBe(user.id)
+
+    // const resSecondRequest = await rq.requestToJoinProject(project.id)
+    // expect(resSecondRequest.data.requestToJoingProject.errors).toEqual({
+    //   path: 'project',
+    //   message: USER_ALREADY_REQUESTED
+    // })
+
+    // await projectAfterRequest!.reload()
+    // expect(projectAfterRequest!.participants).toHaveLength(1)
+    // expect(projectAfterRequest!.participants[0].id).toBe(user.id)
   })
 })

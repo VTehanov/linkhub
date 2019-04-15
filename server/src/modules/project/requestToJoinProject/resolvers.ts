@@ -1,7 +1,11 @@
 import { MutationResolvers } from '../../../generated/types'
 import { Project } from '../../../entity/Project'
 import { ProjectJoinRequest } from '../../../entity/ProjectJoinRequest'
-import { PLEASE_LOG_IN, PROJECT_DOES_NOT_EXIST } from './errorMessages'
+import {
+  PLEASE_LOG_IN,
+  PROJECT_DOES_NOT_EXIST,
+  USER_ALREADY_REQUESTED
+} from './errorMessages'
 import { User } from '../../../entity/User'
 
 const Mutation: MutationResolvers.Resolvers = {
@@ -11,7 +15,8 @@ const Mutation: MutationResolvers.Resolvers = {
     const project = await Project.findOne({
       where: {
         id: projectId
-      }
+      },
+      relations: ['participants']
     })
 
     if (!userId) {
@@ -48,6 +53,24 @@ const Mutation: MutationResolvers.Resolvers = {
           {
             path: 'project',
             message: PROJECT_DOES_NOT_EXIST
+          }
+        ]
+      }
+    }
+
+    const existingRequest = await ProjectJoinRequest.findOne({
+      where: {
+        projectId: project.id,
+        userId: user.id
+      }
+    })
+
+    if (existingRequest) {
+      return {
+        errors: [
+          {
+            path: 'project',
+            message: USER_ALREADY_REQUESTED
           }
         ]
       }
