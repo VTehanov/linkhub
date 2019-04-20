@@ -4,6 +4,10 @@ export interface GetProjectInput {
   id: string
 }
 
+export interface GetProjectPendingRequestsInput {
+  projectId: string
+}
+
 export interface GetProjectsByTagInput {
   slug: string
 }
@@ -106,6 +110,12 @@ export namespace QueryResolvers {
       Context
     >
 
+    getProjectPendingRequests?: GetProjectPendingRequestsResolver<
+      GetProjectPendingRequestsResponse,
+      TypeParent,
+      Context
+    >
+
     getProjects?: GetProjectsResolver<GetProjectsResponse, TypeParent, Context>
 
     getProjectsByTag?: GetProjectsByTagResolver<
@@ -130,6 +140,15 @@ export namespace QueryResolvers {
   > = Resolver<R, Parent, Context, GetProjectArgs>
   export interface GetProjectArgs {
     input: GetProjectInput
+  }
+
+  export type GetProjectPendingRequestsResolver<
+    R = GetProjectPendingRequestsResponse,
+    Parent = {},
+    Context = MyContext
+  > = Resolver<R, Parent, Context, GetProjectPendingRequestsArgs>
+  export interface GetProjectPendingRequestsArgs {
+    input: GetProjectPendingRequestsInput
   }
 
   export type GetProjectsResolver<
@@ -320,6 +339,57 @@ export namespace UserResolvers {
   export type ProjectsJoinedResolver<
     R = Project[],
     Parent = User,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+}
+
+export namespace GetProjectPendingRequestsResponseResolvers {
+  export interface Resolvers<
+    Context = MyContext,
+    TypeParent = GetProjectPendingRequestsResponse
+  > {
+    requests?: RequestsResolver<ProjectJoinRequest[], TypeParent, Context>
+  }
+
+  export type RequestsResolver<
+    R = ProjectJoinRequest[],
+    Parent = GetProjectPendingRequestsResponse,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+}
+
+export namespace ProjectJoinRequestResolvers {
+  export interface Resolvers<
+    Context = MyContext,
+    TypeParent = ProjectJoinRequest
+  > {
+    id?: IdResolver<string, TypeParent, Context>
+
+    userId?: UserIdResolver<string, TypeParent, Context>
+
+    message?: MessageResolver<Maybe<string>, TypeParent, Context>
+
+    status?: StatusResolver<ProjectJoinRequestStatusEnum, TypeParent, Context>
+  }
+
+  export type IdResolver<
+    R = string,
+    Parent = ProjectJoinRequest,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type UserIdResolver<
+    R = string,
+    Parent = ProjectJoinRequest,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type MessageResolver<
+    R = Maybe<string>,
+    Parent = ProjectJoinRequest,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type StatusResolver<
+    R = ProjectJoinRequestStatusEnum,
+    Parent = ProjectJoinRequest,
     Context = MyContext
   > = Resolver<R, Parent, Context>
 }
@@ -591,42 +661,6 @@ export namespace RegisterResponseResolvers {
   > = Resolver<R, Parent, Context>
 }
 
-export namespace ProjectJoinRequestResolvers {
-  export interface Resolvers<
-    Context = MyContext,
-    TypeParent = ProjectJoinRequest
-  > {
-    id?: IdResolver<string, TypeParent, Context>
-
-    userId?: UserIdResolver<string, TypeParent, Context>
-
-    message?: MessageResolver<Maybe<string>, TypeParent, Context>
-
-    status?: StatusResolver<ProjectJoinRequestStatusEnum, TypeParent, Context>
-  }
-
-  export type IdResolver<
-    R = string,
-    Parent = ProjectJoinRequest,
-    Context = MyContext
-  > = Resolver<R, Parent, Context>
-  export type UserIdResolver<
-    R = string,
-    Parent = ProjectJoinRequest,
-    Context = MyContext
-  > = Resolver<R, Parent, Context>
-  export type MessageResolver<
-    R = Maybe<string>,
-    Parent = ProjectJoinRequest,
-    Context = MyContext
-  > = Resolver<R, Parent, Context>
-  export type StatusResolver<
-    R = ProjectJoinRequestStatusEnum,
-    Parent = ProjectJoinRequest,
-    Context = MyContext
-  > = Resolver<R, Parent, Context>
-}
-
 /** Directs the executor to skip this field or fragment when the `if` argument is true. */
 export type SkipDirectiveResolver<Result> = DirectiveResolverFn<
   Result,
@@ -666,6 +700,8 @@ export interface IResolvers {
   Project?: ProjectResolvers.Resolvers
   Tag?: TagResolvers.Resolvers
   User?: UserResolvers.Resolvers
+  GetProjectPendingRequestsResponse?: GetProjectPendingRequestsResponseResolvers.Resolvers
+  ProjectJoinRequest?: ProjectJoinRequestResolvers.Resolvers
   GetProjectsResponse?: GetProjectsResponseResolvers.Resolvers
   GetProjectsByTagResponse?: GetProjectsByTagResponseResolvers.Resolvers
   GetTagsResponse?: GetTagsResponseResolvers.Resolvers
@@ -676,7 +712,6 @@ export interface IResolvers {
   RequestToJoinProjectResponse?: RequestToJoinProjectResponseResolvers.Resolvers
   LoginResponse?: LoginResponseResolvers.Resolvers
   RegisterResponse?: RegisterResponseResolvers.Resolvers
-  ProjectJoinRequest?: ProjectJoinRequestResolvers.Resolvers
 }
 
 export interface IDirectiveResolvers<Result> {
@@ -691,6 +726,8 @@ export interface IDirectiveResolvers<Result> {
 
 export interface Query {
   getProject?: Maybe<GetProjectResponse>
+
+  getProjectPendingRequests: GetProjectPendingRequestsResponse
 
   getProjects: GetProjectsResponse
 
@@ -747,6 +784,20 @@ export interface User {
   projects: Project[]
 
   projectsJoined: Project[]
+}
+
+export interface GetProjectPendingRequestsResponse {
+  requests: ProjectJoinRequest[]
+}
+
+export interface ProjectJoinRequest {
+  id: string
+
+  userId: string
+
+  message?: Maybe<string>
+
+  status: ProjectJoinRequestStatusEnum
 }
 
 export interface GetProjectsResponse {
@@ -811,22 +862,15 @@ export interface RegisterResponse {
   user?: Maybe<User>
 }
 
-export interface ProjectJoinRequest {
-  id: string
-
-  userId: string
-
-  message?: Maybe<string>
-
-  status: ProjectJoinRequestStatusEnum
-}
-
 // ====================================================
 // Arguments
 // ====================================================
 
 export interface GetProjectQueryArgs {
   input: GetProjectInput
+}
+export interface GetProjectPendingRequestsQueryArgs {
+  input: GetProjectPendingRequestsInput
 }
 export interface GetProjectsByTagQueryArgs {
   input: GetProjectsByTagInput

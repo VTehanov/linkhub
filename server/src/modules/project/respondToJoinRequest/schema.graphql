@@ -3,7 +3,7 @@
 
 input RespondToJoinProjectInput {
   requestId: String!
-  status: ProjectJoinRequestStatusEnum!
+  status: ProjectJoinRequestStatusEnum
 }
 
 type RequestToJoinProjectResponse {

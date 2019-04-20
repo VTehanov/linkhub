@@ -9,4 +9,5 @@ type ProjectJoinRequest {
   userId: String!
   message: String
   status: ProjectJoinRequestStatusEnum!
+  projectId: String!
 }

@@ -4,19 +4,21 @@ import { createTestConnection } from '../../../utils/testUtils/createTestConnect
 import { User } from '../../../entity/User'
 import TestRequester from '../../../utils/testUtils/TestRequester'
 import { INVALID_LOGIN } from './errorMessages'
+import { LoginInput } from '../../../generated/types'
 
 faker.seed(process.hrtime()[1])
-const seedEmail = faker.internet.email()
-const seedPassword = faker.internet.password()
+
+const userData: LoginInput = {
+  email: faker.internet.email(),
+  password: faker.internet.password()
+}
 const rq = new TestRequester()
 
+let user: User
 let conn: Connection
 beforeAll(async () => {
   conn = await createTestConnection()
-  await User.create({
-    email: seedEmail,
-    password: seedPassword
-  }).save()
+  user = await User.create(userData).save()
 })
 
 afterAll(async () => {
@@ -25,14 +27,14 @@ afterAll(async () => {
 
 describe('Login user', () => {
   test('logs in user', async () => {
-    const response = await rq.login({
-      email: seedEmail,
-      password: seedPassword
-    })
+    const response = await rq.login(userData)
 
     expect(response.data).toEqual({
       login: {
-        user: { email: seedEmail },
+        user: {
+          id: user.id,
+          email: userData.email
+        },
         errors: null
       }
     })
@@ -61,8 +63,11 @@ describe('Login user', () => {
 
   test('returns Invalid Login on wrong password', async () => {
     const password = '-0jfh-1sh-1'
-    const response = await rq.login({ email: seedEmail, password })
-    const users = await User.find({ where: { email: seedEmail } })
+    const response = await rq.login({
+      email: userData.email,
+      password
+    })
+    const users = await User.find({ where: { email: userData.email } })
 
     expect(response.data).toEqual({
       login: {

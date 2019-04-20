@@ -5,7 +5,6 @@ import {
   RegisterInput,
   LoginInput
 } from '../../generated/types'
-import { ProjectJoinRequestStatusEnum } from '../../entity/ProjectJoinRequest'
 
 class TestRequester {
   requestUrl: string
@@ -59,6 +58,7 @@ class TestRequester {
               password: "${password}"
             }) {
               user {
+                id
                 email
               }
               errors {
@@ -285,21 +285,39 @@ class TestRequester {
     })
   }
 
-  async respondToJoinRequest(
-    requestId: string,
-    status: ProjectJoinRequestStatusEnum
-  ) {
+  async respondToJoinRequest(requestId: string) {
     return rp.post({
       ...this.options,
       body: {
         query: `
           mutation {
             respondToJoinRequest(input: {
-              status: ${status},
               requestId: "${requestId}"
             }) {
               errors {
                 message
+              }
+            }
+          }
+        `
+      }
+    })
+  }
+
+  async getProjectPendingRequests(projectId: string) {
+    return rp.post({
+      ...this.options,
+      body: {
+        query: `
+        query {
+            getProjectPendingRequests(input: {
+              projectId: "${projectId}"
+            }) {
+              requests {
+                id
+                userId
+                projectId
+                status
               }
             }
           }

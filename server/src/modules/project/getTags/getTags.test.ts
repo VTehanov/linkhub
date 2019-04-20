@@ -3,24 +3,16 @@ import * as faker from 'faker'
 import { createTestConnection } from '../../../utils/testUtils/createTestConnection'
 import { Tag } from '../../../entity/Tag'
 import TestRequester from '../../../utils/testUtils/TestRequester'
+import { toHaveWithKey } from '../../../utils/toHaveWithKey'
 
 faker.seed(process.hrtime()[1])
 let conn: Connection
-const tagsData = [
-  {
-    id: '1',
-    name: faker.commerce.productMaterial()
-  },
-  {
-    id: '2',
-    name: faker.commerce.productMaterial()
-  }
-]
+const tagsData: string[] = ['AWS', 'Artificial Intelligence']
 
 beforeAll(async () => {
   conn = await createTestConnection()
-
-  await Tag.create(tagsData[0]).save(), await Tag.create(tagsData[1]).save()
+  await Tag.create({ name: tagsData[0] }).save()
+  await Tag.create({ name: tagsData[1] }).save()
 })
 
 afterAll(async () => {
@@ -30,8 +22,10 @@ afterAll(async () => {
 describe('Get tags', () => {
   test('it returns tags correctly', async () => {
     const rq = new TestRequester()
-    const tags = await rq.getTags()
+    const tags = (await rq.getTags()).data.getTags.tags
 
-    expect(tags.data.getTags.tags).toEqual(tagsData)
+    tagsData.forEach(td =>
+      expect(toHaveWithKey(tags, { name: td })).toBeTruthy()
+    )
   })
 })

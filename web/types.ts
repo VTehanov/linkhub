@@ -17,3 +17,8 @@ export type Tag = {
   name: string
   projects?: Project[]
 }
+
+export type ProjectJoinRequest = {
+  id: string
+  project: Project
+}

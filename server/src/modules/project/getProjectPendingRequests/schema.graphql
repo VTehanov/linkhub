@@ -1,0 +1,15 @@
+# import ProjectJoinRequest from '../../shared/ProjectJoinRequest.graphql'
+
+input GetProjectPendingRequestsInput {
+  projectId: String!
+}
+
+type GetProjectPendingRequestsResponse {
+  requests: [ProjectJoinRequest!]!
+}
+
+type Query {
+  getProjectPendingRequests(
+    input: GetProjectPendingRequestsInput!
+  ): GetProjectPendingRequestsResponse!
+}

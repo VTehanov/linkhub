@@ -100,19 +100,13 @@ describe('forgot password', () => {
     })
 
     // Successfully login with new password
-    const loginWithNewPassword = await rq.login({
+    const loginWithNewPasswordRes = await rq.login({
       email: seedEmail,
       password: newPassword
     })
-    expect(loginWithNewPassword).toEqual({
-      data: {
-        login: {
-          errors: null,
-          user: {
-            email: seedEmail
-          }
-        }
-      }
-    })
+
+    const { errors, user } = loginWithNewPasswordRes.data.login
+    expect(errors).toBe(null)
+    expect(user.email).toBe(seedEmail)
   })
 })

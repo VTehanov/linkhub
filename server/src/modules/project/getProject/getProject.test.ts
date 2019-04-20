@@ -1,5 +1,5 @@
 import TestRequester from '../../../utils/testUtils/TestRequester'
-import faker = require('faker')
+import * as faker from 'faker'
 import { Connection } from 'typeorm'
 import { createTestConnection } from '../../../utils/testUtils/createTestConnection'
 import { Project } from '../../../entity/Project'
