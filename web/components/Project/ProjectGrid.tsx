@@ -17,9 +17,6 @@ export const ProjectGrid: SFC<IProps> = ({ projects }) => (
 )
 
 const StyledProjectGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 30px;
-  max-width: 1200px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 `

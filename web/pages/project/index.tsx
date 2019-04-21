@@ -1,8 +1,9 @@
 import { SFC, Fragment } from 'react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
-import { Project } from '../../types'
+import { Project, Tag } from '../../types'
 import { JoinProjectButton } from '../../components/Project/JoinProjectButton'
+import styled from 'styled-components'
 
 const GET_PROJECT_QUERY = gql`
   query GET_PROJECT_QUERY($id: String!) {
@@ -30,6 +31,16 @@ interface IProps {
   router: any
 }
 
+interface ITags {
+  tags?: Tag[]
+}
+
+const Tags: SFC<ITags> = ({ tags }) => (
+  <StyledTags>
+    {tags && tags.map(tag => <span className="tag">{tag.name}</span>)}
+  </StyledTags>
+)
+
 const ProjectPage: SFC<IProps> = ({ query }) => {
   const { id } = query
 
@@ -41,15 +52,7 @@ const ProjectPage: SFC<IProps> = ({ query }) => {
         return (
           <div>
             <h1>{project.name}</h1>
-            {project.tags && project.tags.length > 0 && (
-              <Fragment>
-                <h2>Tags:</h2>
-                {project.tags.map((tag, i) => (
-                  <p key={i}>{tag.name}</p>
-                ))}
-              </Fragment>
-            )}
-
+            <Tags tags={project.tags} />
             <p>{project.description}</p>
             <JoinProjectButton project={project} />
           </div>
@@ -58,5 +61,11 @@ const ProjectPage: SFC<IProps> = ({ query }) => {
     </Query>
   )
 }
+
+const StyledTags = styled.div`
+  .tag ~ .tag {
+    margin-left: 10px;
+  }
+`
 
 export default ProjectPage

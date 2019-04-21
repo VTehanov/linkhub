@@ -31,13 +31,6 @@ const HomePage = () => {
   )
 }
 
-const StyledHomePage = styled.section`
-  display: flex;
-  justify-content: space-around;
-
-  .inner {
-    width: 400px;
-  }
-`
+const StyledHomePage = styled.section``
 
 export default HomePage
