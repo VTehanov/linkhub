@@ -7,10 +7,13 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToMany,
-  JoinTable
+  JoinTable,
+  BeforeInsert,
+  Like
 } from 'typeorm'
 import { User } from './User'
 import { Tag } from './Tag'
+import slugify from 'slugify'
 
 export enum ProgressStatusEnum {
   NOT_STARTED = 'Not started',
@@ -26,6 +29,11 @@ export class Project extends BaseEntity {
     type: 'varchar'
   })
   name: string
+
+  @Column({
+    type: 'text'
+  })
+  slug: string
 
   @Column({
     type: 'text'
@@ -59,4 +67,23 @@ export class Project extends BaseEntity {
     nullable: true
   })
   updatedAt: string
+
+  @BeforeInsert()
+  async slugifyName() {
+    const slug = slugify(this.name, {
+      lower: true,
+      replacement: '-'
+    })
+
+    const existingWithSlug = await Project.count({
+      where: {
+        slug: Like(`%${slug}%`)
+      }
+    })
+
+    const postfix =
+      existingWithSlug > 0 ? `-${(existingWithSlug + 1).toString()}` : ''
+
+    this.slug = `${slug}${postfix}`
+  }
 }

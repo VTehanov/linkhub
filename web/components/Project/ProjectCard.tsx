@@ -9,7 +9,7 @@ interface ProjectProps {
 }
 
 export const ProjectCard: React.SFC<ProjectProps> = ({ project }) => (
-  <Link as={`/project/${project.id}`} href={`/project/?id=${project.id}`}>
+  <Link as={`/project/${project.slug}`} href={`/project/?slug=${project.slug}`}>
     <StyledProjectCard>
       <a>
         <h1 className="name">{project.name}</h1>

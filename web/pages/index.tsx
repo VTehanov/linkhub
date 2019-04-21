@@ -8,6 +8,7 @@ const GET_PROJECTS_QUERY = gql`
     getProjects {
       projects {
         id
+        slug
         name
         description
       }

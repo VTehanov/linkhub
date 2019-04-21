@@ -16,6 +16,11 @@ const userData: RegisterInput = {
   password: faker.internet.password()
 }
 
+const projectData: CreateProjectInput = {
+  name: 'Slug Me IF yOu cAn',
+  description: faker.random.alphaNumeric(80)
+}
+
 let tagNames = ['Android', 'Machine Learning']
 let tags: Tag[] = []
 let conn: Connection
@@ -34,10 +39,6 @@ afterAll(async () => {
 describe('Create project', () => {
   test('creates project by the logged in user', async () => {
     const rq = new TestRequester()
-    const projectData: CreateProjectInput = {
-      name: faker.commerce.productName(),
-      description: faker.random.alphaNumeric(80)
-    }
 
     await rq.login(userData)
 
@@ -50,6 +51,7 @@ describe('Create project', () => {
     const projects = await Project.find({ where: { name: projectData.name } })
     expect(projects).toHaveLength(1)
     expect(projects[0].name).toBe(projectData.name)
+    expect(projects[0].slug).toBe('slug-me-if-you-can')
     expect(projects[0].description).toBe(projectData.description)
     expect(projects[0].progressStatus).toBe(ProgressStatusEnum.NOT_STARTED)
 
@@ -68,13 +70,12 @@ describe('Create project', () => {
     const rq = new TestRequester()
     await rq.login(userData)
 
-    const prevCount = await Project.count()
     const name = 'Te'
     const description = 'st'
     const response = await rq.createProject({ name, description })
     const projects = await Project.find({ where: { name, description } })
-    const afterCount = await Project.count()
 
+    expect(projects).toHaveLength(0)
     expect(response.data).toEqual({
       createProject: {
         errors: [
@@ -90,8 +91,6 @@ describe('Create project', () => {
         project: null
       }
     })
-    expect(afterCount).toBe(prevCount)
-    expect(projects).toHaveLength(0)
   })
 
   it('does not create a project if user is not logged in', async () => {
@@ -132,5 +131,26 @@ describe('Create project', () => {
     expect(project.tags).toHaveLength(tagNames.length)
     expect(project.tags[0].name).toEqual(tagNames[0])
     expect(project.tags[1].name).toEqual(tagNames[1])
+  })
+
+  test('modifies slug if it already exists', async () => {
+    const rq = new TestRequester()
+    const data: CreateProjectInput = {
+      name: 'coUNt ThE SlugSsS',
+      description: faker.random.alphaNumeric(80)
+    }
+    const expectedSlug = 'count-the-slugsss'
+
+    await rq.login(userData)
+    const project: Project = (await rq.createProject(data)).data.createProject
+      .project
+    const secondProject: Project = (await rq.createProject(data)).data
+      .createProject.project
+    const thirdProject: Project = (await rq.createProject(data)).data
+      .createProject.project
+
+    expect(project.slug).toBe(expectedSlug)
+    expect(secondProject.slug).toBe(`${expectedSlug}-2`)
+    expect(thirdProject.slug).toBe(`${expectedSlug}-3`)
   })
 })

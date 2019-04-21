@@ -1,7 +1,7 @@
 export type Maybe<T> = T | null
 
 export interface GetProjectInput {
-  id: string
+  slug: string
 }
 
 export interface GetProjectPendingRequestsInput {
@@ -29,7 +29,7 @@ export interface RequestToJoinProjectInput {
 export interface RespondToJoinProjectInput {
   requestId: string
 
-  status: ProjectJoinRequestStatusEnum
+  status?: Maybe<ProjectJoinRequestStatusEnum>
 }
 
 export interface LoginInput {
@@ -370,6 +370,8 @@ export namespace ProjectJoinRequestResolvers {
     message?: MessageResolver<Maybe<string>, TypeParent, Context>
 
     status?: StatusResolver<ProjectJoinRequestStatusEnum, TypeParent, Context>
+
+    projectId?: ProjectIdResolver<string, TypeParent, Context>
   }
 
   export type IdResolver<
@@ -389,6 +391,11 @@ export namespace ProjectJoinRequestResolvers {
   > = Resolver<R, Parent, Context>
   export type StatusResolver<
     R = ProjectJoinRequestStatusEnum,
+    Parent = ProjectJoinRequest,
+    Context = MyContext
+  > = Resolver<R, Parent, Context>
+  export type ProjectIdResolver<
+    R = string,
     Parent = ProjectJoinRequest,
     Context = MyContext
   > = Resolver<R, Parent, Context>
@@ -798,6 +805,8 @@ export interface ProjectJoinRequest {
   message?: Maybe<string>
 
   status: ProjectJoinRequestStatusEnum
+
+  projectId: string
 }
 
 export interface GetProjectsResponse {

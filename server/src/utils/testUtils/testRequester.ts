@@ -143,6 +143,7 @@ class TestRequester {
               project {
                 id
                 name
+                slug
                 description
                 progressStatus
                 ${tagsResponse}
@@ -180,15 +181,16 @@ class TestRequester {
     })
   }
 
-  async getProject(id: string) {
+  async getProject(slug: string) {
     return rp.post({
       ...this.options,
       body: {
         query: `
           query {
-            getProject(input: { id: "${id}" }) {
+            getProject(input: { slug: "${slug}" }) {
               project {
                 name
+                slug
                 description
                 tags {
                   id

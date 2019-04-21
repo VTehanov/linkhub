@@ -13,6 +13,7 @@ export type User = {
 export type Project = {
   id: string
   name: string
+  slug: string
   description: string
   tags?: Tag[]
   creator: User

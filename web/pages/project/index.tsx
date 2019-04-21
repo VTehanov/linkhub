@@ -6,8 +6,8 @@ import { JoinProjectButton } from '../../components/Project/JoinProjectButton'
 import styled from 'styled-components'
 
 const GET_PROJECT_QUERY = gql`
-  query GET_PROJECT_QUERY($id: String!) {
-    getProject(input: { id: $id }) {
+  query GET_PROJECT_QUERY($slug: String!) {
+    getProject(input: { slug: $slug }) {
       project {
         id
         name
@@ -26,7 +26,7 @@ const GET_PROJECT_QUERY = gql`
 
 interface IProps {
   query: {
-    id?: string
+    slug?: string
   }
   router: any
 }
@@ -42,10 +42,10 @@ const Tags: SFC<ITags> = ({ tags }) => (
 )
 
 const ProjectPage: SFC<IProps> = ({ query }) => {
-  const { id } = query
+  const { slug } = query
 
   return (
-    <Query query={GET_PROJECT_QUERY} variables={{ id }}>
+    <Query query={GET_PROJECT_QUERY} variables={{ slug }}>
       {({ data }) => {
         const project: Project = data.getProject.project
 

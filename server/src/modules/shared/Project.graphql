@@ -4,6 +4,7 @@
 type Project {
   id: String!
   name: String!
+  slug: String!
   description: String
   progressStatus: String!
   tags: [Tag!]!

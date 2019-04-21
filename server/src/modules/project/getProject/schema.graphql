@@ -1,7 +1,7 @@
 # import Project from '../../shared/Project.graphql'
 
 input GetProjectInput {
-  id: String!
+  slug: String!
 }
 
 type GetProjectResponse {
