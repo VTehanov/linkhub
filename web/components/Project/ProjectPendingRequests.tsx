@@ -1,33 +1,41 @@
-import { FunctionComponent } from 'react'
-import gql from 'graphql-tag'
-import { Query } from 'react-apollo'
+import { FunctionComponent, Fragment } from 'react'
 import { ProjectJoinRequest } from '../../types'
+import gql from 'graphql-tag'
+import { Mutation } from 'react-apollo'
 
 interface IProps {
-  projectId: String
+  requests: ProjectJoinRequest[]
 }
 
-const PROJECT_PENDING_REQUESTS_QUERY = gql`
-  mutation PROJECT_PENDING_REQUESTS($projectId: String!) {
-    getProjectPendingRequests(input: { projectId: $projectId }) {
-      requests {
-        id
+const RESPOND_TO_JOIN_REQUEST = gql`
+  mutation respondToJoinRequest($id: String!) {
+    respondToJoinRequest(input: { requestId: $id }) {
+      errors {
+        message
       }
     }
   }
 `
 
 export const ProjectPendingRequests: FunctionComponent<IProps> = ({
-  projectId
-}) => {
-  return (
-    <Query query={PROJECT_PENDING_REQUESTS_QUERY} variables={{ projectId }}>
-      {({ data }) => {
-        const requests: ProjectJoinRequest[] =
-          data.projectPendingRequests.requests
-
-        return requests.map(r => <p>{r.id}</p>)
-      }}
-    </Query>
-  )
-}
+  requests
+}) => (
+  <Fragment>
+    {requests.map((request, i) => (
+      <Mutation
+        mutation={RESPOND_TO_JOIN_REQUEST}
+        variables={{ id: request.id }}
+      >
+        {respondToJoinRequest => (
+          <div key={i}>
+            <span>
+              {request.id}{' '}
+              <button onClick={() => respondToJoinRequest()}>Approve</button>
+              <button>X</button>
+            </span>
+          </div>
+        )}
+      </Mutation>
+    ))}
+  </Fragment>
+)
