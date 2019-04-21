@@ -1,9 +1,8 @@
 import { SFC, Fragment } from 'react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
-import { Project, ProjectJoinRequest } from '../../types'
+import { Project } from '../../types'
 import { JoinProjectButton } from '../../components/Project/JoinProjectButton'
-import { ProjectPendingRequests } from '../../components/Project/ProjectPendingRequests'
 
 const GET_PROJECT_QUERY = gql`
   query GET_PROJECT_QUERY($id: String!) {
@@ -16,11 +15,6 @@ const GET_PROJECT_QUERY = gql`
           id
           name
         }
-      }
-    }
-    getProjectPendingRequests(input: { projectId: $id }) {
-      requests {
-        id
       }
     }
   }
@@ -40,16 +34,21 @@ const ProjectPage: SFC<IProps> = ({ query }) => {
     <Query query={GET_PROJECT_QUERY} variables={{ id }}>
       {({ data }) => {
         const project: Project = data.getProject.project
-        const requests: ProjectJoinRequest[] =
-          data.getProjectPendingRequests.requests
 
         return (
           <div>
             <h1>{project.name}</h1>
+            {project.tags && project.tags.length > 0 && (
+              <Fragment>
+                <h2>Tags:</h2>
+                {project.tags.map((tag, i) => (
+                  <p key={i}>{tag.name}</p>
+                ))}
+              </Fragment>
+            )}
+
             <p>{project.description}</p>
-            {project.tags && project.tags.map(tag => <p>{tag.name}</p>)}
             <JoinProjectButton project={project} />
-            <ProjectPendingRequests requests={requests} />
           </div>
         )
       }}
