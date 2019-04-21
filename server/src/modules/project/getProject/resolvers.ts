@@ -8,6 +8,7 @@ const Query: QueryResolvers.Resolvers = {
         id: input.id
       })
       .leftJoinAndSelect('project.tags', 'tag')
+      .leftJoinAndSelect('project.creator', 'creator')
       .leftJoinAndSelect('project.participants', 'user')
       .getOne()
 

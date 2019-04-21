@@ -5,11 +5,17 @@ export type GraphQLGenericError = {
   message: string
 }
 
+export type User = {
+  id: string
+  email: string
+}
+
 export type Project = {
   id: string
   name: string
   description: string
   tags?: Tag[]
+  creator: User
 }
 
 export type Tag = {

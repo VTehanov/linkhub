@@ -15,6 +15,9 @@ const GET_PROJECT_QUERY = gql`
           id
           name
         }
+        creator {
+          id
+        }
       }
     }
   }

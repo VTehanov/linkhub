@@ -30,9 +30,11 @@ export const JoinProjectButton: SFC<IProps> = ({ project }) => (
       >
         {requestToJoinProject => {
           return data.me ? (
-            <button onClick={() => requestToJoinProject()}>
-              Request to join project
-            </button>
+            project.creator.id !== data.me.id && (
+              <button onClick={() => requestToJoinProject()}>
+                Request to join project
+              </button>
+            )
           ) : (
             <p>Login to join project</p>
           )
