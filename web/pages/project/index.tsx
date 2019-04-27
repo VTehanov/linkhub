@@ -1,4 +1,4 @@
-import { SFC, Fragment } from 'react'
+import { SFC } from 'react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Project, Tag } from '../../types'
@@ -35,9 +35,13 @@ interface ITags {
   tags?: Tag[]
 }
 
-const Tags: SFC<ITags> = ({ tags }) => (
+const Tags: SFC<ITags> = ({ tags = [] }) => (
   <StyledTags>
-    {tags && tags.map(tag => <span className="tag">{tag.name}</span>)}
+    {tags.map(tag => (
+      <span className="tag" key={tag.id}>
+        {tag.name}
+      </span>
+    ))}
   </StyledTags>
 )
 

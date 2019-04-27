@@ -27,9 +27,16 @@ const Query: QueryResolvers.Resolvers = {
     )
 
     const [project, requests] = await Promise.all(promises)
+    console.log('REQUESTS', requests)
+    if (project[0].creator.id !== userId) {
+      console.log('otther')
+      const filteredRequests = requests.filter(
+        (request: ProjectJoinRequest) => request.userId === userId
+      )
 
-    if (!userId || project[0].creator.id !== userId) {
-      return { requests: [] }
+      return {
+        requests: filteredRequests
+      }
     }
 
     return { requests }
