@@ -81,32 +81,3 @@ export const JoinProjectButton: FunctionComponent<IProps> = ({ project }) => (
     )}
   </Query>
 )
-
-// export const JoinProjectButton: FunctionComponent<IProps> = ({ project }) => (
-//   <Query query={ME_QUERY}>
-//     {({ data }) => (
-//       <Mutation
-//         mutation={JOIN_PROJECT_MUTATION}
-//         variables={{
-//           projectId: project.id
-//         }}
-//       >
-//         {requestToJoinProject => {
-//           if (data.me) {
-//             if (project.creator.id !== data.me.id) {
-//               return (
-//                 <button onClick={() => requestToJoinProject()}>
-//                   Request to join project
-//                 </button>
-//               )
-//             } else {
-//               return null
-//             }
-//           } else {
-//             return <p>Login to join project</p>
-//           }
-//         }}
-//       </Mutation>
-//     )}
-//   </Query>
-// )
