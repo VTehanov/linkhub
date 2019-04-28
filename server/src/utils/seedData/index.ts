@@ -24,28 +24,22 @@ const seed = async () => {
       password: '12345678'
     }).save()
   ]
-
   const tagsPromises = tagsData.map(name => Tag.create({ name }).save())
 
   const [projectCreator] = await Promise.all(userPromises)
   const tags = await Promise.all(tagsPromises)
 
-  const projectPromises: Array<Promise<Project>> = []
   for (let i = 0; i < 10; i++) {
-    projectPromises.push(
-      Project.create({
-        ...seedProjectData(),
-        creator: projectCreator,
-        tags
-      }).save()
-    )
+    await Project.create({
+      ...seedProjectData(),
+      creator: projectCreator,
+      tags
+    }).save()
   }
 
-  Promise.all(projectPromises).then(() =>
-    console.log(
-      `Seeded 10 projects inside ${(process.env
-        .NODE_ENV as string).toUpperCase()}`
-    )
+  console.log(
+    `Seeding 10 projects inside ${(process.env
+      .NODE_ENV as string).toUpperCase()}`
   )
 }
 
