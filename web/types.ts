@@ -27,6 +27,6 @@ export type Tag = {
 
 export type ProjectJoinRequest = {
   id: string
-  projectId: string
-  userId: string
+  project: Project
+  user: User
 }

@@ -60,10 +60,14 @@ const Mutation: MutationResolvers.Resolvers = {
 
     const existingRequest = await ProjectJoinRequest.findOne({
       where: {
-        projectId: project.id,
-        userId: user.id
+        project,
+        user
       }
     })
+
+    console.log(project.id)
+    console.log(user.id)
+    console.log(existingRequest)
 
     if (existingRequest) {
       return {
@@ -77,8 +81,8 @@ const Mutation: MutationResolvers.Resolvers = {
     }
 
     await ProjectJoinRequest.create({
-      userId: user.id,
-      projectId,
+      user,
+      project,
       message
     }).save()
 

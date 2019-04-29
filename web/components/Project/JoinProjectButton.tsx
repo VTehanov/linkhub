@@ -3,6 +3,7 @@ import { Project, ProjectJoinRequest } from '../../types'
 import { Mutation, Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import { ME_QUERY } from '../Auth/Me'
+import { ProjectJoinRequests } from './ProjectJoinRequests'
 
 const JOIN_PROJECT_MUTATION = gql`
   mutation JOIN_PROJECT_MUTATION($projectId: String!, $message: String) {
@@ -20,7 +21,9 @@ const GET_PROJECT_PENDING_REQUESTS = gql`
     getProjectPendingRequests(input: { projectId: $projectId }) {
       requests {
         id
-        userId
+        user {
+          email
+        }
       }
     }
   }
@@ -53,11 +56,11 @@ export const JoinProjectButton: FunctionComponent<IProps> = ({ project }) => (
               if (me) {
                 // If user is creator
                 if (me.id === project.creator.id) {
-                  return <p>show requests</p>
+                  return <ProjectJoinRequests requests={requests} />
                 }
 
                 // If user has already requested to join
-                if (requests.length && requests[0].userId === me.id) {
+                if (requests.length && requests[0].user.id === me.id) {
                   return (
                     <p>
                       Your request is pending approval from the project's

@@ -1,8 +1,8 @@
+import { QueryResolvers } from '../../../generated/types'
 import {
-  QueryResolvers,
+  ProjectJoinRequest,
   ProjectJoinRequestStatusEnum
-} from '../../../generated/types'
-import { ProjectJoinRequest } from '../../../entity/ProjectJoinRequest'
+} from '../../../entity/ProjectJoinRequest'
 import { Project } from '../../../entity/Project'
 
 const Query: QueryResolvers.Resolvers = {
@@ -19,7 +19,9 @@ const Query: QueryResolvers.Resolvers = {
 
     promises.push(
       ProjectJoinRequest.createQueryBuilder('request')
-        .where('request.projectId = :projectId', { projectId })
+        .leftJoinAndSelect('request.user', 'user')
+        .leftJoinAndSelect('request.project', 'project')
+        .where('request.project = :projectId', { projectId })
         .andWhere('request.status = :status', {
           status: ProjectJoinRequestStatusEnum.Pending
         })
@@ -30,7 +32,7 @@ const Query: QueryResolvers.Resolvers = {
 
     if (project[0].creator.id !== userId) {
       const filteredRequests = requests.filter(
-        (request: ProjectJoinRequest) => request.userId === userId
+        (request: ProjectJoinRequest) => request.user.id === userId
       )
 
       return {

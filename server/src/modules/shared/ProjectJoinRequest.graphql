@@ -1,3 +1,6 @@
+# import Project from './Project.graphql'
+# import User from './User.graphql'
+
 enum ProjectJoinRequestStatusEnum {
   PENDING
   APPROVED
@@ -6,8 +9,8 @@ enum ProjectJoinRequestStatusEnum {
 
 type ProjectJoinRequest {
   id: String!
-  userId: String!
+  user: User!
   message: String
   status: ProjectJoinRequestStatusEnum!
-  projectId: String!
+  project: Project!
 }

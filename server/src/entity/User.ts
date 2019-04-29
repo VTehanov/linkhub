@@ -11,6 +11,7 @@ import {
 } from 'typeorm'
 import { EMAIL_MAX_LENGTH } from '../constants/dataConstraints'
 import { Project } from './Project'
+import { ProjectJoinRequest } from './ProjectJoinRequest'
 
 @Entity()
 export class User extends BaseEntity {
@@ -46,6 +47,12 @@ export class User extends BaseEntity {
 
   @ManyToMany(() => Project, (project: Project) => project.participants)
   projectsJoined: Project[]
+
+  @OneToMany(
+    () => ProjectJoinRequest,
+    (request: ProjectJoinRequest) => request.user
+  )
+  requestsToJoinProject: ProjectJoinRequest[]
 
   @CreateDateColumn()
   createdAt: string

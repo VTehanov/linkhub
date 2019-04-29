@@ -1,10 +1,12 @@
 import {
   Entity,
   BaseEntity,
-  PrimaryColumn,
   Column,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
+  ManyToOne
 } from 'typeorm'
+import { User } from './User'
+import { Project } from './Project'
 
 export enum ProjectJoinRequestStatusEnum {
   Pending = 'PENDING',
@@ -17,11 +19,11 @@ export class ProjectJoinRequest extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @PrimaryColumn()
-  userId: string
+  @ManyToOne(() => User, (user: User) => user.requestsToJoinProject)
+  user: User
 
-  @PrimaryColumn()
-  projectId: string
+  @ManyToOne(() => Project, (project: Project) => project.joinRequests)
+  project: Project
 
   @Column({
     type: 'text',

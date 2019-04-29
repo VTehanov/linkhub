@@ -9,11 +9,13 @@ import {
   ManyToMany,
   JoinTable,
   BeforeInsert,
-  Like
+  Like,
+  OneToMany
 } from 'typeorm'
+import slugify from 'slugify'
 import { User } from './User'
 import { Tag } from './Tag'
-import slugify from 'slugify'
+import { ProjectJoinRequest } from './ProjectJoinRequest'
 
 export enum ProgressStatusEnum {
   NOT_STARTED = 'Not started',
@@ -51,6 +53,12 @@ export class Project extends BaseEntity {
     cascade: true
   })
   creator: User
+
+  @OneToMany(
+    () => ProjectJoinRequest,
+    (joinRequest: ProjectJoinRequest) => joinRequest.project
+  )
+  joinRequests: ProjectJoinRequest[]
 
   @ManyToMany(() => Tag, tag => tag.projects)
   @JoinTable()

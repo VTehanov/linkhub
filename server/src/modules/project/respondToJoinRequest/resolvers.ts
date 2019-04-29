@@ -17,7 +17,8 @@ const Mutation: MutationResolvers.Resolvers = {
     const existingRequest = await ProjectJoinRequest.findOne({
       where: {
         id: requestId
-      }
+      },
+      relations: ['project', 'user']
     })
 
     if (!existingRequest) {
@@ -27,7 +28,7 @@ const Mutation: MutationResolvers.Resolvers = {
     }
 
     const project = await Project.createQueryBuilder('project')
-      .where('project.id = :id', { id: existingRequest.projectId })
+      .where('project.id = :id', { id: existingRequest.project.id })
       .leftJoinAndSelect('project.participants', 'user')
       .getOne()
 
@@ -39,7 +40,7 @@ const Mutation: MutationResolvers.Resolvers = {
     }
 
     const user = await User.createQueryBuilder('user')
-      .where('user.id = :id', { id: existingRequest.userId })
+      .where('user.id = :id', { id: existingRequest.user.id })
       .leftJoinAndSelect('user.projectsJoined', 'project')
       .getOne()
 
