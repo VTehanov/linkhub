@@ -6,6 +6,7 @@ import { GithubLogin } from './OAuth/GithubLogin'
 import { StyledInput } from '../../styles/Controls'
 import { FormEvent, InputEvent } from '../../types'
 import { ME_QUERY } from './Me'
+import { InputError } from '../Errors/InputError'
 
 const LOGIN_MUTATION = gql`
   mutation LOGIN_MUTATION($email: String!, $password: String!) {
@@ -39,32 +40,42 @@ export const LoginForm: SFC = () => {
       variables={{ email, password }}
       refetchQueries={[{ query: ME_QUERY }]}
     >
-      {login => (
-        <StyledForm
-          method="post"
-          onSubmit={(e: FormEvent) => handleSubmit(e, login)}
-        >
-          <GithubLogin />
-          <div className="delimeter">or</div>
-          <StyledInput
-            type="email"
-            name="email"
-            required
-            placeholder="Email"
-            value={email}
-            onChange={(e: InputEvent) => setEmail(e.target.value)}
-          />
-          <StyledInput
-            type="password"
-            name="password"
-            required
-            placeholder="Password"
-            value={password}
-            onChange={(e: InputEvent) => setPassword(e.target.value)}
-          />
-          <button type="submit">Login</button>
-        </StyledForm>
-      )}
+      {(login, { data }) => {
+        const errors = data && data.login.errors
+
+        return (
+          <StyledForm
+            method="post"
+            onSubmit={(e: FormEvent) => handleSubmit(e, login)}
+          >
+            <GithubLogin />
+            <div className="delimeter">or</div>
+            <div className="field">
+              <StyledInput
+                type="email"
+                name="email"
+                required
+                placeholder="Email"
+                value={email}
+                onChange={(e: InputEvent) => setEmail(e.target.value)}
+              />
+              <InputError name="email" errors={errors} />
+            </div>
+            <div className="field">
+              <StyledInput
+                type="password"
+                name="password"
+                required
+                placeholder="Password"
+                value={password}
+                onChange={(e: InputEvent) => setPassword(e.target.value)}
+              />
+              <InputError name="password" errors={errors} />
+            </div>
+            <button type="submit">Login</button>
+          </StyledForm>
+        )
+      }}
     </Mutation>
   )
 }
