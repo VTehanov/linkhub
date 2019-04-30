@@ -34,7 +34,7 @@ const Mutation: MutationResolvers.Resolvers = {
       return invalidLoginResponse
     }
 
-    // Add email confirmation check
+    // TODO: Add email confirmation check
 
     if (user.forgotPasswordLocked) {
       return {
