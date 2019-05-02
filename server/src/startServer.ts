@@ -22,9 +22,10 @@ export const startServer = async (serverOptions: Options = {}) => {
   const server = new GraphQLServer({
     typeDefs: getTypeDefs(),
     resolvers: getResolvers(),
-    context: ({ request }) => ({
+    context: ({ request, response }) => ({
       redis,
       request,
+      response,
       requestUrl: `${request.protocol}://${request.get('host')}`,
       session: request.session
     })
