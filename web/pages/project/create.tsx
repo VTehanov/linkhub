@@ -1,10 +1,13 @@
 import styled from 'styled-components'
 import { ProjectForm } from '../../components/Project/ProjectForm'
+import { AuthWrapper } from '../../components/Auth/AuthWrapper'
 
 const CreateProjectPage = () => (
   <StyledCreateProjectPage>
     <div className="inner">
-      <ProjectForm />
+      <AuthWrapper>
+        <ProjectForm />
+      </AuthWrapper>
     </div>
   </StyledCreateProjectPage>
 )

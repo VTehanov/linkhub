@@ -18,6 +18,13 @@ const Header = () => (
         <input type="text" placeholder="Search for projects" />
       </div>
       <div className="navigation">
+        <Link
+          href={{
+            pathname: '/project/create'
+          }}
+        >
+          <a>Create project</a>
+        </Link>
         <JoinOrProfile />
       </div>
     </div>
@@ -59,6 +66,7 @@ const StyledHeader = styled.header`
   }
 
   .navigation {
+    display: flex;
     margin-left: auto;
 
     .cta {
