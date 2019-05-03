@@ -8,6 +8,7 @@ import { FormEvent, InputEvent } from '../../types'
 import { ME_QUERY } from './Me'
 import { InputError } from '../Errors/InputError'
 import Link from 'next/link'
+import Router from 'next/router'
 
 const LOGIN_MUTATION = gql`
   mutation LOGIN_MUTATION($email: String!, $password: String!) {
@@ -35,11 +36,22 @@ export const LoginForm: SFC = () => {
     setPassword('')
   }
 
+  const handleCompleted = (loginData: any) => {
+    if (
+      loginData.login.errors &&
+      !loginData.login.errors.length &&
+      window.location.pathname === '/login'
+    ) {
+      Router.push('/')
+    }
+  }
+
   return (
     <Mutation
       mutation={LOGIN_MUTATION}
       variables={{ email, password }}
       refetchQueries={[{ query: ME_QUERY }]}
+      onCompleted={handleCompleted}
     >
       {(login, { data }) => {
         const errors = data && data.login.errors
