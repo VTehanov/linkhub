@@ -7,6 +7,8 @@ import { GithubLogin } from './OAuth/GithubLogin'
 import { InputEvent, FormEvent } from '../../types'
 import { InputError } from '../Errors/InputError'
 import Link from 'next/link'
+import Router from 'next/router'
+import { ME_QUERY } from './Me'
 
 const REGISTER_MUTATION = gql`
   mutation REGISTER_MUTATION($email: String!, $password: String!) {
@@ -38,8 +40,23 @@ export const RegisterForm: SFC = () => {
     setPassword('')
   }
 
+  const handleCompleted = (registerData: any) => {
+    if (
+      (registerData.register.errors === null ||
+        !registerData.register.errors.length) &&
+      window.location.pathname === '/register'
+    ) {
+      Router.push('/')
+    }
+  }
+
   return (
-    <Mutation mutation={REGISTER_MUTATION} variables={{ email, password }}>
+    <Mutation
+      mutation={REGISTER_MUTATION}
+      variables={{ email, password }}
+      refetchQueries={[{ query: ME_QUERY }]}
+      onCompleted={handleCompleted}
+    >
       {(register, { data }) => {
         const errors = data && data.register.errors
 

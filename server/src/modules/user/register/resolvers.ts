@@ -6,9 +6,10 @@ import { formatYupError } from '../../../utils/formatYupErrors'
 import { registerSchema } from './validationSchemas'
 import { createEmailConfirmationLink } from '../../../utils/createEmailConfirmationLink/createEmailConfirmationLink'
 import { sendEmail } from '../../../services/sendEmail'
+import { USER_SESSION_ID_PREFIX } from '../../../constants/names'
 
 const Mutation: MutationResolvers.Resolvers = {
-  async register(_, { input }, { redis, requestUrl }) {
+  async register(_, { input }, { redis, requestUrl, request, session }) {
     const { email, password } = input
 
     try {
@@ -41,6 +42,14 @@ const Mutation: MutationResolvers.Resolvers = {
       await sendEmail(
         email,
         await createEmailConfirmationLink(requestUrl, user.id, redis)
+      )
+    }
+
+    session.userId = user.id
+    if (request.sessionID) {
+      await redis.lpush(
+        `${USER_SESSION_ID_PREFIX}${user.id}`,
+        request.sessionID
       )
     }
 

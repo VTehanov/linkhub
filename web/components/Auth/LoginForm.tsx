@@ -38,8 +38,7 @@ export const LoginForm: SFC = () => {
 
   const handleCompleted = (loginData: any) => {
     if (
-      loginData.login.errors &&
-      !loginData.login.errors.length &&
+      (loginData.login.errors === null || !loginData.login.errors.length) &&
       window.location.pathname === '/login'
     ) {
       Router.push('/')
