@@ -57,4 +57,15 @@ export const StyledForm = styled.form`
   .delimeter:after {
     margin: 0 0 0 20px;
   }
+
+  .redirect-link {
+    margin-top: 25px;
+    text-align: center;
+
+    a {
+      font-family: 'Nunito Sans';
+      font-size: 14px;
+      color: #a6a6a6;
+    }
+  }
 `

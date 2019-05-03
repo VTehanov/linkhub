@@ -6,6 +6,7 @@ import { StyledInput } from '../../styles/Controls'
 import { GithubLogin } from './OAuth/GithubLogin'
 import { InputEvent, FormEvent } from '../../types'
 import { InputError } from '../Errors/InputError'
+import Link from 'next/link'
 
 const REGISTER_MUTATION = gql`
   mutation REGISTER_MUTATION($email: String!, $password: String!) {
@@ -73,6 +74,15 @@ export const RegisterForm: SFC = () => {
               <InputError name="password" errors={errors} />
             </div>
             <button type="submit">Register</button>
+            <div className="redirect-link">
+              <Link
+                href={{
+                  pathname: '/login'
+                }}
+              >
+                <a>Already have an account?</a>
+              </Link>
+            </div>
           </StyledForm>
         )
       }}

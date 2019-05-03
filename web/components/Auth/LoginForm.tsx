@@ -7,6 +7,7 @@ import { StyledInput } from '../../styles/Controls'
 import { FormEvent, InputEvent } from '../../types'
 import { ME_QUERY } from './Me'
 import { InputError } from '../Errors/InputError'
+import Link from 'next/link'
 
 const LOGIN_MUTATION = gql`
   mutation LOGIN_MUTATION($email: String!, $password: String!) {
@@ -73,6 +74,15 @@ export const LoginForm: SFC = () => {
               <InputError name="password" errors={errors} />
             </div>
             <button type="submit">Login</button>
+            <div className="redirect-link">
+              <Link
+                href={{
+                  pathname: '/register'
+                }}
+              >
+                <a>Don't have an account yet?</a>
+              </Link>
+            </div>
           </StyledForm>
         )
       }}
