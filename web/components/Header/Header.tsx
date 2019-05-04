@@ -1,6 +1,19 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 import { JoinOrProfile } from './JoinOrProfile'
+import Router from 'next/router'
+import NProgress from 'nprogress'
+
+Router.onRouteChangeStart = () => {
+  NProgress.start()
+}
+Router.onRouteChangeComplete = () => {
+  NProgress.done()
+}
+
+Router.onRouteChangeError = () => {
+  NProgress.done()
+}
 
 const Header = () => (
   <StyledHeader>
