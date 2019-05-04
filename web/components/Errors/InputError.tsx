@@ -19,4 +19,9 @@ export const InputError: SFC<IProps> = ({ name, errors }) => {
 
 const StyledInputError = styled.span`
   font-family: 'Nunito Sans';
+  position: absolute;
+  bottom: -22px;
+  font-size: 14px;
+  color: red;
+  padding-left: 12px;
 `

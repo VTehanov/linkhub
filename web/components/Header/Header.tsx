@@ -80,6 +80,7 @@ const StyledHeader = styled.header`
 
   .navigation {
     display: flex;
+    align-items: center;
     margin-left: auto;
 
     .cta {

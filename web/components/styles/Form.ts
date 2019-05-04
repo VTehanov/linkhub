@@ -12,12 +12,14 @@ export const StyledForm = styled.form`
   }
 
   .field {
+    position: relative;
     display: flex;
     flex-direction: column;
-    margin-bottom: 25px;
+    margin-bottom: 32px;
   }
 
   button[type='submit'] {
+    margin-top: 10px;
     padding: 15px 0;
     border: 0;
     border-radius: 5px;
