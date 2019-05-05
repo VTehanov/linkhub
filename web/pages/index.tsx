@@ -11,6 +11,11 @@ const GET_PROJECTS_QUERY = gql`
         slug
         name
         description
+        tags {
+          id
+          name
+          slug
+        }
       }
     }
   }

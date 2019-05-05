@@ -48,6 +48,7 @@ const StyledHeader = styled.header`
   margin-bottom: 1em;
   padding: 30px 100px;
   border-bottom: 1px solid #dddddd;
+  background-color: white;
 
   .inner {
     display: flex;

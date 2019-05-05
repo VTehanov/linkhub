@@ -17,6 +17,8 @@ const Page = (props: any) => (
 )
 
 const StyledPage = styled.div`
+  background-color: #f0f1f2;
+
   main {
     padding-top: 60px;
   }
