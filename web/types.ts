@@ -22,6 +22,7 @@ export type Project = {
 export type Tag = {
   id: string
   name: string
+  slug: string
   projects?: Project[]
 }
 

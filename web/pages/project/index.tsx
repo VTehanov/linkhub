@@ -4,6 +4,7 @@ import gql from 'graphql-tag'
 import { Project, Tag } from '../../types'
 import { JoinProjectButton } from '../../components/Project/JoinProjectButton'
 import styled from 'styled-components'
+import Link from 'next/link'
 
 const GET_PROJECT_QUERY = gql`
   query GET_PROJECT_QUERY($slug: String!) {
@@ -15,6 +16,7 @@ const GET_PROJECT_QUERY = gql`
         tags {
           id
           name
+          slug
         }
         creator {
           id
@@ -38,9 +40,20 @@ interface ITags {
 const Tags: SFC<ITags> = ({ tags = [] }) => (
   <StyledTags>
     {tags.map(tag => (
-      <span className="tag" key={tag.id}>
-        {tag.name}
-      </span>
+      <Link
+        href={{
+          pathname: '/project/search',
+          query: {
+            tags: tag.slug
+          }
+        }}
+      >
+        <a>
+          <span className="tag" key={tag.id}>
+            {tag.name}
+          </span>
+        </a>
+      </Link>
     ))}
   </StyledTags>
 )

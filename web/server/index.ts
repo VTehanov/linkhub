@@ -14,6 +14,9 @@ app
     server.get('/project/create', (req: Request, res: Response) =>
       app.render(req, res, '/project/create')
     )
+    server.get('/project/search', (req: Request, res: Response) => {
+      app.render(req, res, '/project/search', req.query)
+    })
     server.get('/project/:slug', (req: Request, res: Response) => {
       const actualPage = '/project'
       const queryParams = { slug: req.params.slug }
